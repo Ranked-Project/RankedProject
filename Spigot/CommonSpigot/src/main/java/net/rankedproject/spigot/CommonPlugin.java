@@ -13,6 +13,7 @@ import net.rankedproject.spigot.registrar.ConfigRegistrar;
 import net.rankedproject.spigot.registrar.PluginRegistrar;
 import net.rankedproject.spigot.registrar.ServerProxyRegistrar;
 import net.rankedproject.spigot.server.RankedServer;
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
@@ -54,9 +55,10 @@ public abstract class CommonPlugin extends JavaPlugin {
         var bukkitListenerRegistrar = new BukkitListenerRegistrar(this);
         var serverProxyRegistrar = new ServerProxyRegistrar();
 
+        var mainThreadExecutor = Bukkit.getScheduler().getMainThreadExecutor(this);
         configRegistrar.register()
-                .thenRun(bukkitListenerRegistrar::register)
-                .thenCompose(_ -> getDefinedRegistrars(rankedServer.registrars()))
+                .thenRunAsync(bukkitListenerRegistrar::register, mainThreadExecutor)
+                .thenComposeAsync(_ -> getDefinedRegistrars(rankedServer.registrars()), mainThreadExecutor)
                 .thenRun(serverProxyRegistrar::register);
     }
 

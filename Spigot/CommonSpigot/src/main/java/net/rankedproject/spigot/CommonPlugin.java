@@ -14,7 +14,9 @@ import net.rankedproject.spigot.registrar.PluginRegistrar;
 import net.rankedproject.spigot.registrar.ServerProxyRegistrar;
 import net.rankedproject.spigot.server.RankedServer;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.NotNull;
 
+import java.util.Collection;
 import java.util.concurrent.CompletableFuture;
 
 @Slf4j
@@ -30,8 +32,8 @@ public abstract class CommonPlugin extends JavaPlugin {
     public void onEnable() {
         initGuice();
 
-        initRegistrars(rankedServer);
         initInstantiator(rankedServer);
+        initRegistrars(rankedServer);
     }
 
     @Override
@@ -47,19 +49,22 @@ public abstract class CommonPlugin extends JavaPlugin {
         injector.injectMembers(this);
     }
 
-    private void initRegistrars(RankedServer rankedServer) {
-        var registrars = rankedServer.registrars().stream()
-                .map(PluginRegistrar::register)
-                .toArray(CompletableFuture[]::new);
-
+    private void initRegistrars(@NotNull RankedServer rankedServer) {
         var configRegistrar = new ConfigRegistrar(this);
         var bukkitListenerRegistrar = new BukkitListenerRegistrar(this);
         var serverProxyRegistrar = new ServerProxyRegistrar();
 
         configRegistrar.register()
                 .thenRun(bukkitListenerRegistrar::register)
-                .thenCompose(_ -> CompletableFuture.allOf(registrars))
+                .thenCompose(_ -> getDefinedRegistrars(rankedServer.registrars()))
                 .thenRun(serverProxyRegistrar::register);
+    }
+
+    @NotNull
+    private CompletableFuture<Void> getDefinedRegistrars(Collection<PluginRegistrar> registrars) {
+        return CompletableFuture.allOf(registrars.stream()
+                .map(PluginRegistrar::register)
+                .toArray(CompletableFuture[]::new));
     }
 
     @SuppressWarnings("unchecked")
@@ -77,5 +82,6 @@ public abstract class CommonPlugin extends JavaPlugin {
         });
     }
 
+    @NotNull
     protected abstract RankedServer rankedServer();
 }

@@ -5,8 +5,10 @@ import com.google.inject.Singleton;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import net.rankedproject.common.data.domain.BasePlayer;
+import net.rankedproject.common.rest.RestClient;
 import net.rankedproject.common.rest.provider.RestProvider;
 import net.rankedproject.common.rest.type.PlayerRestClient;
+import net.rankedproject.spigot.CommonPlugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -21,7 +23,9 @@ import java.util.function.Consumer;
 public class PlayerSessionImpl implements PlayerSession {
 
     private final Map<UUID, Set<BasePlayer>> cache = new ConcurrentHashMap<>();
+
     private final RestProvider restProvider;
+    private final CommonPlugin plugin;
 
     @NotNull
     @Override
@@ -77,7 +81,8 @@ public class PlayerSessionImpl implements PlayerSession {
             @NotNull Class<T> dataClassType,
             @NotNull Consumer<T> dataAction
     ) {
-        PlayerRestClient<T> client = restProvider.getByReturnType(dataClassType);
+        Collection<Class<? extends PlayerRestClient<?>>> restClientTypes = plugin.getRankedServer().requiredPlayerData();
+        PlayerRestClient<T> client = restProvider.getByReturnType(dataClassType, restClientTypes);
 
         T cachedData = getCached(playerUUID, client.getReturnType());
         return client.updatePlayerAsync(playerUUID, cachedData, dataAction);

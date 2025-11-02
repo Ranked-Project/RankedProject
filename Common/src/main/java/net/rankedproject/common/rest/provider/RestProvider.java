@@ -1,15 +1,19 @@
 package net.rankedproject.common.rest.provider;
 
 import com.google.inject.Inject;
+import com.google.inject.Injector;
 import com.google.inject.Singleton;
 import lombok.RequiredArgsConstructor;
 import net.rankedproject.common.rest.RestClient;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.Collection;
 
 @Singleton
 @RequiredArgsConstructor(onConstructor_ = {@Inject})
 public class RestProvider {
 
-    private final RestClientRegistry registry;
+    private final Injector injector;
 
     /**
      * Retrieves an instance of the specified {@code RestClient} type from the registry.
@@ -21,7 +25,7 @@ public class RestProvider {
      * @throws ClassCastException if the retrieved instance cannot be cast to the specified type.
      */
     public <V, T extends RestClient<? extends V>> T get(Class<? extends T> classType) {
-        return classType.cast(registry.get(classType));
+        return injector.getInstance(classType);
     }
 
     /**
@@ -38,9 +42,13 @@ public class RestProvider {
      * @implNote The method performs an unchecked cast to {@code T}, which is suppressed via {@code @SuppressWarnings("unchecked")}.
      */
     @SuppressWarnings("unchecked")
-    public <V, T extends RestClient<V>> T getByReturnType(Class<? extends V> classType) {
-        RestClient<?> restClient = registry.getAllRegistered().values()
+    public <V, T extends RestClient<V>> T getByReturnType(
+            @NotNull Class<? extends V> classType,
+            @NotNull Collection<? extends Class<? extends RestClient<?>>> restClientTypes
+    ) {
+        RestClient<?> restClient = restClientTypes
                 .stream()
+                .map(injector::getInstance)
                 .filter(client -> client.getReturnType() == classType)
                 .findFirst()
                 .orElse(null);

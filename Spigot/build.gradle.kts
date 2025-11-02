@@ -1,6 +1,6 @@
 plugins {
     id("java")
-    id("io.papermc.paperweight.userdev") version "2.0.0-beta.14" apply false
+    id("io.papermc.paperweight.userdev") version "2.0.0-beta.19" apply false
     id("com.gradleup.shadow") version "9.2.2" apply false
 }
 
@@ -22,7 +22,7 @@ subprojects {
 
     dependencies {
         api(project(":Common"))
-        api("com.infernalsuite.asp:mysql-loader:4.0.0-SNAPSHOT")
+        api("com.infernalsuite.asp:mongo-loader:4.0.0-SNAPSHOT")
         api("org.incendo:cloud-paper:2.0.0-beta.10")
         api("org.reflections:reflections:0.10.2")
         compileOnly("org.projectlombok:lombok:1.18.42")

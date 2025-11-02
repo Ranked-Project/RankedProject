@@ -41,7 +41,9 @@ public abstract class CommonPlugin extends JavaPlugin {
     public void onDisable() {
         injector.getInstance(RestClientRegistry.class)
                 .getAllRegistered()
-                .forEach((type, client) -> client.shutdown());
+                .forEach((_, clientType) ->
+                        injector.getInstance(clientType).shutdown()
+                );
     }
 
     private void initGuice() {
@@ -55,9 +57,11 @@ public abstract class CommonPlugin extends JavaPlugin {
         var bukkitListenerRegistrar = new BukkitListenerRegistrar(this);
         var serverProxyRegistrar = new ServerProxyRegistrar();
 
+        bukkitListenerRegistrar.register();
+
         var mainThreadExecutor = Bukkit.getScheduler().getMainThreadExecutor(this);
         configRegistrar.register()
-                .thenRunAsync(bukkitListenerRegistrar::register, mainThreadExecutor)
+//                .thenRunAsync(bukkitListenerRegistrar::register, mainThreadExecutor)
                 .thenComposeAsync(_ -> getDefinedRegistrars(rankedServer.registrars()), mainThreadExecutor)
                 .thenRun(serverProxyRegistrar::register);
     }

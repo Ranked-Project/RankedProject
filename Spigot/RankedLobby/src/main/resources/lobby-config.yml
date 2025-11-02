@@ -1,3 +1,6 @@
 spawn:
   location:
     world-name: "Lobby"
+    x: 1
+    y: 20
+    z: 1

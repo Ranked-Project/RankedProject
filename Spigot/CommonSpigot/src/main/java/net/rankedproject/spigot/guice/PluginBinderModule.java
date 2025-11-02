@@ -20,6 +20,5 @@ public class PluginBinderModule extends AbstractModule {
     @Override
     protected void configure() {
         bind(CommonPlugin.class).toInstance(plugin);
-        bind(Logger.class).toInstance(plugin.getLogger());
     }
 }

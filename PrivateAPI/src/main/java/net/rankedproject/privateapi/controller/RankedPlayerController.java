@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -18,32 +19,43 @@ public class RankedPlayerController {
     private final RankedPlayerService service;
 
     @GetMapping
-    public Flux<ResponseEntity<RankedPlayer>> getAllPlayers() {
+    public List<ResponseEntity<RankedPlayer>> getAllPlayers() {
         return service.getAllPlayers()
-                .map(players -> new ResponseEntity<>(players, HttpStatus.OK));
+                .stream()
+                .map(players -> new ResponseEntity<>(players, HttpStatus.OK))
+                .toList();
     }
 
     @GetMapping(path = "/{id}")
-    public Mono<ResponseEntity<RankedPlayer>> getPlayerById(@PathVariable UUID id) {
+    public ResponseEntity<RankedPlayer> getPlayerById(@PathVariable UUID id) {
         return service.getPlayerByIdOrCreate(id)
-                .map(player -> new ResponseEntity<>(player, HttpStatus.OK));
+                .stream()
+                .map(player -> new ResponseEntity<>(player, HttpStatus.OK))
+                .findFirst()
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @PostMapping
-    public Mono<ResponseEntity<RankedPlayer>> savePlayer(@RequestBody RankedPlayer player) {
+    public ResponseEntity<RankedPlayer> savePlayer(@RequestBody RankedPlayer player) {
         return service.savePlayer(player)
-                .map(savedPlayer -> new ResponseEntity<>(savedPlayer, HttpStatus.CREATED));
+                .stream()
+                .map(savedPlayer -> new ResponseEntity<>(savedPlayer, HttpStatus.CREATED))
+                .findFirst()
+                .orElse(new ResponseEntity<>(HttpStatus.BAD_REQUEST));
     }
 
     @PutMapping(path = "/{id}")
-    public Mono<ResponseEntity<RankedPlayer>> updatePlayer(@RequestBody RankedPlayer player) {
+    public ResponseEntity<RankedPlayer> updatePlayer(@RequestBody RankedPlayer player) {
         return service.updatePlayer(player)
-                .map(updatedPlayer -> new ResponseEntity<>(updatedPlayer, HttpStatus.CREATED));
+                .stream()
+                .map(updatedPlayer -> new ResponseEntity<>(updatedPlayer, HttpStatus.CREATED))
+                .findFirst()
+                .orElse(new ResponseEntity<>(HttpStatus.BAD_REQUEST));
     }
 
     @DeleteMapping(path = "/{id}")
-    public Mono<ResponseEntity<Void>> deletePlayer(@PathVariable UUID id) {
-        return service.deleteItem(id)
-                .then(Mono.fromCallable(() -> new ResponseEntity<>(HttpStatus.NO_CONTENT)));
+    public ResponseEntity<Void> deletePlayer(@PathVariable UUID id) {
+        service.deleteItem(id);
+        return ResponseEntity.noContent().build();
     }
 }

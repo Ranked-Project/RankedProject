@@ -4,17 +4,17 @@ import net.rankedproject.common.config.codec.ConfigCodec;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
-import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.MemorySection;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class LocationConfigCodec implements ConfigCodec<Location, ConfigurationSection> {
+public class LocationConfigCodec implements ConfigCodec<Location, MemorySection> {
 
     @NotNull
     @Override
-    public Location parse(@NotNull ConfigurationSection section) {
+    public Location parse(@NotNull MemorySection section) {
         World world = null;
         var worldName = section.getString("world-name");
         if (worldName != null) {
@@ -32,7 +32,7 @@ public class LocationConfigCodec implements ConfigCodec<Location, ConfigurationS
 
     @NotNull
     @Override
-    public List<Location> parseList(@NotNull ConfigurationSection section) {
+    public List<Location> parseList(@NotNull MemorySection section) {
         List<Location> locations = new ArrayList<>();
         for (var map : section.getMapList("")) {
             World world = null;

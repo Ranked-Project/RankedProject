@@ -1,7 +1,7 @@
 package net.rankedproject.spigot.instantiator.impl;
 
 import com.infernalsuite.asp.api.loaders.SlimeLoader;
-import com.infernalsuite.asp.loaders.mysql.MysqlLoader;
+import com.infernalsuite.asp.loaders.mongo.MongoLoader;
 import lombok.SneakyThrows;
 import net.rankedproject.spigot.instantiator.Instantiator;
 import org.jetbrains.annotations.NotNull;
@@ -10,35 +10,30 @@ import java.util.Optional;
 
 public class SlimeLoaderInstantiator implements Instantiator<SlimeLoader> {
 
-    private static final String SQL_URL = Optional
-            .ofNullable(System.getenv("SQL_URL"))
+    private static final String MONGO_DATABASE = Optional
+            .ofNullable(System.getenv("MONGO_DATABASE"))
             .orElseThrow();
 
-    private static final String SQL_HOST = Optional
-            .ofNullable(System.getenv("SQL_HOST"))
+    private static final String MONGO_COLLECTION = Optional
+            .ofNullable(System.getenv("MONGO_COLLECTION"))
             .orElseThrow();
 
-    private static final String SQL_DATABASE = Optional
-            .ofNullable(System.getenv("SQL_DATABASE"))
-            .orElseThrow();
+    private static final String MONGO_USERNAME = System.getenv("MONGO_USERNAME");
 
-    private static final int SQL_PORT = Optional
-            .ofNullable(System.getenv("SQL_PORT"))
+    private static final String MONGO_PASSWORD = System.getenv("MONGO_PASSWORD");
+
+    private static final String MONGO_AUTH_SOURCE = System.getenv("MONGO_AUTH_SOURCE");
+
+    private static final String MONGO_HOST = Optional
+            .ofNullable(System.getenv("MONGO_HOST"))
+            .orElse("127.0.0.1");
+
+    private static final Integer MONGO_PORT = Optional
+            .ofNullable(System.getenv("MONGO_PORT"))
             .map(Integer::parseInt)
-            .orElseThrow();
+            .orElse(27017);
 
-    private static final boolean SQL_USE_SSL = Optional
-            .ofNullable(System.getenv("SQL_USE_SSL"))
-            .map(Boolean::parseBoolean)
-            .orElse(false);
-
-    private static final String SQL_USERNAME = Optional
-            .ofNullable(System.getenv("SQL_USERNAME"))
-            .orElse("");
-
-    private static final String SQL_PASSWORD = Optional
-            .ofNullable(System.getenv("SQL_PASSWORD"))
-            .orElse("");
+    private static final String MONGO_URI = System.getenv("MONGO_URI");
 
     private SlimeLoader slimeLoader;
 
@@ -46,7 +41,7 @@ public class SlimeLoaderInstantiator implements Instantiator<SlimeLoader> {
     @Override
     @SneakyThrows
     public SlimeLoader init() {
-        slimeLoader = new MysqlLoader(SQL_URL, SQL_HOST, SQL_PORT, SQL_DATABASE, SQL_USE_SSL, SQL_USERNAME, SQL_PASSWORD);
+        slimeLoader = new MongoLoader(MONGO_DATABASE, MONGO_COLLECTION, MONGO_USERNAME, MONGO_PASSWORD, MONGO_AUTH_SOURCE, MONGO_HOST, MONGO_PORT, MONGO_URI);
         return slimeLoader;
     }
 

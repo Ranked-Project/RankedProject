@@ -23,8 +23,8 @@ public class BukkitConfigLoader implements ConfigLoader {
         try (var resource = plugin.getClass().getClassLoader().getResourceAsStream(name)) {
             Preconditions.checkNotNull(resource, "Requested config file named %s is not found".formatted(name));
 
-            byte[] bytes = resource.readAllBytes();
-            ByteArrayInputStream byteStream = new ByteArrayInputStream(bytes);
+            var bytesArray = resource.readAllBytes();
+            var byteStream = new ByteArrayInputStream(bytesArray);
 
             return new BufferedReader(new InputStreamReader(byteStream, StandardCharsets.UTF_8));
         } catch (IOException e) {

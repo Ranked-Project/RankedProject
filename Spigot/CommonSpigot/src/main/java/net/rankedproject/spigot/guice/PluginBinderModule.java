@@ -6,8 +6,6 @@ import com.google.inject.Injector;
 import lombok.RequiredArgsConstructor;
 import net.rankedproject.spigot.CommonPlugin;
 
-import java.util.logging.Logger;
-
 @RequiredArgsConstructor
 public class PluginBinderModule extends AbstractModule {
 
@@ -20,6 +18,5 @@ public class PluginBinderModule extends AbstractModule {
     @Override
     protected void configure() {
         bind(CommonPlugin.class).toInstance(plugin);
-        bind(Logger.class).toInstance(plugin.getLogger());
     }
 }

@@ -25,23 +25,23 @@ public abstract class ConfigParser<T> {
     }
 
     @NotNull
-    public <R> R get(
+    public <R, U> R get(
             @NotNull String path,
             @NotNull ParsedConfig<T> parsedConfig,
             @NotNull Class<R> returnType
     ) {
-        var configData = getConfigData(path, parsedConfig, returnType);
+        U configData = getConfigData(path, parsedConfig);
         var codec = getCodecByReturnType(returnType);
         return codec.parse(configData);
     }
 
     @NotNull
-    public <R> List<? extends R> getAsList(
+    public <R, U> List<? extends R> getAsList(
             @NotNull String path,
             @NotNull ParsedConfig<T> parsedConfig,
             @NotNull Class<R> returnType
     ) {
-        var configData = getConfigData(path, parsedConfig, returnType);
+        U configData = getConfigData(path, parsedConfig);
         var codec = getCodecByReturnType(returnType);
         return codec.parseList(configData);
     }
@@ -62,7 +62,6 @@ public abstract class ConfigParser<T> {
     @NotNull
     protected abstract <R> R getConfigData(
             @NotNull String path,
-            @NotNull ParsedConfig<T> parsedConfig,
-            @NotNull Class<? extends R> returnType
+            @NotNull ParsedConfig<T> parsedConfig
     );
 }

@@ -15,7 +15,7 @@ public class LobbyPlugin extends CommonPlugin {
         return new RankedServerBuilder()
                 .setName("Lobby")
                 .addSpawn(new LobbySpawn(this))
-                .addRegistrar(new SpawnWorldRegistrar(this))
+                .addRegistrar(SpawnWorldRegistrar.class)
                 .addRequiredPlayerData(RankedPlayerRestClient.class)
                 .build();
     }

@@ -35,13 +35,12 @@ public class BukkitConfigParser extends ConfigParser<YamlConfiguration> {
     @Override
     public <U> U getConfigData(
             @NotNull String path,
-            @NotNull ParsedConfig<YamlConfiguration> parsedConfig,
-            @NotNull Class<? extends U> returnType
+            @NotNull ParsedConfig<YamlConfiguration> parsedConfig
     ) {
         var data = parsedConfig.data();
         var configData = data.get(path);
         Preconditions.checkNotNull(configData, "Couldn't find any config data by path %s".formatted(path));
 
-        return returnType.cast(configData);
+        return (U) configData;
     }
 }

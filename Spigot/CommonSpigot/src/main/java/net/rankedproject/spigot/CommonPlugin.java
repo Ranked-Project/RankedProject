@@ -39,11 +39,9 @@ public abstract class CommonPlugin extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        injector.getInstance(RestClientRegistry.class)
-                .getAllRegistered()
-                .forEach((_, clientType) ->
-                        injector.getInstance(clientType).shutdown()
-                );
+        rankedServer.requiredPlayerData().forEach(clientType ->
+                injector.getInstance(clientType).shutdown()
+        );
     }
 
     private void initGuice() {

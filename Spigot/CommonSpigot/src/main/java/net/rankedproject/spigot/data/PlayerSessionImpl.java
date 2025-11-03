@@ -81,7 +81,7 @@ public class PlayerSessionImpl implements PlayerSession {
             @NotNull Class<T> dataClassType,
             @NotNull Consumer<T> dataAction
     ) {
-        Collection<Class<? extends PlayerRestClient<?>>> restClientTypes = plugin.getRankedServer().requiredPlayerData();
+        var restClientTypes = plugin.getRankedServer().requiredPlayerData();
         PlayerRestClient<T> client = restProvider.getByReturnType(dataClassType, restClientTypes);
 
         T cachedData = getCached(playerUUID, client.getReturnType());

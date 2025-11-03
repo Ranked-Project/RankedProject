@@ -39,9 +39,8 @@ public abstract class CommonPlugin extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        rankedServer.requiredPlayerData().forEach(clientType ->
-                injector.getInstance(clientType).shutdown()
-        );
+        var requiredPlayerData = rankedServer.requiredPlayerData();
+        requiredPlayerData.forEach(clientType -> injector.getInstance(clientType).shutdown());
     }
 
     private void initGuice() {

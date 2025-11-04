@@ -1,6 +1,7 @@
 package net.rankedproject.lobby;
 
 import net.rankedproject.common.rest.impl.RankedPlayerRestClient;
+import net.rankedproject.lobby.config.LobbyConfig;
 import net.rankedproject.lobby.registrar.SpawnWorldRegistrar;
 import net.rankedproject.spigot.CommonPlugin;
 import net.rankedproject.spigot.server.RankedServer;
@@ -14,6 +15,7 @@ public class LobbyPlugin extends CommonPlugin {
     public RankedServer rankedServer() {
         return new RankedServerBuilder()
                 .setName("Lobby")
+                .addConfig(LobbyConfig.class)
                 .addSpawn(new LobbySpawn(this))
                 .addRegistrar(SpawnWorldRegistrar.class)
                 .addRequiredPlayerData(RankedPlayerRestClient.class)

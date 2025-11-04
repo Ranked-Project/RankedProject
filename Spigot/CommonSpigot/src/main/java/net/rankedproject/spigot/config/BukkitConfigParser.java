@@ -33,6 +33,7 @@ public class BukkitConfigParser extends ConfigParser<YamlConfiguration> {
 
     @NotNull
     @Override
+    @SuppressWarnings("unchecked")
     public <U> U getConfigData(
             @NotNull String path,
             @NotNull ParsedConfig<YamlConfiguration> parsedConfig

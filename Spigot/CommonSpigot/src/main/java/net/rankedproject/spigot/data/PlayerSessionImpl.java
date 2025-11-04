@@ -5,6 +5,7 @@ import com.google.inject.Singleton;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import net.rankedproject.common.data.domain.BasePlayer;
+import net.rankedproject.common.rest.RestClient;
 import net.rankedproject.common.rest.provider.RestProvider;
 import net.rankedproject.common.rest.type.PlayerRestClient;
 import net.rankedproject.spigot.CommonPlugin;

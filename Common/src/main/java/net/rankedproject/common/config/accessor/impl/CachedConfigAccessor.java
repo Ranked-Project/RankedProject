@@ -34,6 +34,7 @@ public class CachedConfigAccessor implements ConfigAccessor {
     public <T extends Config> @NotNull ParsedConfig<?> load(@NotNull T config) {
         var metadata = config.getMetadata();
         var configName = metadata.name();
+
         var loader = metadata.loader();
         var loadedConfig = loader.load(configName);
 

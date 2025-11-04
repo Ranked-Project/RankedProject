@@ -1,5 +1,6 @@
 package net.rankedproject.common.rest.request;
 
+import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import net.rankedproject.common.rest.request.type.RequestContent;
 import net.rankedproject.common.rest.request.type.RequestType;
@@ -27,6 +28,7 @@ public class RequestFactory {
 
     private final Map<RequestType, Function<RequestContent, Request>> requests = new EnumMap<>(RequestType.class);
 
+    @Inject
     private RequestFactory() {
         registerDefaults();
     }

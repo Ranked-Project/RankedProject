@@ -1,19 +1,14 @@
 spring:
   application:
     name: "PrivateAPI"
-  r2dbc:
-    url: "r2dbc:postgresql://${POSTGRES_ADDRESS:192.168.1.22}:5432/ranked_project"
-    username: ${POSTGRES_USERNAME:postgres}
-    password: ${POSTGRES_PASSWORD:postgres}
-  data:
+.  data:
+    mongodb:
+      uri: "mongodb://localhost:27017/ranked_data"
     redis:
-      host: ${REDIS_ADDRESS:192.168.1.22}
+      host: ${REDIS_ADDRESS:127.0.0.1}
       port: 6379
   cache:
     type: redis
-  jpa:
-    hibernate:
-      ddl-auto: update
   properties:
     hibernate:
       dialect: org.hibernate.dialect.PostgreSQLDialect

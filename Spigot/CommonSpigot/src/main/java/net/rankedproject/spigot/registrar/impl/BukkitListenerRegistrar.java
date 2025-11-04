@@ -1,5 +1,7 @@
 package net.rankedproject.spigot.registrar.impl;
 
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import lombok.RequiredArgsConstructor;
 import net.rankedproject.spigot.CommonPlugin;
 import net.rankedproject.spigot.registrar.ExecutionPriority;
@@ -10,7 +12,8 @@ import org.bukkit.plugin.EventExecutor;
 import org.jetbrains.annotations.NotNull;
 import org.reflections.Reflections;
 
-@RequiredArgsConstructor
+@Singleton
+@RequiredArgsConstructor(onConstructor_ = {@Inject})
 public class BukkitListenerRegistrar implements Registrar {
 
     private static final String PACKAGE_LOOKUP_NAME = "net.rankedproject";

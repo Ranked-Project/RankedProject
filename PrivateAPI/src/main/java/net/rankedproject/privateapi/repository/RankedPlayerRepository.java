@@ -1,19 +1,15 @@
 package net.rankedproject.privateapi.repository;
 
 import net.rankedproject.privateapi.controller.RankedPlayer;
-import org.springframework.data.r2dbc.repository.Query;
-import org.springframework.data.r2dbc.repository.R2dbcRepository;
+import org.jetbrains.annotations.NotNull;
+import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 import reactor.core.publisher.Mono;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-public interface RankedPlayerRepository extends R2dbcRepository<RankedPlayer, UUID> {
+public interface RankedPlayerRepository extends MongoRepository<RankedPlayer, UUID> {
 
-    @Query("INSERT INTO ")
-    Mono<RankedPlayer> save(RankedPlayer entity);
-
-    @Query("")
-    Mono<RankedPlayer> update(RankedPlayer entity);
 }

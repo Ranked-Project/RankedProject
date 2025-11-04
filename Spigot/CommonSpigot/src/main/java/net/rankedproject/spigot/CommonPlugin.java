@@ -4,7 +4,6 @@ import com.google.common.base.Preconditions;
 import com.google.inject.Injector;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import net.rankedproject.common.rest.provider.RestClientRegistry;
 import net.rankedproject.spigot.guice.PluginBinderModule;
 import net.rankedproject.spigot.instantiator.InstantiatorRegistry;
 import net.rankedproject.spigot.instantiator.impl.SlimeLoaderInstantiator;
@@ -38,10 +37,6 @@ public abstract class CommonPlugin extends JavaPlugin {
     public void onDisable() {
         var requiredPlayerData = rankedServer.requiredPlayerData();
         requiredPlayerData.forEach(clientType -> injector.getInstance(clientType).shutdown());
-
-        injector.getInstance(RestClientRegistry.class)
-                .getAllRegistered()
-                .forEach((type, client) -> client.shutdown());
     }
 
     private void initGuice() {

@@ -1,11 +1,15 @@
 package net.rankedproject.common.rest.impl;
 
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import net.rankedproject.common.data.domain.RankedPlayer;
 import net.rankedproject.common.rest.request.RequestFactory;
 import net.rankedproject.common.rest.type.PlayerRestClient;
 
+@Singleton
 public class RankedPlayerRestClient extends PlayerRestClient<RankedPlayer> {
 
+    @Inject
     public RankedPlayerRestClient(RequestFactory requestFactory) {
         super(requestFactory);
     }

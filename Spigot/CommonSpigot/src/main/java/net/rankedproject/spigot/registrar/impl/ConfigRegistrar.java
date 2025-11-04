@@ -1,5 +1,7 @@
 package net.rankedproject.spigot.registrar.impl;
 
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import lombok.RequiredArgsConstructor;
 import net.rankedproject.common.config.ConfigProvider;
 import net.rankedproject.spigot.CommonPlugin;
@@ -9,7 +11,8 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.concurrent.CompletableFuture;
 
-@RequiredArgsConstructor
+@Singleton
+@RequiredArgsConstructor(onConstructor_ = {@Inject})
 public class ConfigRegistrar implements AsyncRegistrar {
 
     private final CommonPlugin plugin;

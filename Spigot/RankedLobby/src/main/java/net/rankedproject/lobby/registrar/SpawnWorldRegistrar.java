@@ -1,5 +1,7 @@
 package net.rankedproject.lobby.registrar;
 
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import lombok.RequiredArgsConstructor;
 import net.rankedproject.spigot.CommonPlugin;
 import net.rankedproject.spigot.registrar.AsyncRegistrar;
@@ -9,7 +11,8 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.concurrent.CompletableFuture;
 
-@RequiredArgsConstructor
+@Singleton
+@RequiredArgsConstructor(onConstructor_ = {@Inject})
 public class SpawnWorldRegistrar implements AsyncRegistrar {
 
     private final CommonPlugin plugin;

@@ -19,11 +19,11 @@ public class RankedServerBuilder {
 
     private final List<Class<? extends Instantiator<?>>> loaders = new ArrayList<>();
 
-    private final List<Class<? extends Registrar>> registrars = Arrays.asList(
+    private final List<Class<? extends Registrar>> registrars = new ArrayList<>(Arrays.asList(
             ConfigRegistrar.class,
             ServerProxyRegistrar.class,
             BukkitListenerRegistrar.class
-    );
+    ));
 
     private final List<Class<? extends PlayerRestClient<?>>> requiredPlayerData = new ArrayList<>();
     private final List<Class<? extends Config>> configs = new ArrayList<>();

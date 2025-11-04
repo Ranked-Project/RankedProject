@@ -3,6 +3,7 @@ package net.rankedproject.spigot.spawn;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import lombok.RequiredArgsConstructor;
+import net.rankedproject.common.util.EnvironmentUtil;
 import net.rankedproject.spigot.CommonPlugin;
 import net.rankedproject.spigot.world.SpawnFlag;
 import org.bukkit.Material;
@@ -55,13 +56,17 @@ public class SpawnListener implements Listener {
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
+        var player = event.getPlayer();
+        if (EnvironmentUtil.isTesting()) {
+            player.setOp(true);
+        }
+
         var rankedServer = plugin.getRankedServer();
         var spawn = rankedServer.spawn();
         if (spawn == null) {
             return;
         }
 
-        var player = event.getPlayer();
         boolean isFlagEnabled = spawn.getFlags().contains(SpawnFlag.AUTO_TELEPORT);
         if (!isFlagEnabled) {
             return;

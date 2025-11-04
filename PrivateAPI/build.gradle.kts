@@ -33,6 +33,10 @@ dependencies {
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
+springBoot {
+    mainClass = "net.rankedproject.privateapi.PrivateApiApplication"
+}
+
 tasks.withType<Test> {
     useJUnitPlatform()
 }

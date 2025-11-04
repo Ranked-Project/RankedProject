@@ -43,11 +43,19 @@ tasks {
             jvmArgs(argsFromFile)
         }
         debugOptions {
-            enabled = true
+            server = true
+            host = "*"
             suspend = false
             port = 5005
         }
         environment("ENVIRONMENT", "TEST")
+        environment("MONGO_DATABASE", "ranked_data")
+        environment("MONGO_COLLECTION", "test_worlds")
+        environment("MONGO_USERNAME", "test_user")
+        environment("MONGO_PASSWORD", "test_password")
+        environment("MONGO_AUTH_SOURCE", "admin")
+        environment("MONGO_HOST", "127.0.0.1")
+        environment("MONGO_PORT", "27017")
     }
 }
 

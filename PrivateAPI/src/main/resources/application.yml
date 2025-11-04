@@ -1,17 +1,14 @@
 spring:
   application:
     name: "PrivateAPI"
-.  data:
+  data:
     mongodb:
-      uri: "mongodb://localhost:27017/ranked_data"
+      uri: ${PRIVATE_API_MONGODB_URI}
     redis:
-      host: ${REDIS_ADDRESS:127.0.0.1}
-      port: 6379
-  cache:
-    type: redis
-  properties:
-    hibernate:
-      dialect: org.hibernate.dialect.PostgreSQLDialect
+      host: ${PRIVATE_API_REDIS_HOST}
+      port: ${PRIVATE_API_REDIS_PORT}
+    cache:
+      type: redis
 management:
   endpoints:
     web:

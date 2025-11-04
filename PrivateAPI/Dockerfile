@@ -1,4 +1,4 @@
-FROM openjdk:21-jdk
+FROM eclipse-temurin:25-jdk
 ARG JAR_FILE=build/libs/*.jar
-COPY ./build/libs/PrivateAPI-0.0.1.jar app.jar
+COPY ${JAR_FILE} app.jar
 ENTRYPOINT ["java","-jar","/app.jar"]

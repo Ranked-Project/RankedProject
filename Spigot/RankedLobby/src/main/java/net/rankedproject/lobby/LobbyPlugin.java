@@ -17,7 +17,7 @@ public class LobbyPlugin extends CommonPlugin {
                 .setName("Lobby")
                 .addConfig(LobbyConfig.class)
                 .addSpawn(new LobbySpawn(this))
-                .addRegistrar(new SpawnWorldRegistrar(this))
+                .addRegistrar(SpawnWorldRegistrar.class)
                 .addRequiredPlayerData(RankedPlayerRestClient.class)
                 .build();
     }

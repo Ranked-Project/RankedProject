@@ -8,16 +8,13 @@ import net.rankedproject.common.rest.provider.RestClientRegistry;
 import net.rankedproject.spigot.guice.PluginBinderModule;
 import net.rankedproject.spigot.instantiator.InstantiatorRegistry;
 import net.rankedproject.spigot.instantiator.impl.SlimeLoaderInstantiator;
-import net.rankedproject.spigot.registrar.BukkitListenerRegistrar;
-import net.rankedproject.spigot.registrar.ConfigRegistrar;
-import net.rankedproject.spigot.registrar.PluginRegistrar;
-import net.rankedproject.spigot.registrar.ServerProxyRegistrar;
+import net.rankedproject.spigot.registrar.AsyncRegistrar;
 import net.rankedproject.spigot.server.RankedServer;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Collection;
+import java.util.Comparator;
 import java.util.concurrent.CompletableFuture;
 
 @Slf4j
@@ -41,6 +38,10 @@ public abstract class CommonPlugin extends JavaPlugin {
     public void onDisable() {
         var requiredPlayerData = rankedServer.requiredPlayerData();
         requiredPlayerData.forEach(clientType -> injector.getInstance(clientType).shutdown());
+
+        injector.getInstance(RestClientRegistry.class)
+                .getAllRegistered()
+                .forEach((type, client) -> client.shutdown());
     }
 
     private void initGuice() {
@@ -50,24 +51,21 @@ public abstract class CommonPlugin extends JavaPlugin {
     }
 
     private void initRegistrars(@NotNull RankedServer rankedServer) {
-        var configRegistrar = new ConfigRegistrar(this);
-        var bukkitListenerRegistrar = new BukkitListenerRegistrar(this);
-        var serverProxyRegistrar = new ServerProxyRegistrar();
-
-        bukkitListenerRegistrar.register();
-
         var mainThreadExecutor = Bukkit.getScheduler().getMainThreadExecutor(this);
-        configRegistrar.register()
-//                .thenRunAsync(bukkitListenerRegistrar::register, mainThreadExecutor)
-                .thenComposeAsync(_ -> getDefinedRegistrars(rankedServer.registrars()), mainThreadExecutor)
-                .thenRun(serverProxyRegistrar::register);
-    }
+        var registrars = rankedServer.registrars().stream()
+                .map(registrar -> injector.getInstance(registrar))
+                .sorted(Comparator.comparingInt(registrar -> registrar.getPriority().ordinal()))
+                .toList();
 
-    @NotNull
-    private CompletableFuture<Void> getDefinedRegistrars(Collection<PluginRegistrar> registrars) {
-        return CompletableFuture.allOf(registrars.stream()
-                .map(PluginRegistrar::register)
-                .toArray(CompletableFuture[]::new));
+        CompletableFuture<?> processingChain = CompletableFuture.completedFuture(null);
+        for (var registrar : registrars) {
+            if (registrar instanceof AsyncRegistrar asyncRegistrar) {
+                processingChain = processingChain.thenCompose(_ -> asyncRegistrar.registerAsync());
+                continue;
+            }
+
+            processingChain = processingChain.thenRunAsync(registrar::register, mainThreadExecutor);
+        }
     }
 
     @SuppressWarnings("unchecked")
@@ -75,8 +73,10 @@ public abstract class CommonPlugin extends JavaPlugin {
         instantiatorRegistry = new InstantiatorRegistry();
         instantiatorRegistry.register(SlimeLoaderInstantiator.class, new SlimeLoaderInstantiator());
 
-        var instantiator = rankedServer.instantiator();
-        instantiator.forEach(loader -> instantiatorRegistry.register(loader.getClass(), loader));
+        rankedServer.instantiator()
+                .stream()
+                .map(registrar -> injector.getInstance(registrar))
+                .forEach(loader -> instantiatorRegistry.register(loader.getClass(), loader));
 
         var registeredInstantiators = instantiatorRegistry.getAll();
         registeredInstantiators.forEach(loader -> {

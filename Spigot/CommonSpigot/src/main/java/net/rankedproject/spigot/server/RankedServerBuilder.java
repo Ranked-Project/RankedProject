@@ -3,18 +3,27 @@ package net.rankedproject.spigot.server;
 import net.rankedproject.common.config.Config;
 import net.rankedproject.common.rest.type.PlayerRestClient;
 import net.rankedproject.spigot.instantiator.Instantiator;
-import net.rankedproject.spigot.registrar.PluginRegistrar;
+import net.rankedproject.spigot.registrar.Registrar;
+import net.rankedproject.spigot.registrar.impl.BukkitListenerRegistrar;
+import net.rankedproject.spigot.registrar.impl.ConfigRegistrar;
+import net.rankedproject.spigot.registrar.impl.ServerProxyRegistrar;
 import net.rankedproject.spigot.world.Spawn;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
 public class RankedServerBuilder {
 
-    private final List<Instantiator<?>> loaders = new ArrayList<>();
-    private final List<PluginRegistrar> registrars = new ArrayList<>();
+    private final List<Class<? extends Instantiator<?>>> loaders = new ArrayList<>();
+
+    private final List<Class<? extends Registrar>> registrars = Arrays.asList(
+            ConfigRegistrar.class,
+            ServerProxyRegistrar.class,
+            BukkitListenerRegistrar.class
+    );
 
     private final List<Class<? extends PlayerRestClient<?>>> requiredPlayerData = new ArrayList<>();
     private final List<Class<? extends Config>> configs = new ArrayList<>();
@@ -29,13 +38,13 @@ public class RankedServerBuilder {
     }
 
     @NotNull
-    public RankedServerBuilder addRegistrar(@NotNull PluginRegistrar registrar) {
+    public RankedServerBuilder addRegistrar(@NotNull Class<? extends Registrar> registrar) {
         this.registrars.add(registrar);
         return this;
     }
 
     @NotNull
-    public RankedServerBuilder addRegistrar(@NotNull Collection<PluginRegistrar> registrars) {
+    public RankedServerBuilder addRegistrar(@NotNull Collection<Class<? extends Registrar>> registrars) {
         this.registrars.addAll(registrars);
         return this;
     }
@@ -53,13 +62,13 @@ public class RankedServerBuilder {
     }
 
     @NotNull
-    public RankedServerBuilder addInstantiator(@NotNull Instantiator<?> instantiator) {
+    public RankedServerBuilder addInstantiator(@NotNull Class<? extends Instantiator<?>> instantiator) {
         this.loaders.add(instantiator);
         return this;
     }
 
     @NotNull
-    public RankedServerBuilder addInstantiator(@NotNull Collection<Instantiator<?>> instantiator) {
+    public RankedServerBuilder addInstantiator(@NotNull Collection<Class<? extends Instantiator<?>>> instantiator) {
         this.loaders.addAll(instantiator);
         return this;
     }

@@ -15,6 +15,7 @@ dependencies {
     api("org.jetbrains:annotations:26.0.2")
     testImplementation(platform("org.junit:junit-bom:5.10.0"))
     testImplementation("org.junit.jupiter:junit-jupiter")
+    testImplementation("org.mockito:mockito-core:5.20.0")
     annotationProcessor("org.projectlombok:lombok:1.18.42")
 }
 

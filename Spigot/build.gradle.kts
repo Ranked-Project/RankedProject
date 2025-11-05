@@ -29,5 +29,14 @@ subprojects {
         compileOnly("org.projectlombok:lombok:1.18.42")
         compileOnly("com.infernalsuite.asp:api:4.0.0-SNAPSHOT")
         annotationProcessor("org.projectlombok:lombok:1.18.42")
+        testImplementation("org.mockito:mockito-core:5.20.0")
+        testImplementation(platform("org.junit:junit-bom:5.10.0"))
+        testImplementation("org.junit.jupiter:junit-jupiter:5.10.0")
+        testImplementation("org.junit.platform:junit-platform-launcher:6.0.1")
+        testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.10.0")
+    }
+
+    tasks.withType<Test> {
+        useJUnitPlatform()
     }
 }

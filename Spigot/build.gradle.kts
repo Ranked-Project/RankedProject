@@ -24,6 +24,7 @@ subprojects {
     dependencies {
         api(project(":Common"))
         api("com.infernalsuite.asp:mongo-loader:4.0.0-SNAPSHOT")
+        api("com.infernalsuite.asp:file-loader:4.0.0-SNAPSHOT")
         api("org.incendo:cloud-paper:2.0.0-beta.10")
         api("org.reflections:reflections:0.10.2")
         compileOnly("org.projectlombok:lombok:1.18.42")

@@ -1,6 +1,8 @@
 spawn:
   location:
-    world-name: "Lobby"
-    x: 1
-    y: 20
-    z: 1
+    world-name: "lobby"
+    x: 27
+    y: 90
+    z: 27
+    yaw: -180
+    pitch: 0

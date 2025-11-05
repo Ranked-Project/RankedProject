@@ -3,7 +3,9 @@ package net.rankedproject.spigot.instantiator.impl;
 import com.infernalsuite.asp.api.loaders.SlimeLoader;
 import com.infernalsuite.asp.loaders.mongo.MongoLoader;
 import lombok.SneakyThrows;
+import net.rankedproject.common.util.EnvironmentUtil;
 import net.rankedproject.spigot.instantiator.Instantiator;
+import net.rankedproject.spigot.world.util.SlimeResourceLoader;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
@@ -41,6 +43,11 @@ public class SlimeLoaderInstantiator implements Instantiator<SlimeLoader> {
     @Override
     @SneakyThrows
     public SlimeLoader init() {
+        if (EnvironmentUtil.isTesting()) {
+            slimeLoader = new SlimeResourceLoader();
+            return slimeLoader;
+        }
+
         slimeLoader = new MongoLoader(MONGO_DATABASE, MONGO_COLLECTION, MONGO_USERNAME, MONGO_PASSWORD, MONGO_AUTH_SOURCE, MONGO_HOST, MONGO_PORT, MONGO_URI);
         return slimeLoader;
     }

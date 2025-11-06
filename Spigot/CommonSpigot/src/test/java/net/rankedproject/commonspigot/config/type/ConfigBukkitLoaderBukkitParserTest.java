@@ -10,12 +10,12 @@ import net.rankedproject.spigot.config.BukkitConfigParser;
 import org.jetbrains.annotations.NotNull;
 
 @Singleton
-public class ConfigBukkitTest implements Config {
+public class ConfigBukkitLoaderBukkitParserTest implements Config {
 
     private final Injector injector;;
 
     @Inject
-    public ConfigBukkitTest(Injector injector) {
+    public ConfigBukkitLoaderBukkitParserTest(Injector injector) {
         this.injector = injector;
     }
 

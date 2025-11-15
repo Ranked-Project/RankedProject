@@ -2,5 +2,11 @@ games-active-ids:
   - "test"
 games:
   test:
-    world-name: "test-world"
-    display-name: "Test Game"
+    world-name: "Equinox"
+    display-name: "Equinox Game"
+    locations:
+      - x: 0.5
+        y: 100.5
+        z: 0.5
+        yaw: 180.0
+        pitch: 0.0

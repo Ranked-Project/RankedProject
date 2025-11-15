@@ -1,12 +1,13 @@
 package net.rankedproject.game.listener;
 
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import lombok.RequiredArgsConstructor;
+import net.rankedproject.game.GamePlugin;
 import net.rankedproject.game.finder.GameFinder;
 import net.rankedproject.game.tracker.GameTracker;
 import net.rankedproject.gameapi.event.type.GamePlayerJoinEvent;
 import net.rankedproject.gameapi.event.type.GamePlayerQuitEvent;
-import net.rankedproject.spigot.CommonPlugin;
 import net.rankedproject.spigot.util.ComponentUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
@@ -20,6 +21,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.logging.Logger;
 
+@Singleton
 @RequiredArgsConstructor(onConstructor_ = {@Inject})
 public class PlayerConnectListener implements Listener {
 
@@ -27,10 +29,9 @@ public class PlayerConnectListener implements Listener {
     private static final String ERROR_GAME_LOG = "Couldn't find a game for player %s in under 3 seconds. An exception was thrown: %s";
 
     private final Logger logger;
-    private final CommonPlugin plugin;
-
-    private final GameTracker gameTracker;
+    private final GamePlugin plugin;
     private final GameFinder<?> gameFinder;
+    private final GameTracker gameTracker;
 
     @EventHandler
     public void onLogin(AsyncPlayerPreLoginEvent event) {

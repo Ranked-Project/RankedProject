@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import net.rankedproject.common.config.ConfigProvider;
 import net.rankedproject.gameapi.config.MapInfoConfig;
 import net.rankedproject.gameapi.metadata.GameMetadataParser;
+import org.bukkit.Location;
 import org.jetbrains.annotations.NotNull;
 
 @Singleton
@@ -18,14 +19,14 @@ public class RankedGameMetadataParser implements GameMetadataParser<RankedGameMe
     @NotNull
     @Override
     public RankedGameMetadata parse(@NotNull String gameIdentifier) {
-        var worldName = ConfigProvider.get(MapInfoConfig.class, injector)
-                .path("games.%s.world-name".formatted(gameIdentifier))
-                .getAsString();
+        var section = ConfigProvider.get(MapInfoConfig.class, injector)
+                .path("games.%s".formatted(gameIdentifier))
+                .getAsSection();
 
-        var displayName = ConfigProvider.get(MapInfoConfig.class, injector)
-                .path("games.%s.display-name")
-                .getAsString();
+        var worldName = section.path("world-name").getAsString();
+        var displayName = section.path("display-name").getAsString();
+        var locations = section.path("locations").getAsList(Location.class);
 
-        return new RankedGameMetadata(worldName, displayName, gameIdentifier);
+        return new RankedGameMetadata(worldName, displayName, gameIdentifier, locations);
     }
 }

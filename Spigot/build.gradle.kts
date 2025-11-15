@@ -1,3 +1,5 @@
+import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
+
 plugins {
     id("java")
     id("io.papermc.paperweight.userdev") version "2.0.0-beta.19" apply false
@@ -30,5 +32,14 @@ subprojects {
         compileOnly("org.projectlombok:lombok:1.18.42")
         compileOnly("com.infernalsuite.asp:api:4.0.0-SNAPSHOT")
         annotationProcessor("org.projectlombok:lombok:1.18.42")
+    }
+
+    tasks.named<ShadowJar>("shadowJar") {
+        archiveClassifier.set("")
+        exclude("io/reactivex/**")
+        exclude("net/bytebuddy/**")
+        minimize {
+            exclude(dependency("com.github.ben-manes.caffeine:caffeine"))
+        }
     }
 }

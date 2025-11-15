@@ -1,5 +1,6 @@
 package net.rankedproject.spigot.server;
 
+import com.google.inject.AbstractModule;
 import net.rankedproject.common.config.Config;
 import net.rankedproject.common.rest.type.PlayerRestClient;
 import net.rankedproject.spigot.instantiator.Instantiator;
@@ -17,6 +18,7 @@ import java.util.List;
 
 public class RankedServerBuilder {
 
+    private final List<AbstractModule> modules = new ArrayList<>();
     private final List<Class<? extends Instantiator<?>>> loaders = new ArrayList<>();
 
     private final List<Class<? extends Registrar>> registrars = new ArrayList<>(Arrays.asList(
@@ -86,7 +88,13 @@ public class RankedServerBuilder {
     }
 
     @NotNull
+    public RankedServerBuilder addModule(@NotNull AbstractModule module) {
+        modules.add(module);
+        return this;
+    }
+
+    @NotNull
     public RankedServer build() {
-        return new RankedServer(loaders, registrars, requiredPlayerData, configs, spawn, name);
+        return new RankedServer(loaders, registrars, requiredPlayerData, configs, modules, spawn, name);
     }
 }

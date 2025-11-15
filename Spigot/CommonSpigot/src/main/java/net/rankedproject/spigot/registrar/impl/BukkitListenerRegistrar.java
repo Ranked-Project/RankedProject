@@ -27,9 +27,11 @@ public class BukkitListenerRegistrar implements Registrar {
 
         var reflections = new Reflections(PACKAGE_LOOKUP_NAME);
         reflections.getSubTypesOf(Listener.class).forEach(classType -> {
-            var listener = injector.getInstance(classType);
-            if (listener instanceof EventExecutor) return;
+            if (EventExecutor.class.isAssignableFrom(classType)) {
+                return;
+            }
 
+            var listener = injector.getInstance(classType);
             pluginManager.registerEvents(listener, plugin);
         });
     }

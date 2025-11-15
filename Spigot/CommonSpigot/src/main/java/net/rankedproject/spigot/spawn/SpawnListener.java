@@ -197,10 +197,6 @@ public class SpawnListener implements Listener {
             return;
         }
 
-        if (event.getBlock().getType() != Material.FARMLAND) {
-            return;
-        }
-
         event.setCancelled(true);
     }
 

@@ -1,5 +1,6 @@
 package net.rankedproject.spigot.server;
 
+import com.google.inject.AbstractModule;
 import net.rankedproject.common.config.Config;
 import net.rankedproject.common.rest.type.PlayerRestClient;
 import net.rankedproject.spigot.instantiator.Instantiator;
@@ -13,6 +14,7 @@ public record RankedServer(
         Collection<Class<? extends Registrar>> registrars,
         Collection<Class<? extends PlayerRestClient<?>>> requiredPlayerData,
         Collection<Class<? extends Config>> configs,
+        Collection<AbstractModule> modules,
         Spawn spawn,
         String name
 ) {

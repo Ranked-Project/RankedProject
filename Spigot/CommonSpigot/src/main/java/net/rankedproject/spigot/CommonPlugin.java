@@ -22,8 +22,8 @@ public abstract class CommonPlugin extends JavaPlugin {
 
     private final RankedServer rankedServer = rankedServer();
 
-    private InstantiatorRegistry instantiatorRegistry;
-    private Injector injector;
+    protected InstantiatorRegistry instantiatorRegistry;
+    protected Injector injector;
 
     @Override
     public void onEnable() {

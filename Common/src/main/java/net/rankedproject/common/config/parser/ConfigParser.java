@@ -36,13 +36,13 @@ public abstract class ConfigParser<T> {
     }
 
     @NotNull
-    public <R, U> List<? extends R> getAsList(
+    public <R, U> List<R> getAsList(
             @NotNull String path,
             @NotNull ParsedConfig<T> parsedConfig,
             @NotNull Class<R> returnType
     ) {
         U configData = getConfigData(path, parsedConfig);
-        var codec = getCodecByReturnType(returnType);
+        ConfigCodec<R, U> codec = getCodecByReturnType(returnType);
         return codec.parseList(configData);
     }
 

@@ -13,6 +13,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
 public class SlimeWorldLoader implements WorldLoader {
@@ -27,8 +28,9 @@ public class SlimeWorldLoader implements WorldLoader {
         var slimeLoader = slimeLoaderInstantiator.get();
         var slimePaper = AdvancedSlimePaperAPI.instance();
 
+        var randomizedWorldName = worldName + "_" + UUID.randomUUID();
         return CompletableFuture
-                .supplyAsync(() -> readSlimeWorld(worldName, slimePaper, slimeLoader), RestCrudAPI.EXECUTOR_SERVICE)
+                .supplyAsync(() -> readSlimeWorld(worldName, slimePaper, slimeLoader).clone(randomizedWorldName), RestCrudAPI.EXECUTOR_SERVICE)
                 .thenApplyAsync(slimeWorld -> {
                     var loadedWorld = slimePaper.loadWorld(slimeWorld, true);
                     return loadedWorld.getBukkitWorld();

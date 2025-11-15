@@ -1,5 +1,3 @@
-import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
-
 group = "net.rankedproject"
 version = "1.0-SNAPSHOT"
 val minecraftVersion = "1.21.10"
@@ -57,11 +55,4 @@ tasks {
         environment("MONGO_HOST", "127.0.0.1")
         environment("MONGO_PORT", "27017")
     }
-}
-
-tasks.withType<ShadowJar> {
-    minimize()
-    archiveClassifier.set("")
-    exclude("io/reactivex/**")
-    exclude("net/bytebuddy/**")
 }

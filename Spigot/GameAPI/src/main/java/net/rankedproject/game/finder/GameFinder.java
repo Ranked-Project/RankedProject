@@ -31,10 +31,10 @@ public interface GameFinder<G extends Game> {
     @NotNull
     default String findRandomGameIdentifier(Injector injector) {
         var ids = ConfigProvider.get(MapInfoConfig.class, injector)
-                .path("game.active-ids")
+                .path("games-active-ids")
                 .getAsList(String.class);
 
-        var randomIndex = ThreadLocalRandom.current().nextInt(0, ids.size() - 1);
+        var randomIndex = ThreadLocalRandom.current().nextInt(0, ids.size());
         return ids.get(randomIndex);
     }
 }

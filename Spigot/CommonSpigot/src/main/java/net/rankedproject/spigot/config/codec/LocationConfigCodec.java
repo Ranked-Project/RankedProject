@@ -1,5 +1,6 @@
 package net.rankedproject.spigot.config.codec;
 
+import com.google.common.base.Preconditions;
 import net.rankedproject.common.config.codec.ConfigCodec;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -9,12 +10,16 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
-public class LocationConfigCodec implements ConfigCodec<Location, MemorySection> {
+public class LocationConfigCodec implements ConfigCodec<Location, Object> {
 
     @NotNull
     @Override
-    public Location parse(@NotNull MemorySection section) {
+    public Location parse(@NotNull Object serialized) {
+        Preconditions.checkArgument(serialized instanceof MemorySection, "Couldn't parse %s, the value is not MemorySection".formatted(serialized));
+        MemorySection section = (MemorySection) serialized;
+
         World world = null;
         var worldName = section.getString("world-name");
         if (worldName != null) {
@@ -32,9 +37,12 @@ public class LocationConfigCodec implements ConfigCodec<Location, MemorySection>
 
     @NotNull
     @Override
-    public List<Location> parseList(@NotNull MemorySection section) {
+    public List<Location> parseList(@NotNull Object serialized) {
+        Preconditions.checkArgument(serialized instanceof List<?>, "Couldn't parse %s, the value is not a List".formatted(serialized));
+        List<Map<String, Object>> sections = (List<Map<String, Object>>) serialized;
+
         List<Location> locations = new ArrayList<>();
-        for (var map : section.getMapList("")) {
+        for (Map<String, Object> map : sections) {
             World world = null;
             var worldName = (String) map.get("world-name");
             if (worldName != null) {
@@ -46,7 +54,6 @@ public class LocationConfigCodec implements ConfigCodec<Location, MemorySection>
             double z = (Double) map.get("z");
             float yaw = map.containsKey("yaw") ? ((Number) map.get("yaw")).floatValue() : 0;
             float pitch = map.containsKey("pitch") ? ((Number) map.get("pitch")).floatValue() : 0;
-
             locations.add(new Location(world, x, y, z, yaw, pitch));
         }
 

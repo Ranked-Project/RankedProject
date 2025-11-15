@@ -7,7 +7,6 @@ import net.kyori.adventure.util.UTF8ResourceBundleControl;
 import net.rankedproject.common.config.placeholder.ConfigPlaceholder;
 import net.rankedproject.common.localization.Localization;
 import net.rankedproject.common.localization.LocalizationReadOption;
-import net.rankedproject.spigot.CommonPlugin;
 import net.rankedproject.spigot.util.ComponentUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -19,7 +18,6 @@ import java.util.ResourceBundle;
 
 @Singleton
 public class BukkitLocalization extends Localization {
-
 
     @Inject
     public BukkitLocalization(Injector injector) {

@@ -36,6 +36,9 @@ tasks {
         minecraftVersion(minecraftVersion)
         serverJar(File("../Server/asp-server.jar"))
         val jvmArgsFile = project.file("../jvm.args")
+        downloadPlugins {
+            github("retrooper", "packetevents", "v2.10.1", "packetevents-spigot-2.10.1.jar")
+        }
         if (jvmArgsFile.exists()) {
             val argsFromFile = jvmArgsFile.readLines()
                 .map { it.trim() }

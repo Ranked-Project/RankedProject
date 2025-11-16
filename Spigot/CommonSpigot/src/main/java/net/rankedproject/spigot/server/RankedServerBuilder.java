@@ -4,9 +4,7 @@ import net.rankedproject.common.config.Config;
 import net.rankedproject.common.rest.type.PlayerRestClient;
 import net.rankedproject.spigot.instantiator.Instantiator;
 import net.rankedproject.spigot.registrar.Registrar;
-import net.rankedproject.spigot.registrar.impl.BukkitListenerRegistrar;
-import net.rankedproject.spigot.registrar.impl.ConfigRegistrar;
-import net.rankedproject.spigot.registrar.impl.ServerProxyRegistrar;
+import net.rankedproject.spigot.registrar.impl.*;
 import net.rankedproject.spigot.world.Spawn;
 import org.jetbrains.annotations.NotNull;
 
@@ -22,7 +20,8 @@ public class RankedServerBuilder {
     private final List<Class<? extends Registrar>> registrars = new ArrayList<>(Arrays.asList(
             ConfigRegistrar.class,
             ServerProxyRegistrar.class,
-            BukkitListenerRegistrar.class
+            BukkitListenerRegistrar.class,
+            PacketListenerRegistrar.class
     ));
 
     private final List<Class<? extends PlayerRestClient<?>>> requiredPlayerData = new ArrayList<>();

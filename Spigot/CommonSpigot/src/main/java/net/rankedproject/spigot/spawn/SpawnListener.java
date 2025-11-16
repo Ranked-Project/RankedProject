@@ -205,7 +205,7 @@ public class SpawnListener implements Listener {
     }
 
     @EventHandler
-    public void playerTeleport(PlayerTeleportEvent event) {
+    public void onPlayerTeleport(PlayerTeleportEvent event) {
         Player player = event.getPlayer();
         if (isFlagNotEnabled(player.getWorld(), SpawnFlag.NO_TELEPORT)) {
             return;

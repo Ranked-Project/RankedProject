@@ -11,6 +11,7 @@ import net.rankedproject.gameapi.event.type.GamePlayerQuitEvent;
 import net.rankedproject.spigot.util.ComponentUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -33,10 +34,13 @@ public class PlayerConnectListener implements Listener {
     private final GameFinder<?> gameFinder;
     private final GameTracker gameTracker;
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onLogin(AsyncPlayerPreLoginEvent event) {
-        var playerUUID = event.getUniqueId();
+        if (event.getLoginResult() != AsyncPlayerPreLoginEvent.Result.ALLOWED) {
+            return;
+        }
 
+        var playerUUID = event.getUniqueId();
         try {
             gameFinder.find(playerUUID).get(3, TimeUnit.SECONDS);
             event.allow();

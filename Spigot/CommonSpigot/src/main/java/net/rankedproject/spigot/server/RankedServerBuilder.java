@@ -3,9 +3,13 @@ package net.rankedproject.spigot.server;
 import com.google.inject.AbstractModule;
 import net.rankedproject.common.config.Config;
 import net.rankedproject.common.rest.type.PlayerRestClient;
+import net.rankedproject.spigot.command.RankedCommand;
 import net.rankedproject.spigot.instantiator.Instantiator;
+import net.rankedproject.spigot.instantiator.impl.CommandManagerInstantiator;
+import net.rankedproject.spigot.instantiator.impl.SlimeLoaderInstantiator;
 import net.rankedproject.spigot.registrar.Registrar;
 import net.rankedproject.spigot.registrar.impl.BukkitListenerRegistrar;
+import net.rankedproject.spigot.registrar.impl.CommandRegistrar;
 import net.rankedproject.spigot.registrar.impl.ConfigRegistrar;
 import net.rankedproject.spigot.registrar.impl.ServerProxyRegistrar;
 import net.rankedproject.spigot.world.Spawn;
@@ -18,17 +22,22 @@ import java.util.List;
 
 public class RankedServerBuilder {
 
-    private final List<AbstractModule> modules = new ArrayList<>();
-    private final List<Class<? extends Instantiator<?>>> loaders = new ArrayList<>();
-
     private final List<Class<? extends Registrar>> registrars = new ArrayList<>(Arrays.asList(
             ConfigRegistrar.class,
             ServerProxyRegistrar.class,
-            BukkitListenerRegistrar.class
+            BukkitListenerRegistrar.class,
+            CommandRegistrar.class
+    ));
+
+    private final List<Class<? extends Instantiator<?>>> instantiators = new ArrayList<>(Arrays.asList(
+            SlimeLoaderInstantiator.class,
+            CommandManagerInstantiator.class
     ));
 
     private final List<Class<? extends PlayerRestClient<?>>> requiredPlayerData = new ArrayList<>();
+    private final List<Class<? extends RankedCommand>> ignoredCommands = new ArrayList<>();
     private final List<Class<? extends Config>> configs = new ArrayList<>();
+    private final List<AbstractModule> modules = new ArrayList<>();
 
     private Spawn spawn;
     private String name;
@@ -65,19 +74,31 @@ public class RankedServerBuilder {
 
     @NotNull
     public RankedServerBuilder addInstantiator(@NotNull Class<? extends Instantiator<?>> instantiator) {
-        this.loaders.add(instantiator);
+        this.instantiators.add(instantiator);
         return this;
     }
 
     @NotNull
     public RankedServerBuilder addInstantiator(@NotNull Collection<Class<? extends Instantiator<?>>> instantiator) {
-        this.loaders.addAll(instantiator);
+        this.instantiators.addAll(instantiator);
         return this;
     }
 
     @NotNull
     public RankedServerBuilder addConfig(@NotNull Class<? extends Config> config) {
         this.configs.add(config);
+        return this;
+    }
+
+    @NotNull
+    public RankedServerBuilder addIgnoredCommand(@NotNull Class<? extends RankedCommand> command) {
+        this.ignoredCommands.add(command);
+        return this;
+    }
+
+    @NotNull
+    public RankedServerBuilder addIgnoredCommands(@NotNull Collection<? extends Class<? extends RankedCommand>> commands) {
+        this.ignoredCommands.addAll(commands);
         return this;
     }
 
@@ -95,6 +116,6 @@ public class RankedServerBuilder {
 
     @NotNull
     public RankedServer build() {
-        return new RankedServer(loaders, registrars, requiredPlayerData, configs, modules, spawn, name);
+        return new RankedServer(instantiators, registrars, requiredPlayerData, configs, ignoredCommands, modules, spawn, name);
     }
 }

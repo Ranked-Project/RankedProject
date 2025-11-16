@@ -1,9 +1,21 @@
 package net.rankedproject.spigot.instantiator;
 
+import com.google.common.base.Preconditions;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public interface Instantiator<T> {
+
+    Map<Class<?>, Object> INSTANTIATED_FIELDS = new ConcurrentHashMap<>();
+
+    default void init() {
+        var initiatedData = initInternally();
+        Preconditions.checkNotNull(initiatedData);
+
+        INSTANTIATED_FIELDS.put(getClass(), initiatedData);
+    }
 
     /**
      * Loads T into memory.
@@ -15,7 +27,7 @@ public interface Instantiator<T> {
      * @return a non-null, fully initialized {@code T} instance ready for use
      */
     @NotNull
-    T init();
+    T initInternally();
 
     /**
      * Retrieves the currently loaded T instance, if available.
@@ -25,6 +37,12 @@ public interface Instantiator<T> {
      *
      * @return the loaded {@code T} instance if available, or {@code null} if not yet loaded
      */
-    @Nullable
-    T get();
+    @NotNull
+    @SuppressWarnings("unchecked")
+    default T get() {
+        T instantiatedField = (T) INSTANTIATED_FIELDS.get(getClass());
+        Preconditions.checkNotNull(instantiatedField, "%s never initialized".formatted(getClass()));
+
+        return instantiatedField;
+    }
 }

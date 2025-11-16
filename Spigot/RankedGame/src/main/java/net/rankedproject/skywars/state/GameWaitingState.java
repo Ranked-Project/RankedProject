@@ -48,12 +48,15 @@ public class GameWaitingState implements GameState {
                         var player = event.getPlayer();
                         player.teleportAsync(randomLocation);
 
-                        var localization = game.getPlugin().getInjector().getInstance(Localization.class);
-                        localization.path("game-join", player.getUniqueId())
+                        var localization = game.getPlugin()
+                                .getInjector()
+                                .getInstance(Localization.class);
+
+                        localization.builder("messages", "game-join", player.getUniqueId())
                                 .placeholder("player", player.getName())
                                 .placeholder("amount", game.getPlayerTracker().getPlayers().size())
                                 .placeholder("total", 4)
-                                .sendMessage("messages");
+                                .sendMessage();
                     })
                     .build();
 

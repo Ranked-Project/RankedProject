@@ -44,8 +44,8 @@ public record ConfigReadOption(String path,
         }
 
         @NotNull
-        public Builder placeholder(@NotNull String placeholder, @NotNull String value) {
-            this.placeholders.add(new ConfigPlaceholder(placeholder, value));
+        public Builder placeholder(@NotNull String placeholder, @NotNull Object value) {
+            this.placeholders.add(ConfigPlaceholder.of(placeholder, value));
             return this;
         }
 

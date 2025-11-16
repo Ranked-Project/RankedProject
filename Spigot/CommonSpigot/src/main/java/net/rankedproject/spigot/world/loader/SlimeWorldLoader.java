@@ -1,6 +1,5 @@
 package net.rankedproject.spigot.world.loader;
 
-import com.google.common.base.Preconditions;
 import com.infernalsuite.asp.api.AdvancedSlimePaperAPI;
 import com.infernalsuite.asp.api.loaders.SlimeLoader;
 import com.infernalsuite.asp.api.world.SlimeWorld;
@@ -21,12 +20,10 @@ public class SlimeWorldLoader implements WorldLoader {
     @NotNull
     @Override
     public CompletableFuture<World> load(@NotNull CommonPlugin plugin, @NotNull String worldName) {
-        var instantiatorRegistry = plugin.getInstantiatorRegistry();
-        var slimeLoaderInstantiator = instantiatorRegistry.get(SlimeLoaderInstantiator.class);
-        Preconditions.checkNotNull(slimeLoaderInstantiator);
-
-        var slimeLoader = slimeLoaderInstantiator.get();
         var slimePaper = AdvancedSlimePaperAPI.instance();
+        var slimeLoader = plugin.getInjector()
+                .getInstance(SlimeLoaderInstantiator.class)
+                .get();
 
         var randomizedWorldName = worldName + "_" + UUID.randomUUID();
         return CompletableFuture

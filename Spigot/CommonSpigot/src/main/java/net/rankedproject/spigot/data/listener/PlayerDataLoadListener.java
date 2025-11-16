@@ -8,6 +8,7 @@ import net.rankedproject.spigot.CommonPlugin;
 import net.rankedproject.spigot.data.PlayerSessionImpl;
 import net.rankedproject.spigot.util.ComponentUtil;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -25,7 +26,7 @@ public class PlayerDataLoadListener implements Listener {
 
     private final PlayerSessionImpl playerSession;
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOW)
     public void onPlayerLogin(AsyncPlayerPreLoginEvent event) {
         UUID playerUUID = event.getUniqueId();
         playerSession.load(plugin.getRankedServer().requiredPlayerData(), playerUUID)

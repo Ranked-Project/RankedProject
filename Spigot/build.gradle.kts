@@ -17,6 +17,8 @@ subprojects {
         maven("https://repo.papermc.io/repository/maven-public/")
         maven("https://repo.infernalsuite.com/repository/maven-snapshots/")
         maven("https://repo.infernalsuite.com/repository/maven-releases/")
+        maven("https://repo.codemc.io/repository/maven-releases/")
+        maven("https://repo.codemc.io/repository/maven-snapshots/")
         gradlePluginPortal()
 
         mavenLocal()
@@ -31,6 +33,7 @@ subprojects {
         api("org.reflections:reflections:0.10.2")
         compileOnly("org.projectlombok:lombok:1.18.42")
         compileOnly("com.infernalsuite.asp:api:4.0.0-SNAPSHOT")
+        compileOnly("com.github.retrooper:packetevents-spigot:2.10.1")
         annotationProcessor("org.projectlombok:lombok:1.18.42")
     }
 

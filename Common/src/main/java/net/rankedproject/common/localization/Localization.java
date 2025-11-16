@@ -17,8 +17,9 @@ public abstract class Localization {
     }
 
     @NotNull
-    public LocalizationReadOption.Builder path(@NotNull String path, @NotNull UUID playerUUID) {
+    public LocalizationReadOption.Builder builder(@NotNull String fileName, @NotNull String path, @NotNull UUID playerUUID) {
         return LocalizationReadOption.builder(injector)
+                .fileName(fileName)
                 .path(path)
                 .playerUUID(playerUUID);
     }

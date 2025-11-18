@@ -20,4 +20,12 @@ subprojects {
             artifact = rootProject.libs.protobuf.protoc.get().toString()
         }
     }
+
+    extensions.configure<JavaPluginExtension> {
+        sourceSets {
+            val main by getting {
+                java.srcDirs("build/generated/source/proto/main/java")
+            }
+        }
+    }
 }

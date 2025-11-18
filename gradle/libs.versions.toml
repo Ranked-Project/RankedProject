@@ -31,7 +31,7 @@ guice = { module = "com.google.inject:guice", version.ref = "guice" }
 annotations = { module = "org.jetbrains:annotations", version.ref = "annotations" }
 jnats = { module = "io.nats:jnats", version.ref = "jnats" }
 protobuf-java = { module = "com.google.protobuf:protobuf-java", version.ref = "protoc" }
-protobuf-protoc = { module = "com.google.protobuf:protobuf-protoc", version.ref = "protoc" }
+protobuf-protoc = { module = "com.google.protobuf:protoc", version.ref = "protoc" }
 junit-bom = { module = "org.junit:junit-bom", version.ref = "junit-bom" }
 cloud-paper = { module = "org.incendo:cloud-paper", version.ref = "cloud-paper" }
 reflections = { module = "org.reflections:reflections", version.ref = "reflections" }

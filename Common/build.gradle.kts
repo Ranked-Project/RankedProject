@@ -3,21 +3,24 @@ version = "1.0-SNAPSHOT"
 
 repositories {
     mavenCentral()
+    maven("https://repo1.maven.org/maven2/")
 }
 
 dependencies {
-    compileOnly("org.projectlombok:lombok:1.18.42")
-    api("com.google.code.gson:gson:2.12.1")
-    api("com.squareup.okhttp3:okhttp:4.12.0")
-    api("com.github.ben-manes.caffeine:caffeine:3.2.3")
-    api("com.github.ben-manes.caffeine:guava:3.2.3")
-    api("com.github.ben-manes.caffeine:jcache:3.2.3")
-    api("it.unimi.dsi:fastutil:8.2.1")
-    api("com.google.inject:guice:7.0.0")
-    api("org.jetbrains:annotations:26.0.2")
-    testImplementation(platform("org.junit:junit-bom:5.10.0"))
+    compileOnly(libs.lombok)
+    api(libs.gson)
+    api(libs.okhttp)
+    api(libs.caffeine)
+    api(libs.caffeine.guava)
+    api(libs.caffeine.jcache)
+    api(libs.fastutil)
+    api(libs.guice)
+    api(libs.annotations)
+    api(libs.jnats)
+    api(libs.protobuf.java)
+    testImplementation(platform(libs.junit.bom))
     testImplementation("org.junit.jupiter:junit-jupiter")
-    annotationProcessor("org.projectlombok:lombok:1.18.42")
+    annotationProcessor(libs.lombok)
 }
 
 tasks.test {

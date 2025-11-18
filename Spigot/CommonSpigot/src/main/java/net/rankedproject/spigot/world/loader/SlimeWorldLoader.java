@@ -12,22 +12,32 @@ import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
 public class SlimeWorldLoader implements WorldLoader {
 
     @NotNull
     @Override
-    public CompletableFuture<World> load(@NotNull CommonPlugin plugin, @NotNull String worldName) {
+    public CompletableFuture<World> load(
+            @NotNull CommonPlugin plugin,
+            @NotNull String worldName,
+            @NotNull WorldNamingStrategy namingStrategy
+    ) {
         var slimePaper = AdvancedSlimePaperAPI.instance();
         var slimeLoader = plugin.getInjector()
                 .getInstance(SlimeLoaderInstantiator.class)
                 .get();
 
-        var randomizedWorldName = worldName + "_" + UUID.randomUUID();
+        var renamedWorldName = namingStrategy.renameWorld(worldName);
         return CompletableFuture
-                .supplyAsync(() -> readSlimeWorld(worldName, slimePaper, slimeLoader).clone(randomizedWorldName), RestCrudAPI.EXECUTOR_SERVICE)
+                .supplyAsync(() -> {
+                    var slimeWorld = readSlimeWorld(worldName, slimePaper, slimeLoader);
+                    if (renamedWorldName.equals(worldName)) {
+                        return slimeWorld;
+                    }
+
+                    return slimeWorld.clone(renamedWorldName);
+                }, RestCrudAPI.EXECUTOR_SERVICE)
                 .thenApplyAsync(slimeWorld -> {
                     var loadedWorld = slimePaper.loadWorld(slimeWorld, true);
                     return loadedWorld.getBukkitWorld();

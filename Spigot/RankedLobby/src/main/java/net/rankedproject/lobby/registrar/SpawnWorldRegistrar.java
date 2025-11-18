@@ -7,6 +7,7 @@ import net.rankedproject.spigot.CommonPlugin;
 import net.rankedproject.spigot.registrar.AsyncRegistrar;
 import net.rankedproject.spigot.registrar.ExecutionPriority;
 import net.rankedproject.spigot.world.loader.WorldLoaderType;
+import net.rankedproject.spigot.world.loader.WorldNamingStrategy;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.concurrent.CompletableFuture;
@@ -24,7 +25,7 @@ public class SpawnWorldRegistrar implements AsyncRegistrar {
         var spawn = rankedServer.spawn();
 
         var worldLoader = WorldLoaderType.SLIME_WORLD.getLoader();
-        return worldLoader.load(plugin, spawn.getWorldName());
+        return worldLoader.load(plugin, spawn.getWorldName(), WorldNamingStrategy.NORMAL_NAME);
     }
 
     @NotNull

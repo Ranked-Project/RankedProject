@@ -37,24 +37,23 @@ public class SlimeLoaderInstantiator implements Instantiator<SlimeLoader> {
 
     private static final String MONGO_URI = System.getenv("MONGO_URI");
 
-    private SlimeLoader slimeLoader;
-
     @NotNull
     @Override
     @SneakyThrows
-    public SlimeLoader init() {
+    public SlimeLoader initInternally() {
         if (EnvironmentUtil.isTesting()) {
-            slimeLoader = new SlimeResourceLoader();
-            return slimeLoader;
+            return new SlimeResourceLoader();
         }
 
-        slimeLoader = new MongoLoader(MONGO_DATABASE, MONGO_COLLECTION, MONGO_USERNAME, MONGO_PASSWORD, MONGO_AUTH_SOURCE, MONGO_HOST, MONGO_PORT, MONGO_URI);
-        return slimeLoader;
-    }
-
-    @NotNull
-    @Override
-    public SlimeLoader get() {
-        return slimeLoader;
+        return new MongoLoader(
+                MONGO_DATABASE,
+                MONGO_COLLECTION,
+                MONGO_USERNAME,
+                MONGO_PASSWORD,
+                MONGO_AUTH_SOURCE,
+                MONGO_HOST,
+                MONGO_PORT,
+                MONGO_URI
+        );
     }
 }

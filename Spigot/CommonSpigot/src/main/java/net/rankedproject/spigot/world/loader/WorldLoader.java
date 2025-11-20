@@ -9,5 +9,5 @@ import java.util.concurrent.CompletableFuture;
 public interface WorldLoader {
 
     @NotNull
-    CompletableFuture<World> load(@NotNull CommonPlugin plugin, @NotNull String worldName);
+    CompletableFuture<World> load(@NotNull CommonPlugin plugin, @NotNull String worldName, @NotNull WorldNamingStrategy namingStrategy);
 }

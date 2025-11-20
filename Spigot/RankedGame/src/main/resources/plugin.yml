@@ -1,3 +1,5 @@
 name: RankedGame
 version: 1.0.0
-main: net.rankedproject.skywars.GamePlugin
+main: net.rankedproject.skywars.RankedGamePlugin
+api-version: 1.21
+author: theparasol

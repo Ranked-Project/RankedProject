@@ -4,10 +4,11 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import lombok.RequiredArgsConstructor;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.rankedproject.spigot.CommonPlugin;
 import net.rankedproject.spigot.data.PlayerSessionImpl;
+import net.rankedproject.spigot.util.ComponentUtil;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -25,7 +26,7 @@ public class PlayerDataLoadListener implements Listener {
 
     private final PlayerSessionImpl playerSession;
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOW)
     public void onPlayerLogin(AsyncPlayerPreLoginEvent event) {
         UUID playerUUID = event.getUniqueId();
         playerSession.load(plugin.getRankedServer().requiredPlayerData(), playerUUID)
@@ -33,7 +34,7 @@ public class PlayerDataLoadListener implements Listener {
                 .exceptionally(ex -> {
                     event.disallow(
                             AsyncPlayerPreLoginEvent.Result.KICK_OTHER,
-                            MiniMessage.miniMessage().deserialize("<red>Failed to load your data")
+                            ComponentUtil.deserialize("<red>Failed to load your data")
                     );
                     logger.severe("Failed to load data for %s: %s".formatted(playerUUID, ex.getMessage()));
                     return null;

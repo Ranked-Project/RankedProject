@@ -1,0 +1,5 @@
+package net.rankedproject;
+
+message SendPlayerToGame {
+  required int32 value = 1;
+}

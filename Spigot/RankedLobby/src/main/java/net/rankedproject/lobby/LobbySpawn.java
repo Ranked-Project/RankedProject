@@ -44,8 +44,8 @@ public class LobbySpawn implements Spawn {
     @Override
     public Function<Player, Location> getLocationFinder() {
         return _ -> ConfigProvider.get(LobbyConfig.class, plugin.getInjector())
-                    .path("spawn.location")
-                    .get(Location.class);
+                .path("spawn.location")
+                .get(Location.class);
     }
 
     @NotNull

@@ -1,6 +1,5 @@
 package net.rankedproject.spigot.world.loader;
 
-import com.google.common.base.Preconditions;
 import com.infernalsuite.asp.api.AdvancedSlimePaperAPI;
 import com.infernalsuite.asp.api.loaders.SlimeLoader;
 import com.infernalsuite.asp.api.world.SlimeWorld;
@@ -19,16 +18,26 @@ public class SlimeWorldLoader implements WorldLoader {
 
     @NotNull
     @Override
-    public CompletableFuture<World> load(@NotNull CommonPlugin plugin, @NotNull String worldName) {
-        var instantiatorRegistry = plugin.getInstantiatorRegistry();
-        var slimeLoaderInstantiator = instantiatorRegistry.get(SlimeLoaderInstantiator.class);
-        Preconditions.checkNotNull(slimeLoaderInstantiator);
-
-        var slimeLoader = slimeLoaderInstantiator.get();
+    public CompletableFuture<World> load(
+            @NotNull CommonPlugin plugin,
+            @NotNull String worldName,
+            @NotNull WorldNamingStrategy namingStrategy
+    ) {
         var slimePaper = AdvancedSlimePaperAPI.instance();
+        var slimeLoader = plugin.getInjector()
+                .getInstance(SlimeLoaderInstantiator.class)
+                .get();
 
+        var renamedWorldName = namingStrategy.renameWorld(worldName);
         return CompletableFuture
-                .supplyAsync(() -> readSlimeWorld(worldName, slimePaper, slimeLoader), RestCrudAPI.EXECUTOR_SERVICE)
+                .supplyAsync(() -> {
+                    var slimeWorld = readSlimeWorld(worldName, slimePaper, slimeLoader);
+                    if (renamedWorldName.equals(worldName)) {
+                        return slimeWorld;
+                    }
+
+                    return slimeWorld.clone(renamedWorldName);
+                }, RestCrudAPI.EXECUTOR_SERVICE)
                 .thenApplyAsync(slimeWorld -> {
                     var loadedWorld = slimePaper.loadWorld(slimeWorld, true);
                     return loadedWorld.getBukkitWorld();

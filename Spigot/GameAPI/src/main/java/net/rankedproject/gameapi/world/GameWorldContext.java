@@ -3,6 +3,7 @@ package net.rankedproject.gameapi.world;
 import lombok.RequiredArgsConstructor;
 import net.rankedproject.gameapi.Game;
 import net.rankedproject.spigot.world.loader.WorldLoaderType;
+import net.rankedproject.spigot.world.loader.WorldNamingStrategy;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 
@@ -22,7 +23,7 @@ public class GameWorldContext {
         var worldName = gameMetadata.getWorldName();
         var worldLoader = WorldLoaderType.SLIME_WORLD.getLoader();
 
-        return worldLoader.load(game.getPlugin(), worldName).thenAccept(loadedWorld -> {
+        return worldLoader.load(game.getPlugin(), worldName, WorldNamingStrategy.RANDOM_UUID_NAME).thenAccept(loadedWorld -> {
             world = new WeakReference<>(loadedWorld);
         });
     }

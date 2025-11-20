@@ -10,5 +10,5 @@ public interface ConfigCodec<T, U> {
     T parse(@NotNull U serialized);
 
     @NotNull
-    List<? extends T> parseList(@NotNull U serialized);
+    List<T> parseList(@NotNull U serialized);
 }

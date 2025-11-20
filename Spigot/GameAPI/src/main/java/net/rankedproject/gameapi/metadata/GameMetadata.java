@@ -1,6 +1,9 @@
 package net.rankedproject.gameapi.metadata;
 
+import org.bukkit.Location;
 import org.jetbrains.annotations.NotNull;
+
+import java.util.List;
 
 public interface GameMetadata {
 
@@ -12,4 +15,7 @@ public interface GameMetadata {
 
     @NotNull
     String getGameIdentifier();
+
+    @NotNull
+    List<Location> getSpawnLocations();
 }

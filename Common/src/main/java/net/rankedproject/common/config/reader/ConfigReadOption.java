@@ -4,6 +4,7 @@ import com.google.common.base.Preconditions;
 import com.google.inject.Injector;
 import net.rankedproject.common.config.Config;
 import net.rankedproject.common.config.placeholder.ConfigPlaceholder;
+import net.rankedproject.common.config.type.ConfigSection;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -43,8 +44,8 @@ public record ConfigReadOption(String path,
         }
 
         @NotNull
-        public Builder placeholder(@NotNull String placeholder, @NotNull String value) {
-            this.placeholders.add(new ConfigPlaceholder(placeholder, value));
+        public Builder placeholder(@NotNull String placeholder, @NotNull Object value) {
+            this.placeholders.add(ConfigPlaceholder.of(placeholder, value));
             return this;
         }
 
@@ -54,7 +55,7 @@ public record ConfigReadOption(String path,
         }
 
         @NotNull
-        public <T> List<? extends T> getAsList(Class<T> returnType) {
+        public <T> List<T> getAsList(Class<T> returnType) {
             return injector.getInstance(ConfigReader.class).getAsList(returnType, build());
         }
 
@@ -66,6 +67,11 @@ public record ConfigReadOption(String path,
         @NotNull
         public Integer getAsInt() {
             return injector.getInstance(ConfigReader.class).getAsInt(build());
+        }
+
+        @NotNull
+        public ConfigSection getAsSection() {
+            return injector.getInstance(ConfigReader.class).getAsSection(build());
         }
 
         @NotNull

@@ -1,15 +1,20 @@
-package net.rankedproject.spigot.instantiator.impl;
+package net.rankedproject.spigot.instantiator;
 
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
 import com.infernalsuite.asp.api.loaders.SlimeLoader;
 import com.infernalsuite.asp.loaders.mongo.MongoLoader;
+import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import net.rankedproject.common.util.EnvironmentUtil;
-import net.rankedproject.spigot.instantiator.Instantiator;
+import net.rankedproject.common.instantiator.Instantiator;
 import net.rankedproject.spigot.world.util.SlimeResourceLoader;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
 
+@Singleton
+@RequiredArgsConstructor(onConstructor_ = {@Inject})
 public class SlimeLoaderInstantiator implements Instantiator<SlimeLoader> {
 
     private static final String MONGO_DATABASE = Optional

@@ -4,7 +4,7 @@ import com.google.inject.Injector;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.rankedproject.spigot.guice.PluginBinderModule;
-import net.rankedproject.spigot.instantiator.Instantiator;
+import net.rankedproject.common.instantiator.Instantiator;
 import net.rankedproject.spigot.registrar.AsyncRegistrar;
 import net.rankedproject.spigot.registrar.ExecutionPriority;
 import net.rankedproject.spigot.registrar.Registrar;

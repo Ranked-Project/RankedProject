@@ -5,7 +5,7 @@ import com.google.inject.Singleton;
 import lombok.RequiredArgsConstructor;
 import net.rankedproject.spigot.CommonPlugin;
 import net.rankedproject.spigot.command.RankedCommand;
-import net.rankedproject.spigot.instantiator.impl.CommandManagerInstantiator;
+import net.rankedproject.spigot.instantiator.CommandManagerInstantiator;
 import net.rankedproject.spigot.registrar.ExecutionPriority;
 import net.rankedproject.spigot.registrar.Registrar;
 import org.jetbrains.annotations.NotNull;

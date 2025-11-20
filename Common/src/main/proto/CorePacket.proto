@@ -1,0 +1,6 @@
+package net.rankedproject;
+
+message SendPlayerToServer {
+  required string player_uuid = 1;
+  required string server_name = 2;
+}

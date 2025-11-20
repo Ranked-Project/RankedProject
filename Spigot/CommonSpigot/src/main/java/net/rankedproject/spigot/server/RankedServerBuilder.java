@@ -2,11 +2,12 @@ package net.rankedproject.spigot.server;
 
 import com.google.inject.AbstractModule;
 import net.rankedproject.common.config.Config;
+import net.rankedproject.common.instantiator.impl.NatsInstantiator;
 import net.rankedproject.common.rest.type.PlayerRestClient;
 import net.rankedproject.spigot.command.RankedCommand;
-import net.rankedproject.spigot.instantiator.Instantiator;
-import net.rankedproject.spigot.instantiator.impl.CommandManagerInstantiator;
-import net.rankedproject.spigot.instantiator.impl.SlimeLoaderInstantiator;
+import net.rankedproject.common.instantiator.Instantiator;
+import net.rankedproject.spigot.instantiator.CommandManagerInstantiator;
+import net.rankedproject.spigot.instantiator.SlimeLoaderInstantiator;
 import net.rankedproject.spigot.registrar.Registrar;
 import net.rankedproject.spigot.registrar.impl.BukkitListenerRegistrar;
 import net.rankedproject.spigot.registrar.impl.CommandRegistrar;
@@ -30,6 +31,7 @@ public class RankedServerBuilder {
     ));
 
     private final List<Class<? extends Instantiator<?>>> instantiators = new ArrayList<>(Arrays.asList(
+            NatsInstantiator.class,
             SlimeLoaderInstantiator.class,
             CommandManagerInstantiator.class
     ));

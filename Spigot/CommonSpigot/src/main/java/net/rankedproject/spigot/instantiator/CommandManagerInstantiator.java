@@ -1,10 +1,10 @@
-package net.rankedproject.spigot.instantiator.impl;
+package net.rankedproject.spigot.instantiator;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import lombok.RequiredArgsConstructor;
 import net.rankedproject.spigot.CommonPlugin;
-import net.rankedproject.spigot.instantiator.Instantiator;
+import net.rankedproject.common.instantiator.Instantiator;
 import org.incendo.cloud.execution.ExecutionCoordinator;
 import org.incendo.cloud.paper.PaperCommandManager;
 import org.incendo.cloud.paper.util.sender.PaperSimpleSenderMapper;

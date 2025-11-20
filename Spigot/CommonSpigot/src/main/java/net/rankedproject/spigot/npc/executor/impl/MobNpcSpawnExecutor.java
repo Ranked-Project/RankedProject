@@ -24,11 +24,18 @@ public class MobNpcSpawnExecutor implements NpcSpawnExecutor {
         var npc = loadedNpc.npc();
         var mobNpc = (MobNpc) npc;
 
-        var location = mobNpc.getBehavior().location();
-
         var nmsEntityType = loadedNpc.npc().getBehavior().entityType();
         var bukkitEntityType = CraftEntityType.minecraftToBukkit(nmsEntityType);
 
+        var player = Objects.requireNonNull(Bukkit.getPlayer(playerUUID));
+        var packetPlayerManager = PacketEvents.getAPI().getPlayerManager();
+
+        int entitySize = loadedNpc.npc().getBehavior().entitySize();
+        var entitySizeProperty = new WrapperPlayServerUpdateAttributes.Property(Attributes.SCALE, entitySize, List.of());
+
+        var updateAttributesPacket = new WrapperPlayServerUpdateAttributes(loadedNpc.entityId(), List.of(entitySizeProperty));
+
+        var location = mobNpc.getBehavior().location();
         var entitySpawnPacket = new WrapperPlayServerSpawnEntity(
                 loadedNpc.entityId(),
                 UUID.randomUUID(),
@@ -39,25 +46,7 @@ public class MobNpcSpawnExecutor implements NpcSpawnExecutor {
                 null
         );
 
-        var player = Objects.requireNonNull(Bukkit.getPlayer(playerUUID));
-        var packetPlayerManager = PacketEvents.getAPI().getPlayerManager();
-
-        var entitySizeProperty = new WrapperPlayServerUpdateAttributes.Property(
-                Attributes.SCALE,
-                loadedNpc.npc().getBehavior().entitySize(),
-                List.of()
-        );
-        var updateAttributesPacket = new WrapperPlayServerUpdateAttributes(loadedNpc.entityId(), List.of(entitySizeProperty));
-
         packetPlayerManager.sendPacket(player, entitySpawnPacket);
         packetPlayerManager.sendPacket(player, updateAttributesPacket);
-    }
-
-    @Override
-    public void despawnEntity(LoadedNpc loadedNpc, UUID playerUUID) {
-        Player player = Objects.requireNonNull(Bukkit.getPlayer(playerUUID));
-
-        WrapperPlayServerDestroyEntities destroyPacket = new WrapperPlayServerDestroyEntities(loadedNpc.entityId());
-        PacketEvents.getAPI().getPlayerManager().sendPacket(player, destroyPacket);
     }
 }

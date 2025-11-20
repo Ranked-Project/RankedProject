@@ -8,9 +8,9 @@ import org.jetbrains.annotations.NotNull;
 
 public record NpcBehavior(
         Location location,
+        EntityType<?> entityType,
         NpcModel model,
         NpcClickBehavior clickBehavior,
-        EntityType<?> entityType,
         int entitySize
 ) {
 
@@ -56,7 +56,7 @@ public record NpcBehavior(
         }
 
         public NpcBehavior build() {
-            return new NpcBehavior(location, model, clickBehavior, entityType, entitySize);
+            return new NpcBehavior(location, entityType, model, clickBehavior, entitySize);
         }
     }
 }

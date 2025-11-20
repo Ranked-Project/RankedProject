@@ -1,6 +1,8 @@
 package net.rankedproject.spigot;
 
+import com.github.retrooper.packetevents.PacketEvents;
 import com.google.inject.Injector;
+import io.github.retrooper.packetevents.factory.spigot.SpigotPacketEventsBuilder;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.rankedproject.spigot.guice.PluginBinderModule;
@@ -22,6 +24,12 @@ public abstract class CommonPlugin extends JavaPlugin {
 
     private final RankedServer rankedServer = rankedServer();
     protected Injector injector;
+
+    @Override
+    public void onLoad() {
+        PacketEvents.setAPI(SpigotPacketEventsBuilder.build(this));
+        PacketEvents.getAPI().load();
+    }
 
     @Override
     public void onEnable() {

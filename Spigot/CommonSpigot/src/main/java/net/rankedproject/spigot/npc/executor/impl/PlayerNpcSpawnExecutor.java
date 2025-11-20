@@ -53,14 +53,6 @@ public class PlayerNpcSpawnExecutor implements NpcSpawnExecutor {
         showNpcEntity(playerUUID, loadedNpc, npcUserProfile);
     }
 
-    @Override
-    public void despawnEntity(LoadedNpc loadedNpc, UUID playerUUID) {
-        Player player = Objects.requireNonNull(Bukkit.getPlayer(playerUUID));
-
-        WrapperPlayServerDestroyEntities destroyPacket = new WrapperPlayServerDestroyEntities(loadedNpc.entityId());
-        PacketEvents.getAPI().getPlayerManager().sendPacket(player, destroyPacket);
-    }
-
     private void showNpcEntity(
             UUID playerUUID,
             LoadedNpc loadedNpc,

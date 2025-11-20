@@ -11,6 +11,22 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.UUID;
 
+/**
+ * Factory responsible for creating NPCs (Non-Player Characters)
+ * for individual players.
+ * <p>
+ * This class integrates with {@link NpcSpawnedTracker} to keep track of spawned NPCs per player
+ * and uses {@link Injector} to instantiate NPC instances with dependency injection.
+ * </p>
+ *
+ * <p>Example usage:</p>
+ * <pre>{@code
+ * NpcFactory factory = ...;
+ * UUID playerUUID = player.getUniqueId();
+ * int entityId = factory.create(MyCustomNpc.class, playerId);
+ * factory.remove(entityId, playerId);
+ * }</pre>
+ */
 @Singleton
 @RequiredArgsConstructor(onConstructor_ = {@Inject})
 public class NpcFactory {
@@ -18,6 +34,17 @@ public class NpcFactory {
     private final NpcSpawnedTracker npcSpawnedTracker;
     private final Injector injector;
 
+    /**
+     * Creates a new NPC of the specified type for the given player, using a provided entity ID.
+     * <p>
+     * The NPC is tracked in {@link NpcSpawnedTracker} and spawned using its configured spawn executor.
+     * </p>
+     *
+     * @param npcType   The class type of the NPC to instantiate. Must extend {@link Npc}.
+     * @param playerUUID The UUID of the player for whom the NPC is created.
+     * @param entityId  The entity ID to assign to the spawned NPC.
+     * @return The entity ID of the newly created NPC.
+     */
     public int create(
             @NotNull Class<? extends Npc> npcType,
             @NotNull UUID playerUUID,
@@ -29,10 +56,19 @@ public class NpcFactory {
                 .entityId(entityId)
                 .build();
 
-        npcSpawnedTracker.track(playerUUID, loadedNpc);
+        npcSpawnedTracker.track(loadedNpc, playerUUID);
+        npc.getNpcSpawnExecutor().spawnEntity(loadedNpc, playerUUID);
         return entityId;
     }
 
+    /**
+     * Creates a new NPC of the specified type for the given player with an automatically
+     * generated entity ID.
+     *
+     * @param npcType    The class type of the NPC to instantiate. Must extend {@link Npc}.
+     * @param playerUUID The UUID of the player for whom the NPC is created.
+     * @return The entity ID of the newly created NPC.
+     */
     public int create(
             @NotNull Class<? extends Npc> npcType,
             @NotNull UUID playerUUID
@@ -41,6 +77,16 @@ public class NpcFactory {
         return this.create(npcType, playerUUID, entityId);
     }
 
+    /**
+     * Removes the NPC with the specified entity ID for the given player.
+     * <p>
+     * This method untracks the NPC from {@link NpcSpawnedTracker} and effectively removes it
+     * from the player's world.
+     * </p>
+     *
+     * @param entityId   The entity ID of the NPC to remove.
+     * @param playerUUID The UUID of the player associated with the NPC.
+     */
     public void remove(
             int entityId,
             @NotNull UUID playerUUID
@@ -52,6 +98,6 @@ public class NpcFactory {
         if (npcOptional.isEmpty()) return;
 
         var loadedNpc = npcOptional.get();
-        npcSpawnedTracker.untrack(playerUUID, loadedNpc);
+        npcSpawnedTracker.untrack(loadedNpc, playerUUID);
     }
 }

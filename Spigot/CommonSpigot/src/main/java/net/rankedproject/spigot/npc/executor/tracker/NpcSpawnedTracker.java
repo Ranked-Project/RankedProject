@@ -16,11 +16,11 @@ public class NpcSpawnedTracker {
 
     private final Map<UUID, List<LoadedNpc>> spawnedNpcMap = new ConcurrentHashMap<>();
 
-    public void track(@NotNull UUID playerUUID, LoadedNpc loadedNpc) {
+    public void track(@NotNull LoadedNpc loadedNpc, UUID playerUUID) {
         spawnedNpcMap.computeIfAbsent(playerUUID, _ -> new ArrayList<>()).add(loadedNpc);
     }
 
-    public void untrack(@NotNull UUID playerUUID, LoadedNpc loadedNpc) {
+    public void untrack(@NotNull LoadedNpc loadedNpc, UUID playerUUID) {
         spawnedNpcMap.computeIfAbsent(playerUUID, _ -> new ArrayList<>()).remove(loadedNpc);
     }
 

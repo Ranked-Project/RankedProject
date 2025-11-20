@@ -22,6 +22,7 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Singleton
 @RequiredArgsConstructor(onConstructor_ = {@Inject})
@@ -40,6 +41,8 @@ public class NpcHoverListener implements PacketListener {
     private static final List<EntityData<?>> ENTITY_GLOWING_FALSE_FLAGS = new ArrayList<>(
             List.of(new EntityData<>(0, EntityDataTypes.BYTE, (byte) 0))
     );
+
+    private static final double HITBOX_OFFSET = 0.25D;
 
     private final NpcSpawnedTracker npcSpawnedTracker;
 
@@ -92,18 +95,16 @@ public class NpcHoverListener implements PacketListener {
     }
 
     @NotNull
-    private Area getArea(
-            @NotNull Npc npc
-    ) {
+    private Area getArea(@NotNull Npc npc) {
         var location = npc.getBehavior().location();
         var entitySize = npc.getBehavior().entitySize();
 
-        double entityHitboxWidth = (npc.getBehavior().entityType().getWidth() - 0.25) * entitySize;
-        double entityHitboxHeight = npc.getBehavior().entityType().getHeight() * entitySize;
+        double width = (npc.getBehavior().entityType().getWidth() - HITBOX_OFFSET) * entitySize;
+        double height = npc.getBehavior().entityType().getHeight() * entitySize;
 
         return new Area(
-                location.x() - entityHitboxWidth, location.y(), location.z() - entityHitboxWidth,
-                location.x() + entityHitboxWidth, location.y() + entityHitboxHeight, location.z() + entityHitboxWidth
+                location.x() - width, location.y(), location.z() - width,
+                location.x() + width, location.y() + height, location.z() + width
         );
     }
 }

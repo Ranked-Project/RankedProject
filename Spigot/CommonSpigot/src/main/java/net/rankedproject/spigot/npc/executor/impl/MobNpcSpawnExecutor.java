@@ -8,7 +8,6 @@ import io.github.retrooper.packetevents.util.SpigotConversionUtil;
 import lombok.RequiredArgsConstructor;
 import net.rankedproject.spigot.npc.executor.LoadedNpc;
 import net.rankedproject.spigot.npc.executor.NpcSpawnExecutor;
-import net.rankedproject.spigot.npc.type.MobNpc;
 import org.bukkit.Bukkit;
 import org.bukkit.craftbukkit.entity.CraftEntityType;
 import org.jetbrains.annotations.NotNull;
@@ -17,10 +16,10 @@ import java.util.*;
 
 @Singleton
 @RequiredArgsConstructor
-public class MobNpcSpawnExecutor implements NpcSpawnExecutor<MobNpc> {
+public class MobNpcSpawnExecutor implements NpcSpawnExecutor {
 
     @Override
-    public void spawnEntity(@NotNull LoadedNpc<MobNpc> loadedNpc, UUID playerUUID) {
+    public void spawnEntity(@NotNull LoadedNpc loadedNpc, @NotNull UUID playerUUID) {
         var npc = loadedNpc.npc();
 
         var nmsEntityType = loadedNpc.npc().getBehavior().entityType();

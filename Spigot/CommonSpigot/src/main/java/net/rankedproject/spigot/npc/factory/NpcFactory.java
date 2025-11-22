@@ -6,7 +6,6 @@ import com.google.inject.Singleton;
 import lombok.RequiredArgsConstructor;
 import net.rankedproject.spigot.npc.Npc;
 import net.rankedproject.spigot.npc.executor.LoadedNpc;
-import net.rankedproject.spigot.npc.executor.NpcSpawnExecutor;
 import net.rankedproject.spigot.npc.executor.tracker.NpcSpawnedTracker;
 import org.jetbrains.annotations.NotNull;
 
@@ -47,17 +46,13 @@ public class NpcFactory {
      * @param entityId   The entity ID to assign to the spawned NPC.
      * @return The entity ID of the newly created NPC.
      */
-    public <T extends Npc> int create(
-            @NotNull UUID playerUUID,
-            @NotNull Class<T> npcType,
-            int entityId
-    ) {
+    public <T extends Npc> int create(@NotNull UUID playerUUID, @NotNull Class<T> npcType, int entityId) {
         if (npcSpawnedTracker.getNpcById(playerUUID, entityId) != null) {
             return -1;
         }
 
         var npc = injector.getInstance(npcType);
-        var loadedNpc = LoadedNpc.<T>builder()
+        var loadedNpc = LoadedNpc.builder()
                 .npc(npc)
                 .entityId(entityId)
                 .build();
@@ -74,12 +69,9 @@ public class NpcFactory {
      * @param playerUUID The UUID of the player for whom the NPC is created.
      * @return The entity ID of the newly created NPC.
      */
-    public <T extends Npc> int create(
-            @NotNull UUID playerUUID,
-            @NotNull Class<T> npcType
-    ) {
+    public <T extends Npc> int create(@NotNull UUID playerUUID, @NotNull Class<T> npcType) {
         int entityId = ThreadLocalRandom.current().nextInt(Integer.MAX_VALUE);
-        return this.create(playerUUID, npcType, entityId);
+        return create(playerUUID, npcType, entityId);
     }
 
     /**
@@ -92,18 +84,15 @@ public class NpcFactory {
      * @param entityId   The entity ID of the NPC to remove.
      * @param playerUUID The UUID of the player associated with the NPC.
      */
-    @SuppressWarnings("unchecked")
-    public <T extends Npc> void remove(
-            @NotNull UUID playerUUID,
-            int entityId
-    ) {
-        var loadedNpc = (LoadedNpc<T>) npcSpawnedTracker.getNpcById(playerUUID, entityId);
-        if (loadedNpc == null) return;
-
-        var npcSpawnExecutorType = loadedNpc.npc().getNpcSpawnExecutorType();
-        var npcSpawnExecutor = (NpcSpawnExecutor<T>) injector.getInstance(npcSpawnExecutorType);
+    public void remove(@NotNull UUID playerUUID, int entityId) {
+        var loadedNpc = npcSpawnedTracker.getNpcById(playerUUID, entityId);
+        if (loadedNpc == null) {
+            return;
+        }
 
         npcSpawnedTracker.untrack(loadedNpc, playerUUID);
+
+        var npcSpawnExecutor = loadedNpc.npc().getNpcSpawnExecutor();
         npcSpawnExecutor.despawnEntity(loadedNpc, playerUUID);
     }
 }

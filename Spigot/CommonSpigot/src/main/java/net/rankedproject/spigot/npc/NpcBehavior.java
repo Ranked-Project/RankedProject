@@ -6,8 +6,6 @@ import net.rankedproject.spigot.npc.model.NpcModel;
 import org.bukkit.Location;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-
 public record NpcBehavior(
         Location location,
         EntityType<?> entityType,

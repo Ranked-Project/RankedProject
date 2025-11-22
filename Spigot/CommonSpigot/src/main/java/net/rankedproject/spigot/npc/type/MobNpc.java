@@ -13,7 +13,7 @@ public abstract class MobNpc extends Npc {
     }
 
     @Override
-    public Class<? extends NpcSpawnExecutor<? extends Npc>> getNpcSpawnExecutorType() {
-        return MobNpcSpawnExecutor.class;
+    public NpcSpawnExecutor getNpcSpawnExecutor() {
+        return injector.getInstance(MobNpcSpawnExecutor.class);
     }
 }

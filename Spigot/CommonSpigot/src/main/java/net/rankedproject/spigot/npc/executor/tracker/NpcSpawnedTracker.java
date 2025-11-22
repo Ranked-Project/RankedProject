@@ -15,23 +15,22 @@ import java.util.concurrent.ConcurrentHashMap;
 @RequiredArgsConstructor(onConstructor_ = {@Inject})
 public class NpcSpawnedTracker {
 
-    private final Map<UUID, Map<Integer, LoadedNpc<?>>> spawnedNpcMap = new ConcurrentHashMap<>();
+    private final Map<UUID, Map<Integer, LoadedNpc>> spawnedNpcMap = new ConcurrentHashMap<>();
 
-    public <T extends Npc> void track(@NotNull LoadedNpc<T> loadedNpc, UUID playerUUID) {
+    public void track(@NotNull LoadedNpc loadedNpc, @NotNull UUID playerUUID) {
         spawnedNpcMap.computeIfAbsent(playerUUID, _ -> new HashMap<>()).put(loadedNpc.entityId(), loadedNpc);
     }
 
-    public <T extends Npc> void untrack(@NotNull LoadedNpc<T> loadedNpc, UUID playerUUID) {
+    public void untrack(@NotNull LoadedNpc loadedNpc, @NotNull UUID playerUUID) {
         spawnedNpcMap.computeIfAbsent(playerUUID, _ -> new HashMap<>()).remove(loadedNpc.entityId());
     }
 
-    @SuppressWarnings("unchecked")
-    public <T extends Npc> LoadedNpc<T> getNpcById(@NotNull UUID playerUUID, int entityId) {
-        return (LoadedNpc<T>) spawnedNpcMap.getOrDefault(playerUUID, Collections.emptyMap()).get(entityId);
+    public LoadedNpc getNpcById(@NotNull UUID playerUUID, int entityId) {
+        return spawnedNpcMap.getOrDefault(playerUUID, Collections.emptyMap()).get(entityId);
     }
 
     @UnmodifiableView
-    public Map<Integer, LoadedNpc<?>> getNpcMap(@NotNull UUID playerUUID) {
+    public Map<Integer, LoadedNpc> getNpcMap(@NotNull UUID playerUUID) {
         return spawnedNpcMap.getOrDefault(playerUUID, Collections.emptyMap());
     }
 }

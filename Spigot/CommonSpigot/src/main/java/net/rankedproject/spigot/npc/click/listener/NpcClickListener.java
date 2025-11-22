@@ -27,17 +27,22 @@ public class NpcClickListener implements PacketListener {
 
     @Override
     public void onPacketReceive(@NotNull PacketReceiveEvent event) {
-        if (event.getPacketType() != PacketType.Play.Client.INTERACT_ENTITY) return;
+        if (event.getPacketType() != PacketType.Play.Client.INTERACT_ENTITY) {
+            return;
+        }
 
         var playerUUID = event.getUser().getUUID();
         int entityId = new WrapperPlayClientInteractEntity(event).getEntityId();
 
         var loadedNpc = npcSpawnedTracker.getNpcById(playerUUID, entityId);
-        if (loadedNpc == null) return;
+        if (loadedNpc == null) {
+            return;
+        }
 
         var npcClickBehavior = loadedNpc.npc().getBehavior().clickBehavior();
-        if (npcClickBehavior == null) return;
-        if (isFlooding(playerUUID)) return;
+        if (npcClickBehavior == null || isFlooding(playerUUID)) {
+            return;
+        }
 
         var onClickAction = npcClickBehavior.behavior().onClick();
         var player = Bukkit.getPlayer(playerUUID);

@@ -16,7 +16,7 @@ public abstract class PlayerNpc extends Npc {
     }
 
     @Override
-    public Class<? extends NpcSpawnExecutor<? extends Npc>> getNpcSpawnExecutorType() {
-        return PlayerNpcSpawnExecutor.class;
+    public NpcSpawnExecutor getNpcSpawnExecutor() {
+        return injector.getInstance(PlayerNpcSpawnExecutor.class);
     }
 }

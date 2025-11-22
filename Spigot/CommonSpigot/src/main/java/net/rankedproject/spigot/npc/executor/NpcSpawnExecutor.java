@@ -18,8 +18,7 @@ import java.util.UUID;
  * to the player in-game and managing their lifecycle on a per-player basis.
  * </p>
  */
-@Singleton
-public interface NpcSpawnExecutor<T extends Npc> {
+public interface NpcSpawnExecutor {
 
     /**
      * Spawns the given NPC for a specific player.
@@ -30,7 +29,7 @@ public interface NpcSpawnExecutor<T extends Npc> {
      * @param npc the NPC to spawn
      * @param playerUUID the UUID of the player who should see the NPC
      */
-    void spawnEntity(@NotNull LoadedNpc<T> npc, UUID playerUUID);
+    void spawnEntity(@NotNull LoadedNpc npc, @NotNull UUID playerUUID);
 
     /**
      * Despawns the given NPC for a specific player.
@@ -42,7 +41,7 @@ public interface NpcSpawnExecutor<T extends Npc> {
      * @param loadedNpc the NPC to despawn
      * @param playerUUID the UUID of the player who should no longer see the NPC
      */
-    default void despawnEntity(@NotNull LoadedNpc<T> loadedNpc, UUID playerUUID) {
+    default void despawnEntity(@NotNull LoadedNpc loadedNpc, @NotNull UUID playerUUID) {
         Player player = Objects.requireNonNull(Bukkit.getPlayer(playerUUID));
 
         WrapperPlayServerDestroyEntities destroyPacket = new WrapperPlayServerDestroyEntities(loadedNpc.entityId());

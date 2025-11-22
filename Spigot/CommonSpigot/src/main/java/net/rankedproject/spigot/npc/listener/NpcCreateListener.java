@@ -3,7 +3,6 @@ package net.rankedproject.spigot.npc.listener;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import lombok.RequiredArgsConstructor;
-import net.rankedproject.spigot.CommonPlugin;
 import net.rankedproject.spigot.npc.executor.tracker.NpcSpawnedTracker;
 import net.rankedproject.spigot.npc.factory.NpcFactory;
 import net.rankedproject.spigot.npc.registry.AutoSpawnNpcRegistry;

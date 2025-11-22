@@ -8,5 +8,4 @@ import java.util.function.Consumer;
 @Builder
 public record NpcClickBehaviorMetadata(
     Consumer<Player> onClick
-) {
-}
+) {}

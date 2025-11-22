@@ -5,7 +5,6 @@ import com.github.retrooper.packetevents.protocol.attribute.Attributes;
 import com.github.retrooper.packetevents.protocol.npc.NPC;
 import com.github.retrooper.packetevents.protocol.player.TextureProperty;
 import com.github.retrooper.packetevents.protocol.player.UserProfile;
-import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerDestroyEntities;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerTeams;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerUpdateAttributes;
 import com.google.inject.Inject;
@@ -17,10 +16,8 @@ import net.kyori.adventure.text.format.NamedTextColor;
 import net.rankedproject.spigot.npc.executor.LoadedNpc;
 import net.rankedproject.spigot.npc.executor.NpcSpawnExecutor;
 import net.rankedproject.spigot.npc.model.impl.PlayerNpcModel;
-import net.rankedproject.spigot.npc.type.PlayerNpc;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.incendo.cloud.Command;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -29,7 +26,7 @@ import java.util.UUID;
 
 @Singleton
 @RequiredArgsConstructor(onConstructor_ = {@Inject})
-public class PlayerNpcSpawnExecutor implements NpcSpawnExecutor<PlayerNpc> {
+public class PlayerNpcSpawnExecutor implements NpcSpawnExecutor {
 
     private static final WrapperPlayServerTeams.ScoreBoardTeamInfo NAME_TAG_REMOVAL_TEAM = new WrapperPlayServerTeams.ScoreBoardTeamInfo(
             Component.text("NPC"),
@@ -42,7 +39,7 @@ public class PlayerNpcSpawnExecutor implements NpcSpawnExecutor<PlayerNpc> {
     );
 
     @Override
-    public void spawnEntity(@NotNull LoadedNpc<PlayerNpc> loadedNpc, UUID playerUUID) {
+    public void spawnEntity(@NotNull LoadedNpc loadedNpc, @NotNull UUID playerUUID) {
         var npc = loadedNpc.npc();
         var npcModel = (PlayerNpcModel) npc.getBehavior().model();
 
@@ -58,7 +55,7 @@ public class PlayerNpcSpawnExecutor implements NpcSpawnExecutor<PlayerNpc> {
 
     private void showNpcEntity(
             UUID playerUUID,
-            LoadedNpc<PlayerNpc> loadedNpc,
+            LoadedNpc loadedNpc,
             UserProfile profile
     ) {
         var npc = loadedNpc.npc();

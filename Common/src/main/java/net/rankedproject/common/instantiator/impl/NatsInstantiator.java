@@ -27,17 +27,16 @@ public class NatsInstantiator implements Instantiator<Connection> {
      * - Send to specific subjects
      * - Listen to specific subjects
      * - Support automatic packet conversion from/to byte array with protobuf
-     *
+     * <p>
      * - send method returs CF?
-     *
      * Proxies: Velocity-1, Velocity-2
-     *
+     * <p>
      * Velocity-1: List<SpigotServer> servers = Lobby-1, Lobby-2, Lobby-3, Lobby-4
      * Velocity-2: List<SpigotServer> servers = Lobby-1, Lobby-2, Lobby-3, Lobby-4
-     *
+     * <p>
      * Velocity servers manage players connections
      * Players connected to 1 velocity server
-     *
+     * <p>
      * record NetworkPlayer(String spigotServerIdentifier, String velocityServerIdentifier) {
      *
      * }
@@ -49,12 +48,33 @@ public class NatsInstantiator implements Instantiator<Connection> {
      *                  .playerUUID(playerUUID)
      *                  .build();
      *
+     * packetSender.send("velocity-1", packet)
+     *      .await(CorePacket.CanPlayerRemoveIsland.class)
+     *      .thenAccept(packet -> {
+     *
+     *      })
+     *
+     * packetSender.send("velocity-1", packet)
+     *      .await(CorePacket.CanPlayerRemoveIsland.class, Duration.ofMinutes(10))
+     *      .thenAccept(packet -> {
+     *
+     *      })
+     *
+     * packetSender.newBuilder()
+     *             .subject("velocity-1")
+     *             .packet(packet)
+     *             .await(CorePacket.CanPlayerRemoveIsland.class)
+     *             .thenAccept(packet -> {
+     *
+     *             });
+     *
      * packetSender.packet(packet)
      *             .subject("velocity-1")
      *             .packet(packet)
-     *             .response(response -> {
+     *             .await(CorePacket.CanPlayerRemoveIsland.class)
+     *             .thenAccept(packet -> {
      *
-     *             })
+     *             });
      *
      *
      *

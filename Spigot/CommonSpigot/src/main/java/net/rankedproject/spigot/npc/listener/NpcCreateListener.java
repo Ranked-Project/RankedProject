@@ -10,6 +10,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.jetbrains.annotations.NotNull;
 
 @Singleton
 @RequiredArgsConstructor(onConstructor_ = {@Inject})
@@ -24,7 +25,8 @@ public class NpcCreateListener implements Listener {
         var player = event.getPlayer();
         var playerUUID = player.getUniqueId();
 
-        autoSpawnNpcRegistry.getAllRegistered().forEach((npcType, _) -> npcFactory.create(playerUUID, npcType));
+        var registered = autoSpawnNpcRegistry.getAllRegistered();
+        registered.forEach((npcType, _) -> npcFactory.create(playerUUID, npcType));
     }
 
     @EventHandler
@@ -32,7 +34,12 @@ public class NpcCreateListener implements Listener {
         var player = event.getPlayer();
         var playerUUID = player.getUniqueId();
 
-        var npcList = npcSpawnedTracker.getNpcMap(playerUUID).values().stream().toList();
-        npcList.forEach(loadedNpc -> npcFactory.remove(playerUUID, loadedNpc.entityId()));
+        var npcIterator = npcSpawnedTracker.getNpcMap(playerUUID).values().iterator();
+        while (npcIterator.hasNext()) {
+            npcIterator.remove();
+
+            var loadedNpc = npcIterator.next();
+            npcFactory.remove(playerUUID, loadedNpc);
+        }
     }
 }

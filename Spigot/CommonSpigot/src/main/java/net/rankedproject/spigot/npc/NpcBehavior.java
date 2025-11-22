@@ -1,5 +1,6 @@
 package net.rankedproject.spigot.npc;
 
+import com.google.common.base.Preconditions;
 import net.minecraft.world.entity.EntityType;
 import net.rankedproject.spigot.npc.click.NpcClickBehavior;
 import net.rankedproject.spigot.npc.model.NpcModel;
@@ -31,23 +32,23 @@ public record NpcBehavior(
         private boolean autoSpawn = false;
 
         @NotNull
-        public Builder location(Location location) {
+        public Builder location(@NotNull Location location) {
             this.location = location;
             return this;
         }
 
         @NotNull
-        public Builder entityType(EntityType<?> entityType) {
+        public Builder entityType(@NotNull EntityType<?> entityType) {
             this.entityType = entityType;
             return this;
         }
 
-        public Builder model(NpcModel model) {
+        public Builder model(@NotNull NpcModel model) {
             this.model = model;
             return this;
         }
 
-        public Builder clickBehavior(NpcClickBehavior clickBehavior) {
+        public Builder clickBehavior(@NotNull NpcClickBehavior clickBehavior) {
             this.clickBehavior = clickBehavior;
             return this;
         }
@@ -63,6 +64,8 @@ public record NpcBehavior(
         }
 
         public NpcBehavior build() {
+            Preconditions.checkNotNull(location, "Location must not be null");
+            Preconditions.checkNotNull(entityType, "Entity type must not be null");
             return new NpcBehavior(location, entityType, model, clickBehavior, entitySize, autoSpawn);
         }
     }

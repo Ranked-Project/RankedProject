@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import net.rankedproject.spigot.npc.executor.tracker.NpcSpawnedTracker;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.UUID;
 
@@ -18,7 +19,7 @@ public class NpcLoadListener implements Listener {
     private final NpcSpawnedTracker npcSpawnedTracker;
 
     @EventHandler
-    public void onPlayerChunkLoad(PlayerChunkLoadEvent event) {
+    public void onPlayerChunkLoad(@NotNull PlayerChunkLoadEvent event) {
         var player = event.getPlayer();
         var playerUUID = player.getUniqueId();
 
@@ -34,7 +35,7 @@ public class NpcLoadListener implements Listener {
     }
 
     @EventHandler
-    public void onPlayerChunkUnload(PlayerChunkUnloadEvent event) {
+    public void onPlayerChunkUnload(@NotNull PlayerChunkUnloadEvent event) {
         var player = event.getPlayer();
         var playerUUID = player.getUniqueId();
 

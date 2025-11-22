@@ -16,6 +16,7 @@ public abstract class Npc {
         this.behavior = behavior();
     }
 
+    @NotNull
     public abstract NpcSpawnExecutor getNpcSpawnExecutor();
 
     @NotNull

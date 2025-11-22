@@ -12,6 +12,7 @@ public abstract class MobNpc extends Npc {
         super(injector);
     }
 
+    @NotNull
     @Override
     public NpcSpawnExecutor getNpcSpawnExecutor() {
         return injector.getInstance(MobNpcSpawnExecutor.class);

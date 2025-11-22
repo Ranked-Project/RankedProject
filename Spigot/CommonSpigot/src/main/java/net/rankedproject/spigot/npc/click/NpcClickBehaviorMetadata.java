@@ -7,5 +7,5 @@ import java.util.function.Consumer;
 
 @Builder
 public record NpcClickBehaviorMetadata(
-    Consumer<Player> onClick
+    Consumer<? super Player> onClick
 ) {}

@@ -38,6 +38,25 @@ public class PlayerNpcSpawnExecutor implements NpcSpawnExecutor {
             WrapperPlayServerTeams.OptionData.NONE
     );
 
+    private static final WrapperPlayServerTeams REMOVE_TEAM_TAG_PACKET = new WrapperPlayServerTeams(
+            "NPC",
+            WrapperPlayServerTeams.TeamMode.CREATE,
+            NAME_TAG_REMOVAL_TEAM
+    );
+
+    private static final WrapperPlayServerTeams REMOVE_TEAM_PACKET = new WrapperPlayServerTeams(
+            "NPC",
+            WrapperPlayServerTeams.TeamMode.REMOVE,
+            (WrapperPlayServerTeams.ScoreBoardTeamInfo) null
+    );
+
+    private static final WrapperPlayServerTeams ADD_ENTITIES_PACKET = new WrapperPlayServerTeams(
+            "NPC",
+            WrapperPlayServerTeams.TeamMode.ADD_ENTITIES,
+            (WrapperPlayServerTeams.ScoreBoardTeamInfo) null,
+            "NPC"
+    );
+
     @Override
     public void spawnEntity(@NotNull LoadedNpc loadedNpc, @NotNull UUID playerUUID) {
         var npc = loadedNpc.npc();
@@ -54,9 +73,9 @@ public class PlayerNpcSpawnExecutor implements NpcSpawnExecutor {
     }
 
     private void showNpcEntity(
-            UUID playerUUID,
-            LoadedNpc loadedNpc,
-            UserProfile profile
+            @NotNull UUID playerUUID,
+            @NotNull LoadedNpc loadedNpc,
+            @NotNull UserProfile profile
     ) {
         var npc = loadedNpc.npc();
 
@@ -77,25 +96,11 @@ public class PlayerNpcSpawnExecutor implements NpcSpawnExecutor {
         packetPlayerManager.sendPacket(player, updateAttributesPacket);
     }
 
-    private void hideNpcEntityName(Player player) {
+    private void hideNpcEntityName(@NotNull Player player) {
         var packetPlayerManager = PacketEvents.getAPI().getPlayerManager();
-        packetPlayerManager.sendPacket(player, new WrapperPlayServerTeams(
-                "NPC",
-                WrapperPlayServerTeams.TeamMode.REMOVE,
-                (WrapperPlayServerTeams.ScoreBoardTeamInfo) null
-        ));
 
-        packetPlayerManager.sendPacket(player, new WrapperPlayServerTeams(
-                "NPC",
-                WrapperPlayServerTeams.TeamMode.CREATE,
-                NAME_TAG_REMOVAL_TEAM
-        ));
-
-        packetPlayerManager.sendPacket(player, new WrapperPlayServerTeams(
-                "NPC",
-                WrapperPlayServerTeams.TeamMode.ADD_ENTITIES,
-                (WrapperPlayServerTeams.ScoreBoardTeamInfo) null,
-                "NPC"
-        ));
+        packetPlayerManager.sendPacket(player, REMOVE_TEAM_PACKET);
+        packetPlayerManager.sendPacket(player, REMOVE_TEAM_TAG_PACKET);
+        packetPlayerManager.sendPacket(player, ADD_ENTITIES_PACKET);
     }
 }

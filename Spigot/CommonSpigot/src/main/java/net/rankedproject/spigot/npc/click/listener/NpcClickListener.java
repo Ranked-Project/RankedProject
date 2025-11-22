@@ -3,13 +3,13 @@ package net.rankedproject.spigot.npc.click.listener;
 import com.github.retrooper.packetevents.event.PacketListener;
 import com.github.retrooper.packetevents.event.PacketReceiveEvent;
 import com.github.retrooper.packetevents.protocol.packettype.PacketType;
-import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientInteractEntity;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import it.unimi.dsi.fastutil.objects.Object2LongMap;
 import it.unimi.dsi.fastutil.objects.Object2LongOpenHashMap;
 import lombok.RequiredArgsConstructor;
 import net.rankedproject.spigot.npc.executor.tracker.NpcSpawnedTracker;
+import net.rankedproject.spigot.util.PacketUtil;
 import org.bukkit.Bukkit;
 import org.jetbrains.annotations.NotNull;
 
@@ -32,7 +32,7 @@ public class NpcClickListener implements PacketListener {
         }
 
         var playerUUID = event.getUser().getUUID();
-        int entityId = new WrapperPlayClientInteractEntity(event).getEntityId();
+        int entityId = PacketUtil.getEntityIdFromEvent(event);
 
         var loadedNpc = npcSpawnedTracker.getNpcById(playerUUID, entityId);
         if (loadedNpc == null) {

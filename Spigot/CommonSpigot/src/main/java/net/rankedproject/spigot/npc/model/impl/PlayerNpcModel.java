@@ -1,6 +1,7 @@
 package net.rankedproject.spigot.npc.model.impl;
 
 import net.rankedproject.spigot.npc.model.NpcModel;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Represents a player-like NPC model containing skin data.
@@ -26,6 +27,7 @@ public interface PlayerNpcModel extends NpcModel {
      *
      * @return the texture string representing the NPC skin
      */
+    @NotNull
     String getTexture();
 
     /**
@@ -34,5 +36,6 @@ public interface PlayerNpcModel extends NpcModel {
      *
      * @return the signature corresponding to the texture
      */
+    @NotNull
     String getSignature();
 }

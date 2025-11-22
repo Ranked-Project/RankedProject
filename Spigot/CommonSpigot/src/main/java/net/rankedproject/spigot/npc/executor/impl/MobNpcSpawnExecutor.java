@@ -11,18 +11,17 @@ import net.rankedproject.spigot.npc.executor.NpcSpawnExecutor;
 import net.rankedproject.spigot.npc.type.MobNpc;
 import org.bukkit.Bukkit;
 import org.bukkit.craftbukkit.entity.CraftEntityType;
-import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 
 @Singleton
 @RequiredArgsConstructor
-public class MobNpcSpawnExecutor implements NpcSpawnExecutor {
+public class MobNpcSpawnExecutor implements NpcSpawnExecutor<MobNpc> {
 
     @Override
-    public void spawnEntity(LoadedNpc loadedNpc, UUID playerUUID) {
+    public void spawnEntity(@NotNull LoadedNpc<MobNpc> loadedNpc, UUID playerUUID) {
         var npc = loadedNpc.npc();
-        var mobNpc = (MobNpc) npc;
 
         var nmsEntityType = loadedNpc.npc().getBehavior().entityType();
         var bukkitEntityType = CraftEntityType.minecraftToBukkit(nmsEntityType);
@@ -32,10 +31,9 @@ public class MobNpcSpawnExecutor implements NpcSpawnExecutor {
 
         int entitySize = loadedNpc.npc().getBehavior().entitySize();
         var entitySizeProperty = new WrapperPlayServerUpdateAttributes.Property(Attributes.SCALE, entitySize, List.of());
-
         var updateAttributesPacket = new WrapperPlayServerUpdateAttributes(loadedNpc.entityId(), List.of(entitySizeProperty));
 
-        var location = mobNpc.getBehavior().location();
+        var location = npc.getBehavior().location();
         var entitySpawnPacket = new WrapperPlayServerSpawnEntity(
                 loadedNpc.entityId(),
                 UUID.randomUUID(),

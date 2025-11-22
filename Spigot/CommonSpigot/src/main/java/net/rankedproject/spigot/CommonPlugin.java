@@ -69,7 +69,9 @@ public abstract class CommonPlugin extends JavaPlugin {
                 continue;
             }
 
-            processingChain = processingChain.thenRunAsync(registrar::register, mainThreadExecutor);
+            if (registrar.getPriority() != ExecutionPriority.FIRST) {
+                processingChain = processingChain.thenRunAsync(registrar::register, mainThreadExecutor);
+            }
         }
     }
 

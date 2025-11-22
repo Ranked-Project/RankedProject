@@ -6,6 +6,7 @@ import com.google.inject.Singleton;
 import net.rankedproject.spigot.npc.Npc;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 import java.util.UUID;
@@ -18,7 +19,7 @@ import java.util.UUID;
  * </p>
  */
 @Singleton
-public interface NpcSpawnExecutor {
+public interface NpcSpawnExecutor<T extends Npc> {
 
     /**
      * Spawns the given NPC for a specific player.
@@ -29,7 +30,7 @@ public interface NpcSpawnExecutor {
      * @param npc the NPC to spawn
      * @param playerUUID the UUID of the player who should see the NPC
      */
-    void spawnEntity(LoadedNpc npc, UUID playerUUID);
+    void spawnEntity(@NotNull LoadedNpc<T> npc, UUID playerUUID);
 
     /**
      * Despawns the given NPC for a specific player.
@@ -41,7 +42,7 @@ public interface NpcSpawnExecutor {
      * @param loadedNpc the NPC to despawn
      * @param playerUUID the UUID of the player who should no longer see the NPC
      */
-    default void despawnEntity(LoadedNpc loadedNpc, UUID playerUUID) {
+    default void despawnEntity(@NotNull LoadedNpc<T> loadedNpc, UUID playerUUID) {
         Player player = Objects.requireNonNull(Bukkit.getPlayer(playerUUID));
 
         WrapperPlayServerDestroyEntities destroyPacket = new WrapperPlayServerDestroyEntities(loadedNpc.entityId());

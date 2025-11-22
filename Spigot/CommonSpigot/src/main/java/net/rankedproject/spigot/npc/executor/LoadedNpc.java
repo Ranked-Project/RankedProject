@@ -1,11 +1,33 @@
 package net.rankedproject.spigot.npc.executor;
 
-import lombok.Builder;
 import net.rankedproject.spigot.npc.Npc;
-import org.bukkit.entity.Entity;
 
-@Builder
-public record LoadedNpc(
+public record LoadedNpc<T extends Npc>(
         int entityId,
-        Npc npc
-) {}
+        T npc
+) {
+
+    public static <T extends Npc> Builder<T> builder() {
+        return new Builder<>();
+    }
+
+    public static class Builder<T extends Npc> {
+
+        private int entityId;
+        private T npc;
+
+        public Builder<T> entityId(int entityId) {
+            this.entityId = entityId;
+            return this;
+        }
+
+        public Builder<T> npc(T npc) {
+            this.npc = npc;
+            return this;
+        }
+
+        public LoadedNpc<T> build() {
+            return new LoadedNpc<>(entityId, npc);
+        }
+    }
+}

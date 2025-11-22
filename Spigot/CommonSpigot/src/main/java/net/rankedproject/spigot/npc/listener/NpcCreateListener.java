@@ -1,22 +1,22 @@
-package net.rankedproject.lobby.listener;
+package net.rankedproject.spigot.npc.listener;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import lombok.RequiredArgsConstructor;
+import net.rankedproject.spigot.CommonPlugin;
 import net.rankedproject.spigot.npc.executor.tracker.NpcSpawnedTracker;
 import net.rankedproject.spigot.npc.factory.NpcFactory;
-import net.rankedproject.lobby.npc.lobby.LobbyNpc;
+import net.rankedproject.spigot.npc.registry.AutoSpawnNpcRegistry;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
-import java.util.ArrayList;
-
 @Singleton
 @RequiredArgsConstructor(onConstructor_ = {@Inject})
-public class PlayerConnectionListener implements Listener {
+public class NpcCreateListener implements Listener {
 
+    private final AutoSpawnNpcRegistry autoSpawnNpcRegistry;
     private final NpcSpawnedTracker npcSpawnedTracker;
     private final NpcFactory npcFactory;
 
@@ -25,7 +25,7 @@ public class PlayerConnectionListener implements Listener {
         var player = event.getPlayer();
         var playerUUID = player.getUniqueId();
 
-        npcFactory.create(LobbyNpc.class, playerUUID);
+        autoSpawnNpcRegistry.getAllRegistered().forEach((npcType, _) -> npcFactory.create(playerUUID, npcType));
     }
 
     @EventHandler
@@ -33,7 +33,7 @@ public class PlayerConnectionListener implements Listener {
         var player = event.getPlayer();
         var playerUUID = player.getUniqueId();
 
-        var npcList = npcSpawnedTracker.getNpcList(playerUUID);
-        new ArrayList<>(npcList).forEach(loadedNpc -> npcFactory.remove(loadedNpc.entityId(), playerUUID));
+        var npcList = npcSpawnedTracker.getNpcMap(playerUUID).values().stream().toList();
+        npcList.forEach(loadedNpc -> npcFactory.remove(playerUUID, loadedNpc.entityId()));
     }
 }

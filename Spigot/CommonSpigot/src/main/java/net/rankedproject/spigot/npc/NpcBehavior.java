@@ -6,12 +6,15 @@ import net.rankedproject.spigot.npc.model.NpcModel;
 import org.bukkit.Location;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
+
 public record NpcBehavior(
         Location location,
         EntityType<?> entityType,
         NpcModel model,
         NpcClickBehavior clickBehavior,
-        int entitySize
+        int entitySize,
+        boolean autoSpawn
 ) {
 
     public static NpcBehavior.Builder builder() {
@@ -27,6 +30,7 @@ public record NpcBehavior(
         private EntityType<?> entityType;
 
         private int entitySize = 1;
+        private boolean autoSpawn = false;
 
         @NotNull
         public Builder location(Location location) {
@@ -55,8 +59,13 @@ public record NpcBehavior(
             return this;
         }
 
+        public Builder autoSpawn() {
+            this.autoSpawn = true;
+            return this;
+        }
+
         public NpcBehavior build() {
-            return new NpcBehavior(location, entityType, model, clickBehavior, entitySize);
+            return new NpcBehavior(location, entityType, model, clickBehavior, entitySize, autoSpawn);
         }
     }
 }

@@ -1,6 +1,8 @@
 package net.rankedproject.spigot.npc.type;
 
 import com.google.inject.Injector;
+import lombok.SneakyThrows;
+import lombok.experimental.UtilityClass;
 import net.minecraft.world.entity.EntityType;
 import net.rankedproject.spigot.npc.Npc;
 import net.rankedproject.spigot.npc.executor.NpcSpawnExecutor;
@@ -14,7 +16,7 @@ public abstract class PlayerNpc extends Npc {
     }
 
     @Override
-    public NpcSpawnExecutor getNpcSpawnExecutor() {
-        return injector.getInstance(PlayerNpcSpawnExecutor.class);
+    public Class<? extends NpcSpawnExecutor<? extends Npc>> getNpcSpawnExecutorType() {
+        return PlayerNpcSpawnExecutor.class;
     }
 }

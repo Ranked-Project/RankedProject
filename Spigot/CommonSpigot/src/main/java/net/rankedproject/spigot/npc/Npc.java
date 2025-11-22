@@ -2,11 +2,8 @@ package net.rankedproject.spigot.npc;
 
 import com.google.inject.Injector;
 import lombok.Getter;
-import net.minecraft.world.entity.EntityType;
 import net.rankedproject.spigot.npc.executor.NpcSpawnExecutor;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.UUID;
 
 @Getter
 public abstract class Npc {
@@ -16,10 +13,10 @@ public abstract class Npc {
 
     public Npc(@NotNull Injector injector) {
         this.injector = injector;
-        this.behavior = this.behavior();
+        this.behavior = behavior();
     }
 
-    public abstract NpcSpawnExecutor getNpcSpawnExecutor();
+    public abstract Class<? extends NpcSpawnExecutor<? extends Npc>> getNpcSpawnExecutorType();
 
     @NotNull
     public abstract NpcBehavior behavior();

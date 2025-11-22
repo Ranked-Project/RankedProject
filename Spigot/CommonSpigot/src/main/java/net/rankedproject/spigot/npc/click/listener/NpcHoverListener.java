@@ -11,18 +11,19 @@ import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerEn
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import lombok.RequiredArgsConstructor;
+import net.minecraft.world.entity.EntityType;
 import net.rankedproject.spigot.npc.Npc;
 import net.rankedproject.spigot.npc.executor.tracker.NpcSpawnedTracker;
 import net.rankedproject.spigot.util.raytrace.Area;
+import net.rankedproject.spigot.util.raytrace.EntityRayTraceUtil;
 import net.rankedproject.spigot.util.raytrace.RayTraceUtil;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.attribute.Attribute;
-import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 
 @Singleton
 @RequiredArgsConstructor(onConstructor_ = {@Inject})
@@ -42,41 +43,32 @@ public class NpcHoverListener implements PacketListener {
             List.of(new EntityData<>(0, EntityDataTypes.BYTE, (byte) 0))
     );
 
-    private static final double HITBOX_OFFSET = 0.25D;
-
     private final NpcSpawnedTracker npcSpawnedTracker;
 
     @Override
     public void onPacketReceive(@NotNull PacketReceiveEvent event) {
-        var isPacketAccess = PACKET_TYPES
-                .stream()
-                .anyMatch(packetType -> packetType.equals(event.getPacketType()));
-        if (!isPacketAccess) return;
+        var isPacketAccess = PACKET_TYPES.stream().anyMatch(packetType -> packetType.equals(event.getPacketType()));
+        if (!isPacketAccess) {
+            return;
+        }
 
         Player player = event.getPlayer();
         var playerUUID = player.getUniqueId();
 
-        var location = player.getLocation();
-        var eyeVector3d = new Vector3d(location.getX(), location.getY() + player.getEyeHeight(), location.getZ());
-
-        float yaw = player.getYaw();
-        float pitch = player.getPitch();
-
-        npcSpawnedTracker.getNpcList(playerUUID)
+        npcSpawnedTracker.getNpcMap(playerUUID)
+                .values()
                 .forEach(loadedNpc -> {
                     var npc = loadedNpc.npc();
                     var npcClickBehavior = npc.getBehavior().clickBehavior();
                     if (npcClickBehavior == null) return;
 
-                    double entityInteractRange = Objects.requireNonNull(player.getAttribute(Attribute.ENTITY_INTERACTION_RANGE)).getBaseValue();
-                    Vector3d look = RayTraceUtil.getLookVector(yaw, pitch).multiply(entityInteractRange);
-                    Vector3d target = eyeVector3d.add(look);
+                    var location = npc.getBehavior().location();
+                    var entityType = npc.getBehavior().entityType();
+                    var entitySize = npc.getBehavior().entitySize();
 
-                    var area = getArea(npc);
-                    Vector3d intercept = RayTraceUtil.calculateIntercept(area, eyeVector3d, target);
-                    boolean entityExists = intercept != null;
+                    boolean isLookingAtEntity = EntityRayTraceUtil.isLookingAtEntity(player, location, entityType, entitySize);
 
-                    setEntityGlow(playerUUID, loadedNpc.entityId(), entityExists);
+                    setEntityGlow(playerUUID, loadedNpc.entityId(), isLookingAtEntity);
                 });
     }
 
@@ -92,19 +84,5 @@ public class NpcHoverListener implements PacketListener {
 
         var packet = new WrapperPlayServerEntityMetadata(entityId, entityGlowingFlags);
         PacketEvents.getAPI().getPlayerManager().sendPacket(player, packet);
-    }
-
-    @NotNull
-    private Area getArea(@NotNull Npc npc) {
-        var location = npc.getBehavior().location();
-        var entitySize = npc.getBehavior().entitySize();
-
-        double width = (npc.getBehavior().entityType().getWidth() - HITBOX_OFFSET) * entitySize;
-        double height = npc.getBehavior().entityType().getHeight() * entitySize;
-
-        return new Area(
-                location.x() - width, location.y(), location.z() - width,
-                location.x() + width, location.y() + height, location.z() + width
-        );
     }
 }

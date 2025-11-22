@@ -1,7 +1,6 @@
 package net.rankedproject.spigot.npc.type;
 
 import com.google.inject.Injector;
-import net.minecraft.world.entity.EntityType;
 import net.rankedproject.spigot.npc.Npc;
 import net.rankedproject.spigot.npc.executor.NpcSpawnExecutor;
 import net.rankedproject.spigot.npc.executor.impl.MobNpcSpawnExecutor;
@@ -14,7 +13,7 @@ public abstract class MobNpc extends Npc {
     }
 
     @Override
-    public NpcSpawnExecutor getNpcSpawnExecutor() {
-        return injector.getInstance(MobNpcSpawnExecutor.class);
+    public Class<? extends NpcSpawnExecutor<? extends Npc>> getNpcSpawnExecutorType() {
+        return MobNpcSpawnExecutor.class;
     }
 }

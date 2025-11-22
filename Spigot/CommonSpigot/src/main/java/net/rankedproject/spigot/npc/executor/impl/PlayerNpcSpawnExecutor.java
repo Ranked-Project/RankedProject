@@ -1,11 +1,13 @@
 package net.rankedproject.spigot.npc.executor.impl;
 
 import com.github.retrooper.packetevents.PacketEvents;
+import com.github.retrooper.packetevents.protocol.attribute.Attributes;
 import com.github.retrooper.packetevents.protocol.npc.NPC;
 import com.github.retrooper.packetevents.protocol.player.TextureProperty;
 import com.github.retrooper.packetevents.protocol.player.UserProfile;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerDestroyEntities;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerTeams;
+import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerUpdateAttributes;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import io.github.retrooper.packetevents.util.SpigotConversionUtil;
@@ -18,6 +20,8 @@ import net.rankedproject.spigot.npc.model.impl.PlayerNpcModel;
 import net.rankedproject.spigot.npc.type.PlayerNpc;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.incendo.cloud.Command;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.Objects;
@@ -25,7 +29,7 @@ import java.util.UUID;
 
 @Singleton
 @RequiredArgsConstructor(onConstructor_ = {@Inject})
-public class PlayerNpcSpawnExecutor implements NpcSpawnExecutor {
+public class PlayerNpcSpawnExecutor implements NpcSpawnExecutor<PlayerNpc> {
 
     private static final WrapperPlayServerTeams.ScoreBoardTeamInfo NAME_TAG_REMOVAL_TEAM = new WrapperPlayServerTeams.ScoreBoardTeamInfo(
             Component.text("NPC"),
@@ -38,10 +42,9 @@ public class PlayerNpcSpawnExecutor implements NpcSpawnExecutor {
     );
 
     @Override
-    public void spawnEntity(LoadedNpc loadedNpc, UUID playerUUID) {
+    public void spawnEntity(@NotNull LoadedNpc<PlayerNpc> loadedNpc, UUID playerUUID) {
         var npc = loadedNpc.npc();
-        var playerNpc = (PlayerNpc) npc;
-        var npcModel = (PlayerNpcModel) playerNpc.getBehavior().model();
+        var npcModel = (PlayerNpcModel) npc.getBehavior().model();
 
         var npcUserProfile = new UserProfile(UUID.randomUUID(), "NPC");
         if (npcModel != null) {
@@ -55,22 +58,26 @@ public class PlayerNpcSpawnExecutor implements NpcSpawnExecutor {
 
     private void showNpcEntity(
             UUID playerUUID,
-            LoadedNpc loadedNpc,
+            LoadedNpc<PlayerNpc> loadedNpc,
             UserProfile profile
     ) {
         var npc = loadedNpc.npc();
-        var playerNpc = (PlayerNpc) npc;
 
-        var packetNpc = new NPC(profile, loadedNpc.entityId(), null);
-        var location = playerNpc.getBehavior().location();
+        var packetNpc = new NPC(profile, loadedNpc.entityId(), Component.empty());
+        var location = npc.getBehavior().location();
 
         var player = Objects.requireNonNull(Bukkit.getPlayer(playerUUID));
         var packetPlayerManager = PacketEvents.getAPI().getPlayerManager();
 
         packetNpc.setLocation(SpigotConversionUtil.fromBukkitLocation(location));
         packetNpc.spawn(packetPlayerManager.getChannel(player));
-
         hideNpcEntityName(player);
+
+        int entitySize = loadedNpc.npc().getBehavior().entitySize();
+        var entitySizeProperty = new WrapperPlayServerUpdateAttributes.Property(Attributes.SCALE, entitySize, List.of());
+
+        var updateAttributesPacket = new WrapperPlayServerUpdateAttributes(loadedNpc.entityId(), List.of(entitySizeProperty));
+        packetPlayerManager.sendPacket(player, updateAttributesPacket);
     }
 
     private void hideNpcEntityName(Player player) {

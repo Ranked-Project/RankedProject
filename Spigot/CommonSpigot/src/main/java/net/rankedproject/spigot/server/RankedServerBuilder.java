@@ -24,7 +24,8 @@ public class RankedServerBuilder {
             ServerProxyRegistrar.class,
             BukkitListenerRegistrar.class,
             CommandRegistrar.class,
-            PacketListenerRegistrar.class
+            PacketListenerRegistrar.class,
+            AutoSpawnNpcRegistrar.class
     ));
 
     private final List<Class<? extends Instantiator<?>>> instantiators = new ArrayList<>(Arrays.asList(

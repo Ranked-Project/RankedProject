@@ -48,7 +48,7 @@ public class NpcFactory {
      */
     public <T extends Npc> int create(@NotNull UUID playerUUID, @NotNull Class<T> npcType, int entityId) {
         if (npcSpawnedTracker.getNpcById(playerUUID, entityId) != null) {
-            return -1;
+            throw new IllegalStateException("NPC with id " + entityId + " already exists");
         }
 
         var npc = injector.getInstance(npcType);

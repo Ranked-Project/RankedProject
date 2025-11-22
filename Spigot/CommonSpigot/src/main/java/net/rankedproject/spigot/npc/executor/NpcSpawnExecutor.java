@@ -2,8 +2,6 @@ package net.rankedproject.spigot.npc.executor;
 
 import com.github.retrooper.packetevents.PacketEvents;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerDestroyEntities;
-import com.google.inject.Singleton;
-import net.rankedproject.spigot.npc.Npc;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;

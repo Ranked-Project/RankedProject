@@ -1,7 +1,5 @@
 package net.rankedproject.spigot.npc.model;
 
-import net.rankedproject.spigot.npc.Npc;
-
 /**
  * Represents the base model for all NPCs.
  * <p>

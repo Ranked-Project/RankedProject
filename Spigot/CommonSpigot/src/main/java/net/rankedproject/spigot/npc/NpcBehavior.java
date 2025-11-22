@@ -31,13 +31,11 @@ public record NpcBehavior(
         private int entitySize = 1;
         private boolean autoSpawn = false;
 
-        @NotNull
         public Builder location(@NotNull Location location) {
             this.location = location;
             return this;
         }
 
-        @NotNull
         public Builder entityType(@NotNull EntityType<?> entityType) {
             this.entityType = entityType;
             return this;

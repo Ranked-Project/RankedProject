@@ -10,7 +10,8 @@ import net.rankedproject.spigot.npc.executor.LoadedNpc;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.UnmodifiableView;
 
-import java.util.*;
+import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Singleton

@@ -10,8 +10,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.UUID;
-
 @Singleton
 @RequiredArgsConstructor(onConstructor_ = {@Inject})
 public class NpcLoadListener implements Listener {

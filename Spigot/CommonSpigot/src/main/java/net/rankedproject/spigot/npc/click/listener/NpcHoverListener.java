@@ -13,6 +13,7 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import it.unimi.dsi.fastutil.ints.Int2BooleanOpenHashMap;
 import lombok.RequiredArgsConstructor;
+import net.rankedproject.spigot.npc.executor.LoadedNpc;
 import net.rankedproject.spigot.npc.executor.tracker.NpcSpawnedTracker;
 import net.rankedproject.spigot.util.raytrace.EntityRayTraceUtil;
 import org.bukkit.Bukkit;
@@ -20,7 +21,10 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import java.time.Duration;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.UUID;
 
 @Singleton
 @RequiredArgsConstructor(onConstructor_ = {@Inject})
@@ -56,30 +60,31 @@ public class NpcHoverListener implements PacketListener {
         var player = event.<Player>getPlayer();
         var playerUUID = player.getUniqueId();
 
-        npcSpawnedTracker.getNpcMap(playerUUID)
-                .values()
-                .forEach(loadedNpc -> {
-                    var npc = loadedNpc.npc();
-                    var behavior = npc.getBehavior();
+        var loadedNpcs = npcSpawnedTracker.getNpcMap(playerUUID).values();
+        for (LoadedNpc loadedNpc : loadedNpcs) {
+            var npc = loadedNpc.npc();
+            var behavior = npc.getBehavior();
 
-                    var hasHoverEffect = behavior.clickBehavior() != null;
-                    if (!hasHoverEffect) {
-                        return;
-                    }
+            var hasHoverEffect = behavior.clickBehavior() != null;
+            if (!hasHoverEffect) {
+                continue;
+            }
 
-                    var location = behavior.location();
-                    var entityType = behavior.entityType();
-                    var entitySize = behavior.entitySize();
+            var location = behavior.location();
+            var entityType = behavior.entityType();
+            var entitySize = behavior.entitySize();
 
-                    boolean isLookingAtEntity = EntityRayTraceUtil.isLookingAtEntity(player, location, entityType, entitySize);
-                    var lastWasGlowing = Objects.requireNonNull(lastPacket.get(playerUUID)).get(loadedNpc.entityId());
+            boolean isLookingAtEntity = EntityRayTraceUtil.isLookingAtEntity(player, location, entityType, entitySize);
 
-                    if (isLookingAtEntity && !lastWasGlowing) {
-                        setEntityGlow(playerUUID, loadedNpc.entityId(), Boolean.TRUE);
-                    } else if (!isLookingAtEntity && lastWasGlowing) {
-                        setEntityGlow(playerUUID, loadedNpc.entityId(), Boolean.FALSE);
-                    }
-                });
+            var lastGlowingStatePerEntityMap = Objects.requireNonNull(lastPacket.get(playerUUID));
+            var lastWasGlowing = lastGlowingStatePerEntityMap.get(loadedNpc.entityId());
+
+            if (isLookingAtEntity && !lastWasGlowing) {
+                setEntityGlow(playerUUID, loadedNpc.entityId(), true);
+            } else if (!isLookingAtEntity && lastWasGlowing) {
+                setEntityGlow(playerUUID, loadedNpc.entityId(), false);
+            }
+        }
     }
 
     private void setEntityGlow(@NotNull UUID playerUUID, int entityId, boolean glowing) {
@@ -89,9 +94,7 @@ public class NpcHoverListener implements PacketListener {
         var packet = new WrapperPlayServerEntityMetadata(entityId, entityGlowingFlags);
         PacketEvents.getAPI().getPlayerManager().sendPacket(player, packet);
 
-        var glowingEntityMap = Objects.requireNonNull(lastPacket.get(playerUUID));
-        glowingEntityMap.put(entityId, glowing);
-
-        lastPacket.put(playerUUID, glowingEntityMap);
+        var lastGlowingStatePerEntityMap = Objects.requireNonNull(lastPacket.get(playerUUID));
+        lastGlowingStatePerEntityMap.put(entityId, glowing);
     }
 }

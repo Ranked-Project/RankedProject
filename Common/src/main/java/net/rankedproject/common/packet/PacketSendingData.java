@@ -10,6 +10,7 @@ import java.util.concurrent.CompletableFuture;
 public record PacketSendingData<T extends GeneratedMessage, U extends GeneratedMessage>(
         String subject,
         T sendingPacket,
+        Duration timeout,
         Class<U> awaitingPacket
 ) {
 
@@ -25,7 +26,7 @@ public record PacketSendingData<T extends GeneratedMessage, U extends GeneratedM
         private String subject;
         private T sendingPacket;
 
-        private Duration timeout;
+        private Duration timeout = Duration.ofMinutes(10);
         private Class<U> awaitingPacket;
 
         private final PacketSender packetSender;

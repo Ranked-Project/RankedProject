@@ -2,7 +2,7 @@ package net.rankedproject.spigot.npc;
 
 import com.google.common.base.Preconditions;
 import net.minecraft.world.entity.EntityType;
-import net.rankedproject.spigot.npc.click.NpcClickBehavior;
+import net.rankedproject.spigot.npc.click.NpcClickBehaviorMetadata;
 import net.rankedproject.spigot.npc.model.NpcModel;
 import org.bukkit.Location;
 import org.jetbrains.annotations.NotNull;
@@ -11,7 +11,7 @@ public record NpcBehavior(
         Location location,
         EntityType<?> entityType,
         NpcModel model,
-        NpcClickBehavior clickBehavior,
+        NpcClickBehaviorMetadata clickBehaviorMetadata,
         int entitySize,
         boolean autoSpawn
 ) {
@@ -25,7 +25,7 @@ public record NpcBehavior(
         private Location location;
 
         private NpcModel model;
-        private NpcClickBehavior clickBehavior;
+        private NpcClickBehaviorMetadata clickBehaviorMetadata;
         private EntityType<?> entityType;
 
         private int entitySize = 1;
@@ -46,8 +46,8 @@ public record NpcBehavior(
             return this;
         }
 
-        public Builder clickBehavior(@NotNull NpcClickBehavior clickBehavior) {
-            this.clickBehavior = clickBehavior;
+        public Builder clickBehavior(@NotNull NpcClickBehaviorMetadata clickBehaviorMetadata) {
+            this.clickBehaviorMetadata = clickBehaviorMetadata;
             return this;
         }
 
@@ -64,7 +64,7 @@ public record NpcBehavior(
         public NpcBehavior build() {
             Preconditions.checkNotNull(location, "Location must not be null");
             Preconditions.checkNotNull(entityType, "Entity type must not be null");
-            return new NpcBehavior(location, entityType, model, clickBehavior, entitySize, autoSpawn);
+            return new NpcBehavior(location, entityType, model, clickBehaviorMetadata, entitySize, autoSpawn);
         }
     }
 }

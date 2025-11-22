@@ -33,12 +33,7 @@ public class NpcCreateListener implements Listener {
         var player = event.getPlayer();
         var playerUUID = player.getUniqueId();
 
-        var npcIterator = npcSpawnedTracker.getNpcMap(playerUUID).values().iterator();
-        while (npcIterator.hasNext()) {
-            npcIterator.remove();
-
-            var loadedNpc = npcIterator.next();
-            npcFactory.remove(playerUUID, loadedNpc);
-        }
+        var npcList = npcSpawnedTracker.getNpcMap(playerUUID).values().stream().toList();
+        npcList.forEach(loadedNpc -> npcFactory.remove(playerUUID, loadedNpc.entityId()));
     }
 }

@@ -3,7 +3,6 @@ package net.rankedproject.lobby.npc.lobby;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import lombok.RequiredArgsConstructor;
-import net.rankedproject.spigot.npc.click.NpcClickBehavior;
 import net.rankedproject.spigot.npc.click.NpcClickBehaviorMetadata;
 import org.jetbrains.annotations.NotNull;
 

@@ -194,11 +194,13 @@ public class SpawnListener implements Listener {
 
         ItemStack itemInHand = event.getItem();
         Material clickedBlockMaterial = Objects.requireNonNull(event.getClickedBlock()).getType();
+        if (itemInHand == null || itemInHand.getType().isEdible()) {
+            return;
+        }
 
-        if (itemInHand != null && itemInHand.getType().isEdible() && !BLOCKED_MATERIAL.contains(clickedBlockMaterial))
+        if (USABLE_MATERIAL.contains(itemInHand.getType()) || BLOCKED_MATERIAL.contains(clickedBlockMaterial)) {
             return;
-        if (itemInHand != null && USABLE_MATERIAL.contains(itemInHand.getType()) && !BLOCKED_MATERIAL.contains(clickedBlockMaterial))
-            return;
+        }
 
         event.setCancelled(true);
     }

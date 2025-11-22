@@ -18,7 +18,7 @@ public class EntityRayTraceUtil {
     public static boolean isLookingAtEntity(
             @NotNull Player player,
             @NotNull Location entityLocation,
-            EntityType<?> entityType,
+            @NotNull EntityType<?> entityType,
             int entitySize
     ) {
         var location = player.getLocation();

@@ -81,11 +81,18 @@ public class NpcFactory {
      * from the player's world.
      * </p>
      *
-     * @param loadedNpc   The LoadedNpc of the NPC to remove.
+     * @param entityId   The entityId of the NPC to remove.
      * @param playerUUID The UUID of the player associated with the NPC.
      */
-    public void remove(@NotNull UUID playerUUID, @NotNull LoadedNpc loadedNpc) {
+    public void remove(@NotNull UUID playerUUID, int entityId) {
+        var loadedNpc = npcSpawnedTracker.getNpcById(playerUUID, entityId);
+        if (loadedNpc == null) {
+            return;
+        }
+
         var npcSpawnExecutor = loadedNpc.npc().getNpcSpawnExecutor();
         npcSpawnExecutor.despawnEntity(loadedNpc, playerUUID);
+
+        npcSpawnedTracker.untrack(loadedNpc, playerUUID);
     }
 }

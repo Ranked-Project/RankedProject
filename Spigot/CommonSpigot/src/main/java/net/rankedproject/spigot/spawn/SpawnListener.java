@@ -22,6 +22,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
+import org.bukkit.event.weather.WeatherChangeEvent;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
@@ -29,7 +30,7 @@ import java.util.Objects;
 import java.util.Set;
 
 @Singleton
-@RequiredArgsConstructor(onConstructor_={@Inject})
+@RequiredArgsConstructor(onConstructor_ = {@Inject})
 public class SpawnListener implements Listener {
 
     private static final Set<Material> BLOCKED_FOOD_MATERIAL = Set.of(
@@ -74,6 +75,15 @@ public class SpawnListener implements Listener {
 
         var location = spawn.getLocationFinder().apply(player);
         player.teleportAsync(location);
+    }
+
+    @EventHandler
+    public void onWeatherChange(WeatherChangeEvent event) {
+        if (isFlagNotEnabled(event.getWorld(), SpawnFlag.NO_WEATHER_CHANGE)) {
+            return;
+        }
+
+        event.setCancelled(true);
     }
 
     @EventHandler
@@ -184,9 +194,13 @@ public class SpawnListener implements Listener {
 
         ItemStack itemInHand = event.getItem();
         Material clickedBlockMaterial = Objects.requireNonNull(event.getClickedBlock()).getType();
+        if (itemInHand == null || itemInHand.getType().isEdible()) {
+            return;
+        }
 
-        if (itemInHand != null && itemInHand.getType().isEdible() && !BLOCKED_MATERIAL.contains(clickedBlockMaterial)) return;
-        if (itemInHand != null && USABLE_MATERIAL.contains(itemInHand.getType()) && !BLOCKED_MATERIAL.contains(clickedBlockMaterial)) return;
+        if (USABLE_MATERIAL.contains(itemInHand.getType()) || BLOCKED_MATERIAL.contains(clickedBlockMaterial)) {
+            return;
+        }
 
         event.setCancelled(true);
     }
@@ -201,7 +215,7 @@ public class SpawnListener implements Listener {
     }
 
     @EventHandler
-    public void playerTeleport(PlayerTeleportEvent event) {
+    public void onPlayerTeleport(PlayerTeleportEvent event) {
         Player player = event.getPlayer();
         if (isFlagNotEnabled(player.getWorld(), SpawnFlag.NO_TELEPORT)) {
             return;

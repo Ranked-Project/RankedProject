@@ -8,12 +8,11 @@ import net.rankedproject.common.registrar.Registrar;
 import net.rankedproject.common.registrar.impl.PacketListenerRegistrar;
 import net.rankedproject.common.rest.type.PlayerRestClient;
 import net.rankedproject.spigot.command.RankedCommand;
-import net.rankedproject.spigot.instantiator.CommandManagerInstantiator;
-import net.rankedproject.spigot.instantiator.SlimeLoaderInstantiator;
-import net.rankedproject.spigot.registrar.BukkitListenerRegistrar;
-import net.rankedproject.spigot.registrar.CommandRegistrar;
-import net.rankedproject.spigot.registrar.ConfigRegistrar;
-import net.rankedproject.spigot.registrar.ServerProxyRegistrar;
+import net.rankedproject.spigot.instantiator.Instantiator;
+import net.rankedproject.spigot.instantiator.impl.CommandManagerInstantiator;
+import net.rankedproject.spigot.instantiator.impl.SlimeLoaderInstantiator;
+import net.rankedproject.spigot.registrar.Registrar;
+import net.rankedproject.spigot.registrar.impl.*;
 import net.rankedproject.spigot.world.Spawn;
 import org.jetbrains.annotations.NotNull;
 
@@ -29,7 +28,9 @@ public class RankedServerBuilder {
             ServerProxyRegistrar.class,
             BukkitListenerRegistrar.class,
             PacketListenerRegistrar.class,
-            CommandRegistrar.class
+            CommandRegistrar.class,
+            PacketListenerRegistrar.class,
+            AutoSpawnNpcRegistrar.class
     ));
 
     private final List<Class<? extends Instantiator<?>>> instantiators = new ArrayList<>(Arrays.asList(

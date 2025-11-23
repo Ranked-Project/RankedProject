@@ -11,7 +11,6 @@ public abstract class BaseRegistry<K, V> {
 
     public BaseRegistry(Map<K, V> registeredEntries) {
         this.registeredEntries = registeredEntries;
-        registerDefaults();
     }
 
     public void register(K key, V value) {
@@ -26,6 +25,4 @@ public abstract class BaseRegistry<K, V> {
     public Map<K, V> getAllRegistered() {
         return Collections.unmodifiableMap(registeredEntries);
     }
-
-    public abstract void registerDefaults();
 }

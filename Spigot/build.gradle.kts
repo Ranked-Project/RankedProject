@@ -1,5 +1,6 @@
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import io.papermc.paperweight.userdev.PaperweightUserDependenciesExtension
+import io.papermc.paperweight.util.download
 
 plugins {
     id("java")
@@ -68,6 +69,10 @@ subprojects {
             disablePluginRemapping()
             minecraftVersion(minecraftVersion)
             serverJar(file("../Server/asp-server.jar"))
+
+            downloadPlugins {
+                github("retrooper", "packetevents", "v2.10.1", "packetevents-spigot-2.10.1.jar")
+            }
 
             val jvmArgsFile = project.file("../jvm.args")
             if (jvmArgsFile.exists()) {

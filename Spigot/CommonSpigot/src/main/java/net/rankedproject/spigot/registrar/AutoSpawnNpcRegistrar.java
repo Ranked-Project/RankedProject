@@ -1,13 +1,13 @@
-package net.rankedproject.spigot.registrar.impl;
+package net.rankedproject.spigot.registrar;
 
 import com.google.inject.Inject;
 import com.google.inject.Injector;
 import com.google.inject.Singleton;
 import lombok.RequiredArgsConstructor;
+import net.rankedproject.common.registrar.ExecutionPriority;
+import net.rankedproject.common.registrar.Registrar;
 import net.rankedproject.spigot.npc.Npc;
 import net.rankedproject.spigot.npc.registry.AutoSpawnNpcRegistry;
-import net.rankedproject.spigot.registrar.ExecutionPriority;
-import net.rankedproject.spigot.registrar.Registrar;
 import org.jetbrains.annotations.NotNull;
 import org.reflections.Reflections;
 
@@ -35,8 +35,9 @@ public class AutoSpawnNpcRegistrar implements Registrar {
                 .forEach(npc -> autoSpawnNpcRegistry.register(npc.getClass(), npc));
     }
 
+    @NotNull
     @Override
-    public @NotNull ExecutionPriority getPriority() {
+    public ExecutionPriority getPriority() {
         return ExecutionPriority.LAST;
     }
 }

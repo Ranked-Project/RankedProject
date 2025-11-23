@@ -1,14 +1,16 @@
 package net.rankedproject.privateapi.controller;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.UUID;
 
-@Data
+@Getter
+@Setter
 @RequiredArgsConstructor
 @AllArgsConstructor
 @Document(collection = "ranked_player")
@@ -24,3 +26,17 @@ public class RankedPlayer {
         this.id = id;
     }
 }
+
+/**
+ * Server:
+ * - players (List<UUID>),
+ * - type (ServerType -> Proxy,Game,Lobby) ?
+ * - name ("ranked-skywars", "ranked-lobby", "proxy") ?
+ * - long lastHeartBeat (unix time)
+ *
+ * /server/getAll
+ * /server/{id}
+ * /
+ *
+ *
+ */

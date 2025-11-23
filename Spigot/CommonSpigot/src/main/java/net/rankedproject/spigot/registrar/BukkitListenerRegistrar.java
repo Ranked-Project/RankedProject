@@ -1,11 +1,11 @@
-package net.rankedproject.spigot.registrar.impl;
+package net.rankedproject.spigot.registrar;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import lombok.RequiredArgsConstructor;
+import net.rankedproject.common.registrar.ExecutionPriority;
+import net.rankedproject.common.registrar.Registrar;
 import net.rankedproject.spigot.CommonPlugin;
-import net.rankedproject.spigot.registrar.ExecutionPriority;
-import net.rankedproject.spigot.registrar.Registrar;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.EventExecutor;

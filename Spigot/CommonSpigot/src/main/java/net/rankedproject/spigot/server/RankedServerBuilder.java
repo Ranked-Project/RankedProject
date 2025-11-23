@@ -2,17 +2,18 @@ package net.rankedproject.spigot.server;
 
 import com.google.inject.AbstractModule;
 import net.rankedproject.common.config.Config;
+import net.rankedproject.common.instantiator.Instantiator;
 import net.rankedproject.common.instantiator.impl.NatsInstantiator;
+import net.rankedproject.common.registrar.Registrar;
+import net.rankedproject.common.registrar.impl.PacketListenerRegistrar;
 import net.rankedproject.common.rest.type.PlayerRestClient;
 import net.rankedproject.spigot.command.RankedCommand;
-import net.rankedproject.common.instantiator.Instantiator;
 import net.rankedproject.spigot.instantiator.CommandManagerInstantiator;
 import net.rankedproject.spigot.instantiator.SlimeLoaderInstantiator;
-import net.rankedproject.spigot.registrar.Registrar;
-import net.rankedproject.spigot.registrar.impl.BukkitListenerRegistrar;
-import net.rankedproject.spigot.registrar.impl.CommandRegistrar;
-import net.rankedproject.spigot.registrar.impl.ConfigRegistrar;
-import net.rankedproject.spigot.registrar.impl.ServerProxyRegistrar;
+import net.rankedproject.spigot.registrar.BukkitListenerRegistrar;
+import net.rankedproject.spigot.registrar.CommandRegistrar;
+import net.rankedproject.spigot.registrar.ConfigRegistrar;
+import net.rankedproject.spigot.registrar.ServerProxyRegistrar;
 import net.rankedproject.spigot.world.Spawn;
 import org.jetbrains.annotations.NotNull;
 
@@ -27,6 +28,7 @@ public class RankedServerBuilder {
             ConfigRegistrar.class,
             ServerProxyRegistrar.class,
             BukkitListenerRegistrar.class,
+            PacketListenerRegistrar.class,
             CommandRegistrar.class
     ));
 

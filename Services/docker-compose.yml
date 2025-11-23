@@ -33,6 +33,19 @@ services:
       timeout: 5s
       retries: 5
 
+  nats:
+    image: nats:latest
+    container_name: dev-nats
+    restart: unless-stopped
+    ports:
+      - "4222:4222"
+      - "8222:8222"
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8222/varz || exit 1" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
   private-api:
     build:
       context: ../PrivateAPI
@@ -43,6 +56,8 @@ services:
       mongodb:
         condition: service_healthy
       redis:
+        condition: service_healthy
+      nats:
         condition: service_healthy
     environment:
       PRIVATE_API_MONGODB_URI: mongodb://test_user:test_password@mongodb:27017/ranked_data?authSource=admin

@@ -18,6 +18,7 @@ junit-bom = "5.10.0"
 cloud-paper = "2.0.0-beta.10"
 reflections = "0.10.2"
 packetevents-spigot = "2.10.1"
+redisson = "3.52.0"
 
 [libraries]
 lombok = { module = "org.projectlombok:lombok", version.ref = "lombok" }
@@ -36,6 +37,7 @@ junit-bom = { module = "org.junit:junit-bom", version.ref = "junit-bom" }
 cloud-paper = { module = "org.incendo:cloud-paper", version.ref = "cloud-paper" }
 reflections = { module = "org.reflections:reflections", version.ref = "reflections" }
 packetevents-spigot = { module = "com.github.retrooper:packetevents-spigot", version.ref = "packetevents-spigot" }
+redisson = { module = "org.redisson:redisson", version.ref = "redisson" }
 
 [plugins]
 protobuf = { id = "com.google.protobuf", version.ref = "protobuf-gradle-plugin" }

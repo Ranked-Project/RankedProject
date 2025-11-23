@@ -2,21 +2,19 @@ package net.rankedproject.common.instantiator.impl;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import io.nats.client.Connection;
-import io.nats.client.Nats;
 import lombok.RequiredArgsConstructor;
-import lombok.SneakyThrows;
 import net.rankedproject.common.instantiator.Instantiator;
 import org.jetbrains.annotations.NotNull;
+import org.redisson.Redisson;
+import org.redisson.api.RedissonClient;
 
 @Singleton
 @RequiredArgsConstructor(onConstructor_ = {@Inject})
-public class NatsInstantiator implements Instantiator<Connection> {
+public class RedisInstantiator implements Instantiator<RedissonClient> {
 
     @NotNull
     @Override
-    @SneakyThrows
-    public Connection initInternally() {
-        return Nats.connect();
+    public RedissonClient initInternally() {
+        return Redisson.create();
     }
 }

@@ -1,4 +1,4 @@
-package net.rankedproject.spigot.registrar;
+package net.rankedproject.common.registrar;
 
 import org.jetbrains.annotations.NotNull;
 

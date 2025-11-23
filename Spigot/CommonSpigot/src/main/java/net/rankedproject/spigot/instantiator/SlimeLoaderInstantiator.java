@@ -6,8 +6,8 @@ import com.infernalsuite.asp.api.loaders.SlimeLoader;
 import com.infernalsuite.asp.loaders.mongo.MongoLoader;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
-import net.rankedproject.common.util.EnvironmentUtil;
 import net.rankedproject.common.instantiator.Instantiator;
+import net.rankedproject.common.util.EnvironmentUtil;
 import net.rankedproject.spigot.world.util.SlimeResourceLoader;
 import org.jetbrains.annotations.NotNull;
 

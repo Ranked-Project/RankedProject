@@ -1,10 +1,10 @@
-package net.rankedproject.spigot.registrar.impl;
+package net.rankedproject.spigot.registrar;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import lombok.RequiredArgsConstructor;
-import net.rankedproject.spigot.registrar.AsyncRegistrar;
-import net.rankedproject.spigot.registrar.ExecutionPriority;
+import net.rankedproject.common.registrar.AsyncRegistrar;
+import net.rankedproject.common.registrar.ExecutionPriority;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.concurrent.CompletableFuture;

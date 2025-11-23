@@ -26,8 +26,8 @@ public record PacketSendingData<T extends GeneratedMessage, U extends GeneratedM
         private String subject;
         private T sendingPacket;
 
-        private Duration timeout = Duration.ofMinutes(10);
         private Class<U> awaitingPacket;
+        private Duration timeout = Duration.ofMinutes(10);
 
         private final PacketSender packetSender;
 
@@ -52,17 +52,26 @@ public record PacketSendingData<T extends GeneratedMessage, U extends GeneratedM
                     .subject(subject);
         }
 
-        public CompletableFuture<U> send() {
+        public CompletableFuture<?> send() {
             return packetSender.send(build());
         }
 
-        public CompletableFuture<U> send(@NotNull Duration timeout) {
+        public CompletableFuture<?> send(@NotNull Duration timeout) {
             this.timeout = timeout;
             return packetSender.send(build());
         }
 
+        public CompletableFuture<U> sendAwaiting() {
+            return packetSender.sendAwaiting(build());
+        }
+
+        public CompletableFuture<U> sendAwaiting(@NotNull Duration timeout) {
+            this.timeout = timeout;
+            return packetSender.sendAwaiting(build());
+        }
+
         public PacketSendingData<T, U> build() {
-            return new PacketSendingData<>(subject, sendingPacket, awaitingPacket);
+            return new PacketSendingData<>(subject, sendingPacket, timeout, awaitingPacket);
         }
     }
 }

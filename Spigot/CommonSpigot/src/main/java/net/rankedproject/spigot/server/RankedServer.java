@@ -2,10 +2,10 @@ package net.rankedproject.spigot.server;
 
 import com.google.inject.AbstractModule;
 import net.rankedproject.common.config.Config;
+import net.rankedproject.common.instantiator.Instantiator;
+import net.rankedproject.common.registrar.Registrar;
 import net.rankedproject.common.rest.type.PlayerRestClient;
 import net.rankedproject.spigot.command.RankedCommand;
-import net.rankedproject.common.instantiator.Instantiator;
-import net.rankedproject.spigot.registrar.Registrar;
 import net.rankedproject.spigot.world.Spawn;
 
 import java.util.Collection;

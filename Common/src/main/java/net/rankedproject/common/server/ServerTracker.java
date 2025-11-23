@@ -1,27 +1,22 @@
 package net.rankedproject.common.server;
 
-import net.rankedproject.CorePacket;
-import net.rankedproject.common.packet.PacketSender;
+import net.rankedproject.common.util.ServerType;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.UnmodifiableView;
 
-public class ServerTracker {
+import java.util.Collection;
 
-    private final PacketSender packetSender;
+public interface ServerTracker {
 
-    public ServerTracker(PacketSender packetSender) {
-        this.packetSender = packetSender;
-    }
+    void track(@NotNull Server server);
 
-    public void test() {
-        var packet = CorePacket.SendPlayerToServer.newBuilder()
-                .setServerName("lobby-server-3")
-                .setPlayerUuid("randomUUID")
-                .build();
+    void untrack(@NotNull Server server);
 
-        packetSender.builder(null)
-                .subject("lobby-server-*")
-                .packet(packet)
-                .build()
-                .send();
-    }
+    @NotNull
+    @UnmodifiableView
+    Collection<? extends Server> getAllServers();
 
+    @NotNull
+    @UnmodifiableView
+    Collection<? extends Server> getAllServersByType(@NotNull ServerType serverType);
 }

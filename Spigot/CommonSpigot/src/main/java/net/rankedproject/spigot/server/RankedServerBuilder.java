@@ -2,13 +2,15 @@ package net.rankedproject.spigot.server;
 
 import com.google.inject.AbstractModule;
 import net.rankedproject.common.config.Config;
+import net.rankedproject.common.instantiator.Instantiator;
+import net.rankedproject.common.instantiator.impl.NatsInstantiator;
+import net.rankedproject.common.registrar.Registrar;
+import net.rankedproject.common.registrar.impl.PacketListenerRegistrar;
 import net.rankedproject.common.rest.type.PlayerRestClient;
 import net.rankedproject.spigot.command.RankedCommand;
-import net.rankedproject.spigot.instantiator.Instantiator;
-import net.rankedproject.spigot.instantiator.impl.CommandManagerInstantiator;
-import net.rankedproject.spigot.instantiator.impl.SlimeLoaderInstantiator;
-import net.rankedproject.spigot.registrar.Registrar;
-import net.rankedproject.spigot.registrar.impl.*;
+import net.rankedproject.spigot.instantiator.CommandManagerInstantiator;
+import net.rankedproject.spigot.instantiator.SlimeLoaderInstantiator;
+import net.rankedproject.spigot.registrar.*;
 import net.rankedproject.spigot.world.Spawn;
 import org.jetbrains.annotations.NotNull;
 
@@ -23,12 +25,13 @@ public class RankedServerBuilder {
             ConfigRegistrar.class,
             ServerProxyRegistrar.class,
             BukkitListenerRegistrar.class,
-            CommandRegistrar.class,
             PacketListenerRegistrar.class,
+            CommandRegistrar.class,
             AutoSpawnNpcRegistrar.class
     ));
 
     private final List<Class<? extends Instantiator<?>>> instantiators = new ArrayList<>(Arrays.asList(
+            NatsInstantiator.class,
             SlimeLoaderInstantiator.class,
             CommandManagerInstantiator.class
     ));

@@ -7,7 +7,7 @@ import com.infernalsuite.asp.api.world.properties.SlimePropertyMap;
 import lombok.SneakyThrows;
 import net.rankedproject.common.rest.RestCrudAPI;
 import net.rankedproject.spigot.CommonPlugin;
-import net.rankedproject.spigot.instantiator.impl.SlimeLoaderInstantiator;
+import net.rankedproject.spigot.instantiator.SlimeLoaderInstantiator;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.jetbrains.annotations.NotNull;

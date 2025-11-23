@@ -41,7 +41,6 @@ subprojects {
         api("com.infernalsuite.asp:mongo-loader:4.0.0-SNAPSHOT")
         api("com.infernalsuite.asp:file-loader:4.0.0-SNAPSHOT")
         api(rootProject.libs.cloud.paper)
-        api(rootProject.libs.reflections)
         compileOnly(rootProject.libs.lombok)
         compileOnly("com.infernalsuite.asp:api:4.0.0-SNAPSHOT")
         compileOnly(rootProject.libs.packetevents.spigot)

@@ -18,8 +18,12 @@ dependencies {
     api(libs.annotations)
     api(libs.jnats)
     api(libs.protobuf.java)
+    api(libs.redisson)
+    api(libs.reflections)
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
     testImplementation(platform(libs.junit.bom))
     testImplementation("org.junit.jupiter:junit-jupiter")
+    testImplementation("org.mockito:mockito-core:5.+")
     annotationProcessor(libs.lombok)
 }
 

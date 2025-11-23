@@ -4,12 +4,15 @@ import com.github.retrooper.packetevents.PacketEvents;
 import com.google.inject.Injector;
 import io.github.retrooper.packetevents.factory.spigot.SpigotPacketEventsBuilder;
 import lombok.Getter;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import net.rankedproject.common.instantiator.Instantiator;
+import net.rankedproject.common.instantiator.impl.NatsInstantiator;
+import net.rankedproject.common.registrar.AsyncRegistrar;
+import net.rankedproject.common.registrar.ExecutionPriority;
+import net.rankedproject.common.registrar.Registrar;
+import net.rankedproject.common.rest.RestCrudAPI;
 import net.rankedproject.spigot.guice.PluginBinderModule;
-import net.rankedproject.spigot.instantiator.Instantiator;
-import net.rankedproject.spigot.registrar.AsyncRegistrar;
-import net.rankedproject.spigot.registrar.ExecutionPriority;
-import net.rankedproject.spigot.registrar.Registrar;
 import net.rankedproject.spigot.server.RankedServer;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -38,10 +41,16 @@ public abstract class CommonPlugin extends JavaPlugin {
         initRegistrars(rankedServer);
     }
 
+    @SneakyThrows
     @Override
     public void onDisable() {
         var requiredPlayerData = rankedServer.requiredPlayerData();
         requiredPlayerData.forEach(clientType -> injector.getInstance(clientType).shutdown());
+
+        var nats = injector.getInstance(NatsInstantiator.class).get();
+        nats.close();
+
+        RestCrudAPI.EXECUTOR_SERVICE.shutdown();
     }
 
     private void initGuice() {

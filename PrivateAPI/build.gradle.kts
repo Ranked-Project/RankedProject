@@ -2,6 +2,7 @@ plugins {
     id("java")
     id("org.springframework.boot") version "3.4.4"
     id("io.spring.dependency-management") version "1.1.7"
+    alias(libs.plugins.protobuf)
 }
 
 group = "net.rankedproject"
@@ -28,6 +29,8 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-data-mongodb")
     implementation("io.micrometer:micrometer-registry-prometheus:1.9.1")
     implementation("org.jetbrains:annotations:26.0.2-1")
+    implementation(libs.jnats)
+    implementation(libs.protobuf.java)
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("io.projectreactor:reactor-test")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
@@ -35,6 +38,18 @@ dependencies {
 
 springBoot {
     mainClass = "net.rankedproject.privateapi.PrivateApiApplication"
+}
+
+protobuf {
+    protoc {
+        artifact = rootProject.libs.protobuf.protoc.get().toString()
+    }
+}
+
+sourceSets {
+    val main by getting {
+        java.srcDirs("build/generated/source/proto/main/java")
+    }
 }
 
 tasks.withType<Test> {

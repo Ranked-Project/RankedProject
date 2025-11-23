@@ -1,4 +1,4 @@
-package net.rankedproject.spigot.instantiator;
+package net.rankedproject.common.instantiator;
 
 import com.google.common.base.Preconditions;
 import org.jetbrains.annotations.NotNull;

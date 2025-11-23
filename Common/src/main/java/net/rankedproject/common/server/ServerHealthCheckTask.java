@@ -49,7 +49,7 @@ public class ServerHealthCheckTask implements Runnable {
                         }
 
                         serverTracker.untrack(server);
-                        logger.info(SERVER_UNTRACKED.formatted(server.serverUUID()));
+                        logger.info(SERVER_UNTRACKED.formatted(server.getServerUUID()));
                     });
         }
     }

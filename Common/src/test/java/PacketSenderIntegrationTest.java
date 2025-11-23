@@ -2,9 +2,9 @@ import com.google.inject.Injector;
 import io.nats.client.Connection;
 import io.nats.client.Message;
 import io.nats.client.Nats;
-import net.rankedproject.CorePacket;
 import net.rankedproject.common.instantiator.impl.NatsInstantiator;
 import net.rankedproject.common.packet.PacketSenderImpl;
+import net.rankedproject.proto.SendPlayerToServer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -15,6 +15,7 @@ import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -44,8 +45,8 @@ public class PacketSenderIntegrationTest {
         var dispatcher = connection.createDispatcher(queue::offer);
         dispatcher.subscribe(subject);
 
-        var packet = CorePacket.SendPlayerToServer.newBuilder()
-                .setServerName("server-2")
+        var packet = SendPlayerToServer.newBuilder()
+                .setServerIdentifier("server-2")
                 .setPlayerUuid("")
                 .build();
 

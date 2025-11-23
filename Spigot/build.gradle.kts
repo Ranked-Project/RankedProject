@@ -44,6 +44,7 @@ subprojects {
         api(rootProject.libs.reflections)
         compileOnly(rootProject.libs.lombok)
         compileOnly("com.infernalsuite.asp:api:4.0.0-SNAPSHOT")
+        compileOnly("io.github.toxicity188:bettermodel:1.14.2")
         compileOnly(rootProject.libs.packetevents.spigot)
         annotationProcessor(rootProject.libs.lombok)
     }
@@ -73,6 +74,7 @@ subprojects {
 
             downloadPlugins {
                 github("retrooper", "packetevents", "v2.10.1", "packetevents-spigot-2.10.1.jar")
+                github("toxicity188", "BetterModel", "1.14.2", "BetterModel-1.14.2-paper.jar")
             }
 
             val jvmArgsFile = project.file("../jvm.args")

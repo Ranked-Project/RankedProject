@@ -39,12 +39,12 @@ public class NpcClickListener implements PacketListener {
             return;
         }
 
-        var npcClickBehavior = loadedNpc.npc().getBehavior().clickBehavior();
+        var npcClickBehavior = loadedNpc.npc().getBehavior().clickBehaviorMetadata();
         if (npcClickBehavior == null || isFlooding(playerUUID)) {
             return;
         }
 
-        var onClickAction = npcClickBehavior.behavior().onClick();
+        var onClickAction = npcClickBehavior.onClick();
         var player = Bukkit.getPlayer(playerUUID);
 
         onClickAction.accept(player);

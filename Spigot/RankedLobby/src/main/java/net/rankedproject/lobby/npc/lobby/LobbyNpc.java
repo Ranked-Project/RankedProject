@@ -10,6 +10,7 @@ import net.rankedproject.spigot.npc.type.MobNpc;
 import net.rankedproject.spigot.npc.type.PlayerNpc;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.entity.Zombie;
 import org.jetbrains.annotations.NotNull;
 
 @Singleton

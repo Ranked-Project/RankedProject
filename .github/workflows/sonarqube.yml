@@ -39,9 +39,12 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
         with:
-          projectKey: Ranked-Project_RankedProject
-          projectName: RankedProject
-          organization: ranked-project
+          args: >
+            -Dsonar.projectKey=Ranked-Project_RankedProject
+            -Dsonar.organization=ranked-project
+            -Dsonar.projectName=RankedProject
+            -Dsonar.host.url=${{ secrets.SONAR_HOST_URL }}
+            -Dsonar.login=${{ secrets.SONAR_TOKEN }}
       - name: SonarQube Quality Gate check
         id: sonarqube-quality-gate-check
         uses: sonarsource/sonarqube-quality-gate-action@master

@@ -34,16 +34,18 @@ services:
       retries: 5
 
   nats:
-    image: nats:latest
+    image: nats:2.11-alpine
     container_name: dev-nats
     restart: unless-stopped
     ports:
       - "4222:4222"
       - "8222:8222"
+    command:
+        - "--http_port=8222"
     healthcheck:
-      test: [ "CMD", "curl", "-f", "http://localhost:8222/varz || exit 1" ]
-      interval: 10s
-      timeout: 5s
+      test: [ "CMD", "wget", "-qO-", "http://localhost:8222/healthz" ]
+      interval: 15s
+      timeout: 10s
       retries: 5
 
   private-api:

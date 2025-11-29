@@ -22,3 +22,5 @@ jobs:
           git add .
           git diff --quiet || git commit -m "Apply code formatting"
           git push origin HEAD:${GITHUB_HEAD_REF}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

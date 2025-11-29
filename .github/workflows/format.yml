@@ -1,0 +1,16 @@
+name: Formatting
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    types: [opened, synchronize, reopened]
+jobs:
+  build:
+    name: Build and analyze
+    runs-on: ubuntu-latest
+    steps:
+      - uses: findologic/intellij-format-action@71ab7ce630fef4398cb571a5ef46b2a3cee3e0d5
+        with:
+          include-glob: '*.java'
+          path: .

@@ -26,17 +26,3 @@ public class RankedPlayer {
         this.id = id;
     }
 }
-
-/**
- * Server:
- * - players (List<UUID>),
- * - type (ServerType -> Proxy,Game,Lobby) ?
- * - name ("ranked-skywars", "ranked-lobby", "proxy") ?
- * - long lastHeartBeat (unix time)
- *
- * /server/getAll
- * /server/{id}
- * /
- *
- *
- */

@@ -51,7 +51,11 @@ subprojects {
         java {
             toolchain {
                 languageVersion.set(JavaLanguageVersion.of(rootProject.libs.versions.java.get()))
-                vendor.set(JvmVendorSpec.JETBRAINS)
+                if (System.getenv("GITHUB_ACTIONS")?.toBoolean() == true) {
+                    vendor.set(JvmVendorSpec.ADOPTIUM) // GH doesn't recognize Jetbrains JVM vendor
+                } else {
+                    vendor.set(JvmVendorSpec.JETBRAINS)
+                }
             }
         }
     }

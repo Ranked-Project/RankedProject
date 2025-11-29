@@ -1,29 +1,12 @@
-name: Formatting
+name: Format
 on:
-  push:
-    branches:
-      - master
   pull_request:
     types: [opened, synchronize, reopened]
-permissions:
-  contents: write
 jobs:
-  build:
-    name: Build and analyze
+  reformat:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@v4
-      - uses: findologic/intellij-format-action@71ab7ce630fef4398cb571a5ef46b2a3cee3e0d5
-        with:
-          include-glob: '*.java'
-          path: .
-      - name: Commit formatted files
-        run: |
-          git config user.name "github-actions"
-          git config user.email "github-actions@github.com"
-          git add .
-          git diff --quiet || git commit -m "Apply code formatting"
-          git diff --cached --quiet || git pull --rebase origin ${GITHUB_HEAD_REF}
-          git push origin HEAD:${GITHUB_HEAD_REF}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - uses: joutvhu/intellij-format@a7bc832bc5258ce68662cea2d77044c34a3cad17

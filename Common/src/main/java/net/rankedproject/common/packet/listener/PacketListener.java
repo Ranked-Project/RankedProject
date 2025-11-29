@@ -1,4 +1,4 @@
-package net.rankedproject.common.packet;
+package net.rankedproject.common.packet.listener;
 
 import com.google.protobuf.GeneratedMessage;
 import io.nats.client.Message;

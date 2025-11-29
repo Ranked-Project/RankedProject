@@ -3,7 +3,7 @@ package net.rankedproject.spigot.instantiator;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import lombok.RequiredArgsConstructor;
-import net.rankedproject.common.packet.PacketListener;
+import net.rankedproject.common.packet.listener.PacketListener;
 import net.rankedproject.proto.SendPlayerToServer;
 import net.rankedproject.spigot.CommonPlugin;
 import org.jetbrains.annotations.NotNull;

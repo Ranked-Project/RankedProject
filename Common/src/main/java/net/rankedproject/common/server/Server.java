@@ -24,6 +24,7 @@ public class Server {
     private int maxPlayers = 100;
 
     @NotNull
+    @Deprecated
     public String getUniqueIdentifier() {
         return serverType.getIdentifier() + "_" + serverUUID;
     }

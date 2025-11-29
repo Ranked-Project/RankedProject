@@ -5,6 +5,7 @@ import net.rankedproject.common.config.Config;
 import net.rankedproject.common.instantiator.Instantiator;
 import net.rankedproject.common.registrar.Registrar;
 import net.rankedproject.common.rest.type.PlayerRestClient;
+import net.rankedproject.common.util.ServerType;
 import net.rankedproject.spigot.command.RankedCommand;
 import net.rankedproject.spigot.world.Spawn;
 
@@ -18,6 +19,7 @@ public record RankedServer(
         Collection<Class<? extends RankedCommand>> ignoredCommands,
         Collection<AbstractModule> modules,
         Spawn spawn,
-        String name
+        String name,
+        ServerType serverType
 ) {
 }

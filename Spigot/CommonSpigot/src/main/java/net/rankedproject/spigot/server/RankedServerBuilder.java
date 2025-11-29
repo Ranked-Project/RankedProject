@@ -7,6 +7,7 @@ import net.rankedproject.common.instantiator.impl.NatsInstantiator;
 import net.rankedproject.common.registrar.Registrar;
 import net.rankedproject.common.registrar.impl.PacketListenerRegistrar;
 import net.rankedproject.common.rest.type.PlayerRestClient;
+import net.rankedproject.common.util.ServerType;
 import net.rankedproject.spigot.command.RankedCommand;
 import net.rankedproject.spigot.instantiator.CommandManagerInstantiator;
 import net.rankedproject.spigot.instantiator.SlimeLoaderInstantiator;
@@ -43,6 +44,7 @@ public class RankedServerBuilder {
 
     private Spawn spawn;
     private String name;
+    private ServerType serverType;
 
     @NotNull
     public RankedServerBuilder setName(@NotNull String name) {
@@ -117,7 +119,23 @@ public class RankedServerBuilder {
     }
 
     @NotNull
+    public RankedServerBuilder setServerType(ServerType serverType) {
+        this.serverType = serverType;
+        return this;
+    }
+
+    @NotNull
     public RankedServer build() {
-        return new RankedServer(instantiators, registrars, requiredPlayerData, configs, ignoredCommands, modules, spawn, name);
+        return new RankedServer(
+                instantiators,
+                registrars,
+                requiredPlayerData,
+                configs,
+                ignoredCommands,
+                modules,
+                spawn,
+                name,
+                serverType
+        );
     }
 }

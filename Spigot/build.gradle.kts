@@ -104,5 +104,6 @@ subprojects {
         archiveClassifier.set("")
         exclude("io/reactivex/**")
         exclude("net/bytebuddy/**")
+        relocate("com.google.protobuf", "net.rankedproject.protobuf")
     }
 }

@@ -1,8 +1,8 @@
-package net.rankedproject.common.server;
+package net.rankedproject.common.server.network;
 
 import com.google.inject.Injector;
 import lombok.RequiredArgsConstructor;
-import net.rankedproject.common.packet.PacketSender;
+import net.rankedproject.common.packet.sender.PacketSender;
 import net.rankedproject.proto.SendPlayerToServer;
 import org.jetbrains.annotations.NotNull;
 

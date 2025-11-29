@@ -4,7 +4,6 @@ import com.google.inject.Inject;
 import com.google.inject.Injector;
 import com.google.inject.Singleton;
 import net.minecraft.world.entity.EntityType;
-import net.rankedproject.lobby.npc.lobby.LobbyNpcClickBehavior;
 import net.rankedproject.spigot.npc.NpcBehavior;
 import net.rankedproject.spigot.npc.type.MobNpc;
 import org.bukkit.Bukkit;
@@ -25,7 +24,6 @@ public class PenkayNpc extends MobNpc {
         return NpcBehavior.builder()
                 .location(new Location(Bukkit.getWorld("lobby"), 31, 91, 17))
                 .entityType(EntityType.BEE)
-                .clickBehavior(injector.getInstance(LobbyNpcClickBehavior.class))
                 .autoSpawn()
                 .build();
     }

@@ -41,10 +41,10 @@ services:
       - "4222:4222"
       - "8222:8222"
     healthcheck:
-      test: [ "CMD", "curl", "-f", "http://localhost:8222/varz || exit 1" ]
-      interval: 10s
-      timeout: 5s
-      retries: 5
+      test: ["CMD-SHELL", "nc -z localhost 4222 || exit 1"]
+      interval: 1s
+      timeout: 1s
+      retries: 1
 
   private-api:
     build:

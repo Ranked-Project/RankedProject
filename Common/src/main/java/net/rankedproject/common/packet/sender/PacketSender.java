@@ -1,6 +1,7 @@
-package net.rankedproject.common.packet;
+package net.rankedproject.common.packet.sender;
 
 import com.google.protobuf.GeneratedMessage;
+import net.rankedproject.common.packet.sender.data.PacketSendingData;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.concurrent.CompletableFuture;

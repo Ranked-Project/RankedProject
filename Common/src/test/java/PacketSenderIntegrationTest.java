@@ -3,7 +3,7 @@ import io.nats.client.Connection;
 import io.nats.client.Message;
 import io.nats.client.Nats;
 import net.rankedproject.common.instantiator.impl.NatsInstantiator;
-import net.rankedproject.common.packet.PacketSenderImpl;
+import net.rankedproject.common.packet.sender.PacketSenderImpl;
 import net.rankedproject.proto.SendPlayerToServer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

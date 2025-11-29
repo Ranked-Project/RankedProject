@@ -1,4 +1,4 @@
-package net.rankedproject.common.packet;
+package net.rankedproject.common.packet.sender;
 
 import com.google.inject.Inject;
 import com.google.inject.Injector;
@@ -8,6 +8,7 @@ import io.nats.client.Message;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import net.rankedproject.common.instantiator.impl.NatsInstantiator;
+import net.rankedproject.common.packet.sender.data.PacketSendingData;
 import net.rankedproject.common.rest.RestCrudAPI;
 import org.jetbrains.annotations.NotNull;
 

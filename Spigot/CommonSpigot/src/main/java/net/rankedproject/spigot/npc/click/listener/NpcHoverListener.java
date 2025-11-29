@@ -65,7 +65,7 @@ public class NpcHoverListener implements PacketListener {
             var npc = loadedNpc.npc();
             var behavior = npc.getBehavior();
 
-            var hasHoverEffect = behavior.clickBehavior() != null;
+            var hasHoverEffect = behavior.clickBehaviorMetadata() != null;
             if (!hasHoverEffect) {
                 continue;
             }

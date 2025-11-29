@@ -7,5 +7,5 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v4
-      - uses: editorconfig-checker/action-editorconfig-checker@main
+      - uses: editorconfig-checker/action-editorconfig-checker@4b6cd6190d435e7e084fb35e36a096e98506f7b9
       - run: editorconfig-checker

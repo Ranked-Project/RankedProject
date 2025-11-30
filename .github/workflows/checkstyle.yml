@@ -7,6 +7,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
+      - name: List repo files
+        run: ls -R
       - uses: dbelyaev/action-checkstyle@cbb61fa05565e0e47512a34f5127bd2318f56d9d
         with:
           github_token: ${{ secrets.github_token }}

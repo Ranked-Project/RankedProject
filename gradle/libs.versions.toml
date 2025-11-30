@@ -20,6 +20,10 @@ reflections = "0.10.2"
 packetevents-spigot = "2.10.1"
 redisson = "3.52.0"
 sonarqube = "7.1.0.6387"
+spotless = "8.1.0"
+checkstyle = "12.1.2"
+editorconfig = "0.1.0"
+stylecheck = "0.2.1"
 
 [libraries]
 lombok = { module = "org.projectlombok:lombok", version.ref = "lombok" }
@@ -39,6 +43,7 @@ cloud-paper = { module = "org.incendo:cloud-paper", version.ref = "cloud-paper" 
 reflections = { module = "org.reflections:reflections", version.ref = "reflections" }
 packetevents-spigot = { module = "com.github.retrooper:packetevents-spigot", version.ref = "packetevents-spigot" }
 redisson = { module = "org.redisson:redisson", version.ref = "redisson" }
+stylecheck = { module = "ca.stellardrift:stylecheck", version.ref = "stylecheck" }
 
 [plugins]
 protobuf = { id = "com.google.protobuf", version.ref = "protobuf-gradle-plugin" }
@@ -46,3 +51,5 @@ paperweight = { id = "io.papermc.paperweight.userdev", version.ref = "paperweigh
 run-paper = { id = "xyz.jpenilla.run-paper", version.ref = "run-paper" }
 shadow = { id = "com.gradleup.shadow", version.ref = "shadow" }
 sonarqube = { id = "org.sonarqube", version.ref = "sonarqube" }
+spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }
+editorconfig = { id = "org.ec4j.editorconfig", version.ref = "editorconfig" }

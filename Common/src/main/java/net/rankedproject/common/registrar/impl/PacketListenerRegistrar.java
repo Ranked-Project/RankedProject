@@ -1,6 +1,8 @@
 package net.rankedproject.common.registrar.impl;
 
+import com.google.inject.Inject;
 import com.google.inject.Injector;
+import com.google.inject.Singleton;
 import lombok.RequiredArgsConstructor;
 import net.rankedproject.common.instantiator.impl.NatsInstantiator;
 import net.rankedproject.common.packet.PacketListener;
@@ -9,7 +11,8 @@ import net.rankedproject.common.registrar.Registrar;
 import org.jetbrains.annotations.NotNull;
 import org.reflections.Reflections;
 
-@RequiredArgsConstructor
+@Singleton
+@RequiredArgsConstructor(onConstructor_ = {@Inject})
 public class PacketListenerRegistrar implements Registrar {
 
     private static final String PACKAGE_LOOKUP_NAME = "net.rankedproject";

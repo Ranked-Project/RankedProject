@@ -82,6 +82,11 @@ public abstract class CommonPlugin extends JavaPlugin {
                 processingChain = processingChain.thenRunAsync(registrar::register, mainThreadExecutor);
             }
         }
+
+        processingChain.exceptionally(ex -> {
+            log.error("An exception during registrar's initiation", ex);
+            return null;
+        });
     }
 
     private void initInstantiator(@NotNull RankedServer rankedServer) {

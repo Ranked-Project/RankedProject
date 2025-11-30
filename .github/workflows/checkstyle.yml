@@ -39,7 +39,8 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           workflowSummary: true
           reports: |
-            **/build/reports/checkstyle/*.xml
+            **/build/reports/checkstyle/**/*.xml
           checksSummary: full
           filterChecks: true
-          failOnError: false
+          failOnError: true
+          failIfNoReportsFound: false

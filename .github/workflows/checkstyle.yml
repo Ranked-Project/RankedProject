@@ -1,6 +1,9 @@
 on:
   pull_request:
     types: [opened, synchronize, reopened]
+permissions:
+  checks: write
+  contents: read
 jobs:
   checkstyle:
     name: runner / checkstyle
@@ -34,7 +37,6 @@ jobs:
         if: ${{ !cancelled() }}
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          checkName: "Checkstyle"
           workflowSummary: true
           reports: |
             **/build/reports/checkstyle/*.xml

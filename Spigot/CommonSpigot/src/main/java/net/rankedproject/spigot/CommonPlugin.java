@@ -3,6 +3,8 @@ package net.rankedproject.spigot;
 import com.github.retrooper.packetevents.PacketEvents;
 import com.google.inject.Injector;
 import io.github.retrooper.packetevents.factory.spigot.SpigotPacketEventsBuilder;
+import java.util.Comparator;
+import java.util.concurrent.CompletableFuture;
 import lombok.Getter;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -17,9 +19,6 @@ import net.rankedproject.spigot.server.RankedServer;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.Comparator;
-import java.util.concurrent.CompletableFuture;
 
 @Slf4j
 @Getter

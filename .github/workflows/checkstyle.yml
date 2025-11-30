@@ -13,4 +13,6 @@ jobs:
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         reporter: 'github-pr-check'
-        tool_name: 'testtool'
+        tool_name: 'checkstyle'
+        fail_level: warning
+        checkstyle_config: checkstyle/checkstyle.xml

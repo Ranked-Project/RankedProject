@@ -20,3 +20,25 @@ jobs:
           checkstyle_config: config/checkstyle/checkstyle.xml
           properties_file: config/checkstyle/checkstyle.properties
           reviewdog_flags: "-class-path ./stylecheck.jar"
+  checkstyle-v2:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+      - name: Download stylecheck module
+        run: |
+          wget -q https://repo1.maven.org/maven2/ca/stellardrift/stylecheck/0.2.1/stylecheck-0.2.1.jar \
+            -O stylecheck.jar
+      - name: Run Checkstyle
+        uses: nacier/checkstyle-action@v2
+        with:
+          checkstyle_version: "12.1.2"
+          config: "config/checkstyle/checkstyle.xml"
+          classpath: "stylecheck.jar"
+          directory: "."
+          github_token: ${{ secrets.GITHUB_TOKEN }}

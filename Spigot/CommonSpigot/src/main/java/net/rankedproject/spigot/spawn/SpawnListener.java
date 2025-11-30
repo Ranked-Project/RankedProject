@@ -2,6 +2,8 @@ package net.rankedproject.spigot.spawn;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import java.util.Objects;
+import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import net.rankedproject.common.util.EnvironmentUtil;
 import net.rankedproject.spigot.CommonPlugin;
@@ -17,7 +19,12 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
-import org.bukkit.event.entity.*;
+import org.bukkit.event.entity.CreatureSpawnEvent;
+import org.bukkit.event.entity.EntityChangeBlockEvent;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.FoodLevelChangeEvent;
+import org.bukkit.event.entity.ProjectileLaunchEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -25,9 +32,6 @@ import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.event.weather.WeatherChangeEvent;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.Objects;
-import java.util.Set;
 
 @Singleton
 @RequiredArgsConstructor(onConstructor_ = {@Inject})

@@ -1,15 +1,14 @@
 package net.rankedproject.spigot.data;
 
 import com.google.inject.ImplementedBy;
-import net.rankedproject.common.data.domain.BasePlayer;
-import net.rankedproject.common.rest.type.PlayerRestClient;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
 import java.util.Collection;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
+import net.rankedproject.common.data.domain.BasePlayer;
+import net.rankedproject.common.rest.type.PlayerRestClient;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 @ImplementedBy(PlayerSessionImpl.class)
 public interface PlayerSession {
@@ -24,7 +23,7 @@ public interface PlayerSession {
      * @param playerUUID The UUID of the target player.
      * @param <T>        The type of the data to be loaded.
      * @return A non-null {@link CompletableFuture} containing the loaded data instance.
-     * The future will complete with a nullable value if no data exists.
+     *         The future will complete with a nullable value if no data exists.
      */
     @NotNull
     <U extends BasePlayer, T extends PlayerRestClient<U>> CompletableFuture<U> load(
@@ -40,10 +39,9 @@ public interface PlayerSession {
      * @param clients    A collection of {@link PlayerRestClient} class types to load.
      * @param playerUUID The UUID of the target player.
      * @return A non-null {@link CompletableFuture} that completes when all data types are loaded.
-     * Individual results may still be null if no data exists for a given type.
+     *         Individual results may still be null if no data exists for a given type.
      */
-    @NotNull
-    CompletableFuture<?> load(
+    @NotNull CompletableFuture<?> load(
             @NotNull Collection<Class<? extends PlayerRestClient<?>>> clients,
             @NotNull UUID playerUUID
     );
@@ -56,7 +54,7 @@ public interface PlayerSession {
      * @param playerUUID The UUID of the target player.
      * @param <T>        The type of the data to retrieve.
      * @return A non-null {@link CompletableFuture} containing the most recent data from the database.
-     * The result may be null if no data exists.
+     *         The result may be null if no data exists.
      */
     @NotNull
     <T extends BasePlayer, U extends PlayerRestClient<T>> CompletableFuture<T> get(

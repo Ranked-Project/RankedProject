@@ -13,4 +13,4 @@ jobs:
           reporter: github-pr-review
           fail_level: warning
           checkstyle_version: "12.1.2"
-          checkstyle_config: ./checkstyle/checkstyle.xml
+          checkstyle_config: checkstyle/checkstyle.xml

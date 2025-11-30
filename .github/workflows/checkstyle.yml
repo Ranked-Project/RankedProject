@@ -5,6 +5,8 @@ jobs:
   checkstyle:
     name: runner / checkstyle
     runs-on: ubuntu-latest
+    env:
+      config_loc: ${{ github.workspace }}/config/checkstyle
     steps:
       - uses: actions/checkout@v5
       - uses: dbelyaev/action-checkstyle@cbb61fa05565e0e47512a34f5127bd2318f56d9d

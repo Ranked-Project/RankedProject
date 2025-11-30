@@ -12,6 +12,5 @@ jobs:
           github_token: ${{ secrets.github_token }}
           reporter: github-pr-review
           fail_level: warning
-          tool_name: 'checkstyle'
           checkstyle_version: "12.1.2"
           checkstyle_config: ./checkstyle/checkstyle.xml

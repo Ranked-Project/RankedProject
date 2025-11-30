@@ -7,6 +7,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
+      - name: Download stylecheck
+        run: |
+          wget -q "https://repo1.maven.org/maven2/ca/stellardrift/stylecheck/0.2.1/stylecheck-0.2.1.jar" \
+            -O stylecheck.jar
       - uses: dbelyaev/action-checkstyle@cbb61fa05565e0e47512a34f5127bd2318f56d9d
         with:
           github_token: ${{ secrets.github_token }}
@@ -15,3 +19,4 @@ jobs:
           checkstyle_version: "12.1.2"
           checkstyle_config: config/checkstyle/checkstyle.xml
           properties_file: config/checkstyle/checkstyle.properties
+          reviewdog_flags: "-class-path ./stylecheck.jar"

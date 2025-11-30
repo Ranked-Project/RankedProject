@@ -6,39 +6,38 @@ jobs:
     name: runner / checkstyle
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
-      - name: Download stylecheck
-        run: |
-          wget -q "https://repo1.maven.org/maven2/ca/stellardrift/stylecheck/0.2.1/stylecheck-0.2.1.jar" \
-            -O stylecheck.jar
-      - uses: dbelyaev/action-checkstyle@cbb61fa05565e0e47512a34f5127bd2318f56d9d
-        with:
-          github_token: ${{ secrets.github_token }}
-          reporter: github-pr-review
-          fail_level: warning
-          checkstyle_version: "12.1.2"
-          checkstyle_config: config/checkstyle/checkstyle.xml
-          properties_file: config/checkstyle/checkstyle.properties
-          reviewdog_flags: "-class-path ./stylecheck.jar"
-  checkstyle-v2:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-      - name: Set up JDK
+      - uses: actions/checkout@v4
+      - name: Set up JDK 25
         uses: actions/setup-java@v4
         with:
+          java-version: 25
           distribution: 'temurin'
-          java-version: '17'
-      - name: Download stylecheck module
-        run: |
-          wget -q https://repo1.maven.org/maven2/ca/stellardrift/stylecheck/0.2.1/stylecheck-0.2.1.jar \
-            -O stylecheck.jar
-      - name: Run Checkstyle
-        uses: nacier/checkstyle-action@v2
+          cache: gradle
+      - name: Cache SonarQube packages
+        uses: actions/cache@v4
         with:
-          checkstyle_version: "12.1.2"
-          config: "config/checkstyle/checkstyle.xml"
-          classpath: "stylecheck.jar"
-          directory: "."
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          path: ~/.sonar/cache
+          key: ${{ runner.os }}-sonar
+          restore-keys: ${{ runner.os }}-sonar
+      - name: Cache Gradle packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.gradle/caches
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
+          restore-keys: ${{ runner.os }}-gradle
+      - name: Change wrapper permissions
+        run: chmod +x ./gradlew
+      - name: Run Gradle Checkstyle
+        run: ./gradlew checkstyleMain checkstyleTest --no-daemon
+      - name: Publish Checkstyle reports
+        uses: gmazzo/publish-report-annotations@8bec9f79d4fb200c6d42faeeb2e04879646ba04f
+        if: ${{ !cancelled() }}
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          checkName: "Checkstyle"
+          workflowSummary: true
+          reports: |
+            **/build/reports/checkstyle/*.xml
+          checksSummary: full
+          filterChecks: true
+          failOnError: false

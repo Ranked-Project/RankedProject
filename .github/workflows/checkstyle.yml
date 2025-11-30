@@ -14,5 +14,4 @@ jobs:
           fail_level: warning
           checkstyle_version: "12.1.2"
           checkstyle_config: config/checkstyle/checkstyle.xml
-          properties: |
-            config_loc=${{ github.workspace }}/config/checkstyle
+          checkstyle_properties: config/checkstyle/checkstyle.properties

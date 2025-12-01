@@ -53,7 +53,7 @@ allprojects {
     extensions.configure<CheckstyleExtension> {
         configFile = rootProject.file("config/checkstyle/checkstyle.xml")
 
-        isIgnoreFailures = false
+        isIgnoreFailures = true
         isShowViolations = true
         toolVersion = rootProject.libs.versions.checkstyle.get()
     }

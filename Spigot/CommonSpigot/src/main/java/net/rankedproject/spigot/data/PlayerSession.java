@@ -87,8 +87,7 @@ public interface PlayerSession {
      * @param <T>           The type of the data being updated.
      * @return A non-null {@link CompletableFuture} containing the updated data instance.
      */
-    @NotNull
-    <T extends BasePlayer> CompletableFuture<Void> updateData(
+    <T extends BasePlayer> @NotNull CompletableFuture<Void> updateData(
             @NotNull UUID playerUUID,
             @NotNull Class<T> dataClassType,
             @NotNull Consumer<T> dataConsumer

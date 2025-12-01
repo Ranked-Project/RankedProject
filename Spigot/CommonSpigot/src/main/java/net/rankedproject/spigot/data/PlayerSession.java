@@ -88,7 +88,11 @@ public interface PlayerSession {
      * @return A non-null {@link CompletableFuture} containing the updated data instance.
      */
     @NotNull
-    <T extends BasePlayer> CompletableFuture<Void> updateData(@NotNull UUID playerUUID, @NotNull Class<T> dataClassType, @NotNull Consumer<T> dataConsumer);
+    <T extends BasePlayer> CompletableFuture<Void> updateData(
+            @NotNull UUID playerUUID,
+            @NotNull Class<T> dataClassType,
+            @NotNull Consumer<T> dataConsumer
+    );
 
     /**
      * Unloads all cached data for the given player.

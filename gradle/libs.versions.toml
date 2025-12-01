@@ -20,7 +20,6 @@ reflections = "0.10.2"
 packetevents-spigot = "2.10.1"
 redisson = "3.52.0"
 sonarqube = "7.1.0.6387"
-spotless = "8.1.0"
 checkstyle = "12.1.2"
 editorconfig = "0.1.0"
 stylecheck = "0.2.1"
@@ -51,5 +50,4 @@ paperweight = { id = "io.papermc.paperweight.userdev", version.ref = "paperweigh
 run-paper = { id = "xyz.jpenilla.run-paper", version.ref = "run-paper" }
 shadow = { id = "com.gradleup.shadow", version.ref = "shadow" }
 sonarqube = { id = "org.sonarqube", version.ref = "sonarqube" }
-spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }
 editorconfig = { id = "org.ec4j.editorconfig", version.ref = "editorconfig" }

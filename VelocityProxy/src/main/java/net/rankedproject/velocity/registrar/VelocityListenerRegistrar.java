@@ -7,10 +7,12 @@ import com.velocitypowered.api.event.Subscribe;
 import lombok.RequiredArgsConstructor;
 import net.rankedproject.common.registrar.ExecutionPriority;
 import net.rankedproject.common.registrar.Registrar;
-import org.jetbrains.annotations.NotNull;
 import net.rankedproject.velocity.VelocityProxy;
+import org.jetbrains.annotations.NotNull;
 import org.reflections.Reflections;
 import org.reflections.scanners.Scanners;
+
+import java.lang.reflect.Method;
 
 @Singleton
 @RequiredArgsConstructor(onConstructor_ = {@Inject})
@@ -26,13 +28,14 @@ public class VelocityListenerRegistrar implements Registrar {
         var reflections = new Reflections(LOOKUP_PACKAGES, Scanners.MethodsAnnotated);
         var methods = reflections.getMethodsAnnotatedWith(Subscribe.class);
 
-        methods.forEach(method -> {
-            var listenerClass = method.getDeclaringClass();
-            if (listenerClass.isAssignableFrom(VelocityProxy.class)) return;
-
-            var listener = injector.getInstance(listenerClass);
-            plugin.getProxyServer().getEventManager().register(plugin, listener);
-        });
+        methods.stream()
+                .map(Method::getDeclaringClass)
+                .filter(listenerClass -> !VelocityProxy.class.isAssignableFrom(listenerClass))
+                .distinct()
+                .forEach(listenerClass -> {
+                    var listener = injector.getInstance(listenerClass);
+                    plugin.getProxyServer().getEventManager().register(plugin, listener);
+                });
     }
 
     @Override

@@ -1,7 +1,7 @@
 package net.rankedproject.lobby;
 
 import net.rankedproject.common.rest.impl.RankedPlayerRestClient;
-import net.rankedproject.common.util.ServerType;
+import net.rankedproject.common.network.server.ServerType;
 import net.rankedproject.lobby.config.LobbyConfig;
 import net.rankedproject.lobby.registrar.SpawnWorldRegistrar;
 import net.rankedproject.spigot.CommonPlugin;

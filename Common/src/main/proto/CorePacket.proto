@@ -3,19 +3,33 @@ package net.rankedproject;
 option java_multiple_files = true;
 option java_package = "net.rankedproject.proto";
 
-message SendPlayerToServer {
-  required string player_uuid = 1;
-  required string server_identifier = 2;
-}
-
 message SpigotServerConnect {
-  required string server_uuid = 1;
+  required string server_identifier = 1;
   required string server_type = 2;
   required string host_name = 3;
   required int32 port = 4;
   required int32 max_players = 5;
 }
 
+message SpigotServerDisconnect {
+  required string server_identifier = 1;
+}
+
 message SpigotServerPing {
-  required string server_uuid = 1;
+  required string server_identifier = 1;
+  required string server_type = 2;
+  required string host_name = 3;
+  required int32 port = 4;
+  required int32 max_players = 5;
+}
+
+message PlayerSendToServer {
+  required string player_uuid = 1;
+  required string server_identifier = 2;
+}
+
+message PlayerSendToServerByPicker {
+  required string player_uuid = 1;
+  required string server_type = 2;
+  required string server_picker_type = 3;
 }

@@ -38,6 +38,7 @@ subprojects {
         }
 
         api(project(":Common"))
+
         api("com.infernalsuite.asp:mongo-loader:4.0.0-SNAPSHOT")
         api("com.infernalsuite.asp:file-loader:4.0.0-SNAPSHOT")
         api(rootProject.libs.cloud.paper)
@@ -108,6 +109,5 @@ subprojects {
         archiveClassifier.set("")
         exclude("io/reactivex/**")
         exclude("net/bytebuddy/**")
-        relocate("com.google.protobuf", "net.rankedproject.protobuf")
     }
 }

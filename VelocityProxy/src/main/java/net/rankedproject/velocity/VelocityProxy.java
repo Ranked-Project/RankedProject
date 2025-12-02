@@ -15,8 +15,9 @@ import net.rankedproject.common.registrar.AsyncRegistrar;
 import net.rankedproject.common.registrar.ExecutionPriority;
 import net.rankedproject.common.registrar.Registrar;
 import net.rankedproject.common.registrar.impl.PacketListenerRegistrar;
+import net.rankedproject.velocity.registrar.ServerPickerRegistrar;
 import net.rankedproject.velocity.registrar.VelocityListenerRegistrar;
-import net.rankedproject.velocity.server.ServerHealthCheckTask;
+import net.rankedproject.velocity.server.ServerHealthMonitor;
 
 import java.util.Comparator;
 import java.util.List;
@@ -35,7 +36,8 @@ public class VelocityProxy {
 
     private static final List<Class<? extends Registrar>> REGISTRARS = List.of(
             VelocityListenerRegistrar.class,
-            PacketListenerRegistrar.class
+            PacketListenerRegistrar.class,
+            ServerPickerRegistrar.class
     );
 
     private final ProxyServer proxyServer;
@@ -59,8 +61,7 @@ public class VelocityProxy {
         initInstantiator();
         initRegistrars();
 
-        ServerHealthCheckTask.runTask(injector);
-        log.info("[VelocityProxy] Initialize Server");
+        ServerHealthMonitor.runTask(injector);
     }
 
     private void initRegistrars() {

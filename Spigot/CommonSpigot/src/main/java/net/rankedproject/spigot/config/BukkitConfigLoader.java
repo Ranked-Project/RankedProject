@@ -12,7 +12,7 @@ import java.io.*;
 import java.nio.charset.StandardCharsets;
 
 @Singleton
-@RequiredArgsConstructor(onConstructor_={@Inject})
+@RequiredArgsConstructor(onConstructor_ = {@Inject})
 public class BukkitConfigLoader implements ConfigLoader {
 
     private final CommonPlugin plugin;

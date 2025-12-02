@@ -5,11 +5,12 @@ import net.rankedproject.common.config.Config;
 import net.rankedproject.common.instantiator.Instantiator;
 import net.rankedproject.common.registrar.Registrar;
 import net.rankedproject.common.rest.type.PlayerRestClient;
-import net.rankedproject.common.util.ServerType;
+import net.rankedproject.common.network.server.ServerType;
 import net.rankedproject.spigot.command.RankedCommand;
 import net.rankedproject.spigot.world.Spawn;
 
 import java.util.Collection;
+import java.util.UUID;
 
 public record RankedServer(
         Collection<Class<? extends Instantiator<?>>> instantiator,
@@ -20,6 +21,7 @@ public record RankedServer(
         Collection<AbstractModule> modules,
         Spawn spawn,
         String name,
-        ServerType serverType
+        ServerType serverType,
+        String identifier
 ) {
 }

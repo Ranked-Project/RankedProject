@@ -3,9 +3,14 @@ package net.rankedproject.spigot.spawn;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import net.rankedproject.common.network.player.PlayerNetworkGateway;
+import net.rankedproject.common.network.server.ServerType;
+import net.rankedproject.common.network.server.picker.ServerPickerType;
 import net.rankedproject.common.util.EnvironmentUtil;
 import net.rankedproject.spigot.CommonPlugin;
 import net.rankedproject.spigot.world.SpawnFlag;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.World;
@@ -26,9 +31,11 @@ import org.bukkit.event.weather.WeatherChangeEvent;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Arrays;
 import java.util.Objects;
 import java.util.Set;
 
+@Slf4j
 @Singleton
 @RequiredArgsConstructor(onConstructor_ = {@Inject})
 public class SpawnListener implements Listener {
@@ -144,6 +151,14 @@ public class SpawnListener implements Listener {
                 0, 0, 0,
                 0.05
         );
+
+        plugin.getInjector()
+                .getInstance(PlayerNetworkGateway.class)
+                .sendPlayerToServerPacket(player.getUniqueId(), ServerType.RANKED_LOBBY, ServerPickerType.LEAST)
+                .exceptionally(exception -> {
+                    log.error(exception.getMessage(), exception);
+                    return null;
+                });
 
         event.setCancelled(true);
     }

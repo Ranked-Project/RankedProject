@@ -8,33 +8,27 @@ import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import net.rankedproject.common.instantiator.Instantiator;
 import net.rankedproject.common.instantiator.impl.NatsInstantiator;
-import net.rankedproject.common.packet.sender.PacketSenderImpl;
-import net.rankedproject.common.packet.sender.data.PacketSendingData;
+import net.rankedproject.common.network.server.ServerNetworkGateway;
 import net.rankedproject.common.registrar.AsyncRegistrar;
 import net.rankedproject.common.registrar.ExecutionPriority;
 import net.rankedproject.common.registrar.Registrar;
 import net.rankedproject.common.rest.RestCrudAPI;
-import net.rankedproject.common.util.ServerType;
-import net.rankedproject.proto.SendPlayerToServer;
-import net.rankedproject.proto.SpigotServerConnect;
 import net.rankedproject.spigot.guice.PluginBinderModule;
 import net.rankedproject.spigot.server.RankedServer;
-import net.rankedproject.spigot.server.task.ServerPingTask;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Comparator;
-import java.util.Random;
-import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Executor;
 
 @Slf4j
 @Getter
 public abstract class CommonPlugin extends JavaPlugin {
 
     private final RankedServer rankedServer = rankedServer();
-    private final UUID serverUUID = UUID.randomUUID();
+    private final Executor mainExecutor = Bukkit.getScheduler().getMainThreadExecutor(this);
 
     protected Injector injector;
 
@@ -50,7 +44,6 @@ public abstract class CommonPlugin extends JavaPlugin {
 
         initInstantiator();
         initRegistrars();
-        connectServerVelocity();
     }
 
     @SneakyThrows
@@ -63,6 +56,7 @@ public abstract class CommonPlugin extends JavaPlugin {
         nats.close();
 
         RestCrudAPI.EXECUTOR_SERVICE.shutdown();
+        injector.getInstance(ServerNetworkGateway.class).sendDisconnectSpigotServerPacket(rankedServer.identifier());
     }
 
     private void initGuice() {
@@ -101,30 +95,6 @@ public abstract class CommonPlugin extends JavaPlugin {
                 .stream()
                 .map(registrar -> injector.getInstance(registrar))
                 .forEach(Instantiator::init);
-    }
-
-    private void connectServerVelocity() {
-        log.info("Connecting to server at {}", serverUUID);
-        var packet = SpigotServerConnect.newBuilder()
-                .setHostName("127.0.0.1")
-                .setPort(Bukkit.getPort())
-                .setServerUuid(serverUUID.toString())
-                .setServerType(rankedServer.serverType().toString())
-                .setMaxPlayers(100)
-                .build();
-
-        injector.getInstance(PacketSenderImpl.class)
-                .builder("spigot.server.connect", packet)
-                .send()
-                .whenComplete((sender, throwable) -> {
-                    if (throwable != null) {
-                        log.error("Error connecting to server", throwable);
-                        return;
-                    }
-
-                    ServerPingTask.runTask(injector);
-                    log.info("Server connected to server: {}", sender);
-                });
     }
 
     @NotNull

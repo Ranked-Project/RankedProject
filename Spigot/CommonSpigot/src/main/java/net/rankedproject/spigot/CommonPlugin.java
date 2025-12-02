@@ -3,12 +3,13 @@ package net.rankedproject.spigot;
 import com.github.retrooper.packetevents.PacketEvents;
 import com.google.inject.Injector;
 import io.github.retrooper.packetevents.factory.spigot.SpigotPacketEventsBuilder;
+import java.util.Comparator;
+import java.util.concurrent.CompletableFuture;
 import lombok.Getter;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import net.rankedproject.common.instantiator.Instantiator;
 import net.rankedproject.common.instantiator.impl.NatsInstantiator;
-import net.rankedproject.common.network.server.ServerNetworkGateway;
 import net.rankedproject.common.registrar.AsyncRegistrar;
 import net.rankedproject.common.registrar.ExecutionPriority;
 import net.rankedproject.common.registrar.Registrar;
@@ -88,6 +89,11 @@ public abstract class CommonPlugin extends JavaPlugin {
                 processingChain = processingChain.thenRunAsync(registrar::register, mainThreadExecutor);
             }
         }
+
+        processingChain.exceptionally(ex -> {
+            log.error("An exception during registrar's initiation", ex);
+            return null;
+        });
     }
 
     private void initInstantiator() {

@@ -2,15 +2,12 @@ package net.rankedproject.spigot.spawn;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import java.util.Objects;
+import java.util.Set;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import net.rankedproject.common.network.player.PlayerNetworkGateway;
-import net.rankedproject.common.network.server.ServerType;
-import net.rankedproject.common.network.server.picker.ServerPickerType;
 import net.rankedproject.common.util.EnvironmentUtil;
 import net.rankedproject.spigot.CommonPlugin;
 import net.rankedproject.spigot.world.SpawnFlag;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.World;
@@ -22,7 +19,12 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
-import org.bukkit.event.entity.*;
+import org.bukkit.event.entity.CreatureSpawnEvent;
+import org.bukkit.event.entity.EntityChangeBlockEvent;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.FoodLevelChangeEvent;
+import org.bukkit.event.entity.ProjectileLaunchEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -31,11 +33,6 @@ import org.bukkit.event.weather.WeatherChangeEvent;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Arrays;
-import java.util.Objects;
-import java.util.Set;
-
-@Slf4j
 @Singleton
 @RequiredArgsConstructor(onConstructor_ = {@Inject})
 public class SpawnListener implements Listener {
@@ -151,14 +148,6 @@ public class SpawnListener implements Listener {
                 0, 0, 0,
                 0.05
         );
-
-        plugin.getInjector()
-                .getInstance(PlayerNetworkGateway.class)
-                .sendPlayerToServerPacket(player.getUniqueId(), ServerType.RANKED_LOBBY, ServerPickerType.LEAST)
-                .exceptionally(exception -> {
-                    log.error(exception.getMessage(), exception);
-                    return null;
-                });
 
         event.setCancelled(true);
     }

@@ -13,6 +13,8 @@ import org.jetbrains.annotations.NotNull;
  * default {@link #onPacket(Message)} will parse the bytes using the static
  * {@code parseFrom(byte[])} method of the declared protobuf class and forward
  * the typed instance to {@link #onPacket(GeneratedMessage)}.
+ *
+ * @param <T> protobuf message type this listener processes
  */
 public interface PacketListener<T extends GeneratedMessage> {
 
@@ -24,8 +26,7 @@ public interface PacketListener<T extends GeneratedMessage> {
      *
      * @return the protobuf class to parse incoming messages into
      */
-    @NotNull
-    Class<T> getPacketType();
+    @NotNull Class<T> getPacketType();
 
     /**
      * Returns the subject/topic this listener handles.
@@ -36,8 +37,7 @@ public interface PacketListener<T extends GeneratedMessage> {
      *
      * @return the subject string to subscribe to
      */
-    @NotNull
-    String getSubject();
+    @NotNull String getSubject();
 
     /**
      * Handle a parsed protobuf packet.

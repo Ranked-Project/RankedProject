@@ -1,11 +1,10 @@
 package net.rankedproject.common.rest.request.type;
 
+import java.util.function.Consumer;
 import lombok.Builder;
 import okhttp3.HttpUrl;
 import okhttp3.Request;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.function.Consumer;
 
 @Builder
 public record RequestContent(

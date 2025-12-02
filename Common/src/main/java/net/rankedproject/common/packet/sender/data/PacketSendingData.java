@@ -1,11 +1,11 @@
 package net.rankedproject.common.packet.sender.data;
 
 import com.google.protobuf.GeneratedMessage;
+import java.time.Duration;
+import java.util.concurrent.CompletableFuture;
 import lombok.RequiredArgsConstructor;
 import net.rankedproject.common.packet.sender.PacketSender;
 import org.jetbrains.annotations.NotNull;
-import java.time.Duration;
-import java.util.concurrent.CompletableFuture;
 
 public record PacketSendingData<T extends GeneratedMessage, U extends GeneratedMessage>(
         String subject,
@@ -52,11 +52,11 @@ public record PacketSendingData<T extends GeneratedMessage, U extends GeneratedM
                     .subject(subject);
         }
 
-        public CompletableFuture<?> send() {
+        public CompletableFuture<Void> send() {
             return packetSender.send(build());
         }
 
-        public CompletableFuture<?> send(@NotNull Duration timeout) {
+        public CompletableFuture<Void> send(@NotNull Duration timeout) {
             this.timeout = timeout;
             return packetSender.send(build());
         }

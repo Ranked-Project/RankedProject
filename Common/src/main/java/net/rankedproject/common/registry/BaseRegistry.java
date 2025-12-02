@@ -1,9 +1,8 @@
 package net.rankedproject.common.registry;
 
-import org.jetbrains.annotations.UnmodifiableView;
-
 import java.util.Collections;
 import java.util.Map;
+import org.jetbrains.annotations.UnmodifiableView;
 
 public abstract class BaseRegistry<K, V> {
 

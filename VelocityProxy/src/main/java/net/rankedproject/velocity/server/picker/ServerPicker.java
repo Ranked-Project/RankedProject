@@ -11,7 +11,7 @@ public abstract class ServerPicker {
 
     protected final ServerTracker serverTracker;
 
-    public ServerPicker(ServerTracker serverTracker) {
+    protected ServerPicker(ServerTracker serverTracker) {
         this.serverTracker = serverTracker;
     }
 

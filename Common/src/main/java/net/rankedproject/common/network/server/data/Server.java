@@ -1,14 +1,10 @@
 package net.rankedproject.common.network.server.data;
 
+import java.net.InetSocketAddress;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import net.rankedproject.common.network.server.ServerType;
-import org.jetbrains.annotations.NotNull;
-
-import java.net.InetSocketAddress;
-import java.util.Set;
-import java.util.UUID;
 
 @Getter
 @Setter

@@ -12,14 +12,11 @@ import java.util.ArrayList;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 @Singleton
 @RequiredArgsConstructor(onConstructor_ = {@Inject})
 public class ServerHealthMonitor implements Runnable {
-
-    private static final String SERVER_UNTRACKED = "Untracked server %s because it didn't send a heartbeat response";
 
     private static final ScheduledExecutorService SCHEDULER = Executors.newSingleThreadScheduledExecutor();
     private static final Duration TIMEOUT = Duration.ofSeconds(10);
@@ -41,8 +38,6 @@ public class ServerHealthMonitor implements Runnable {
             long elapsedMs = System.currentTimeMillis() - loadedServer.getLastPingMs();
 
             if (elapsedMs > TIMEOUT.toMillis()) {
-                logger.log(Level.INFO, String.format(SERVER_UNTRACKED, loadedServer));
-
                 var identifier = loadedServer.getServer().getIdentifier();
                 serverInstanceFacade.removeServer(identifier);
             }

@@ -1,10 +1,9 @@
 package net.rankedproject.common.config.codec.impl;
 
 import com.google.common.base.Preconditions;
+import java.util.List;
 import net.rankedproject.common.config.codec.ConfigCodec;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.List;
 
 public class IntegerConfigCodec implements ConfigCodec<Integer, Object> {
 

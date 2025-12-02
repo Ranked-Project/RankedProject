@@ -2,13 +2,12 @@ package net.rankedproject.common.config.reader;
 
 import com.google.common.base.Preconditions;
 import com.google.inject.Injector;
+import java.util.ArrayList;
+import java.util.List;
 import net.rankedproject.common.config.Config;
 import net.rankedproject.common.config.placeholder.ConfigPlaceholder;
 import net.rankedproject.common.config.type.ConfigSection;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public record ConfigReadOption(String path,
                                Injector injector,

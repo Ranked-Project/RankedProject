@@ -12,13 +12,13 @@ repositories {
 }
 
 dependencies {
-    compileOnly("com.velocitypowered:velocity-api:3.4.0-SNAPSHOT")
-    annotationProcessor("com.velocitypowered:velocity-api:3.4.0-SNAPSHOT")
-
-    compileOnly(libs.lombok)
-    annotationProcessor(libs.lombok)
-
     api(project(":Common"))
+
+    compileOnly(libs.velocity)
+    compileOnly(libs.lombok)
+
+    annotationProcessor(libs.velocity)
+    annotationProcessor(libs.lombok)
 }
 
 tasks.shadowJar {

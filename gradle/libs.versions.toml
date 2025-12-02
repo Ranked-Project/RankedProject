@@ -23,6 +23,8 @@ sonarqube = "7.1.0.6387"
 checkstyle = "12.1.2"
 editorconfig = "0.1.0"
 stylecheck = "0.2.1"
+mockito = "5.+"
+velocity = "3.4.0-SNAPSHOT"
 
 [libraries]
 lombok = { module = "org.projectlombok:lombok", version.ref = "lombok" }
@@ -43,6 +45,10 @@ reflections = { module = "org.reflections:reflections", version.ref = "reflectio
 packetevents-spigot = { module = "com.github.retrooper:packetevents-spigot", version.ref = "packetevents-spigot" }
 redisson = { module = "org.redisson:redisson", version.ref = "redisson" }
 stylecheck = { module = "ca.stellardrift:stylecheck", version.ref = "stylecheck" }
+junit-jupiter = { module = "org.junit.jupiter:junit-jupiter" }
+junit-platform = { module = "org.junit.platform:junit-platform-launcher" }
+mockito-core = { module = "org.mockito:mockito-core", version.ref = "mockito" }
+velocity = { module = "com.velocitypowered:velocity-api", version.ref = "velocity" }
 
 [plugins]
 protobuf = { id = "com.google.protobuf", version.ref = "protobuf-gradle-plugin" }

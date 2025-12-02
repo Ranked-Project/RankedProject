@@ -1,13 +1,12 @@
 package net.rankedproject.common.rest.type;
 
 import com.google.gson.JsonElement;
+import java.util.Collection;
 import net.rankedproject.common.rest.RestClient;
 import net.rankedproject.common.rest.request.RequestFactory;
 import net.rankedproject.common.rest.request.type.RequestContent;
 import net.rankedproject.common.rest.request.type.RequestType;
 import okhttp3.RequestBody;
-
-import java.util.Collection;
 
 public abstract class CrudRestClient<V> extends RestClient<V> {
 

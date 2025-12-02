@@ -10,7 +10,6 @@ import net.rankedproject.spigot.command.RankedCommand;
 import net.rankedproject.spigot.world.Spawn;
 
 import java.util.Collection;
-import java.util.UUID;
 
 public record RankedServer(
         Collection<Class<? extends Instantiator<?>>> instantiator,

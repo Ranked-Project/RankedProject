@@ -2,15 +2,14 @@ package net.rankedproject.common.config.accessor;
 
 import com.google.inject.ImplementedBy;
 import com.google.inject.Injector;
+import java.util.Collection;
+import java.util.concurrent.CompletableFuture;
 import net.rankedproject.common.config.Config;
 import net.rankedproject.common.config.accessor.impl.CachedConfigAccessor;
 import net.rankedproject.common.config.parser.ParsedConfig;
 import net.rankedproject.common.config.reader.ConfigReadOption;
 import net.rankedproject.common.rest.RestClient;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.Collection;
-import java.util.concurrent.CompletableFuture;
 
 @ImplementedBy(CachedConfigAccessor.class)
 public interface ConfigAccessor {

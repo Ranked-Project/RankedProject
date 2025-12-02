@@ -52,13 +52,13 @@ public class ServerTracker {
 
     @NotNull
     @UnmodifiableView
-    public Collection<? extends LoadedServer> getAllServers() {
+    public Collection<LoadedServer> getAllServers() {
         return loadedServers.values();
     }
 
     @NotNull
     @UnmodifiableView
-    public Collection<? extends LoadedServer> getAllServersByType(@NotNull ServerType serverType) {
+    public Collection<LoadedServer> getAllServersByType(@NotNull ServerType serverType) {
         return loadedServers.values()
                 .stream()
                 .filter(loadedServer -> loadedServer.getServer().getServerType().equals(serverType))

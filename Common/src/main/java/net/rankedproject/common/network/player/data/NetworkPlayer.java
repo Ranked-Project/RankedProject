@@ -1,8 +1,7 @@
 package net.rankedproject.common.network.player.data;
 
-import lombok.RequiredArgsConstructor;
-
 import java.util.UUID;
+import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 public class NetworkPlayer {

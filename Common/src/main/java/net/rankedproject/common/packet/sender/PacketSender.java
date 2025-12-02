@@ -1,10 +1,9 @@
 package net.rankedproject.common.packet.sender;
 
 import com.google.protobuf.GeneratedMessage;
+import java.util.concurrent.CompletableFuture;
 import net.rankedproject.common.packet.sender.data.PacketSendingData;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.concurrent.CompletableFuture;
 
 public interface PacketSender {
 
@@ -19,7 +18,7 @@ public interface PacketSender {
      * @param packetSendingData data that contains subject, packet and optional metadata
      * @return a {@link CompletableFuture} that completes when the send finishes
      */
-    <T extends GeneratedMessage> CompletableFuture<?> send(
+    <T extends GeneratedMessage> CompletableFuture<Void> send(
             @NotNull PacketSendingData<T, ?> packetSendingData
     );
 

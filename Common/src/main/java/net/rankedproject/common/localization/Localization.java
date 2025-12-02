@@ -1,11 +1,14 @@
 package net.rankedproject.common.localization;
 
 import com.google.inject.Injector;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Locale;
+import java.util.ResourceBundle;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import net.rankedproject.common.config.placeholder.ConfigPlaceholder;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.*;
 
 @RequiredArgsConstructor
 public abstract class Localization {

@@ -2,6 +2,8 @@ package net.rankedproject.common.network.server;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import java.net.InetSocketAddress;
+import java.util.concurrent.CompletableFuture;
 import lombok.RequiredArgsConstructor;
 import net.rankedproject.common.network.NetworkGateway;
 import net.rankedproject.common.packet.sender.PacketSenderImpl;
@@ -11,9 +13,6 @@ import net.rankedproject.proto.SpigotServerDisconnect;
 import net.rankedproject.proto.SpigotServerPing;
 import org.jetbrains.annotations.NotNull;
 
-import java.net.InetSocketAddress;
-import java.util.concurrent.CompletableFuture;
-
 @Singleton
 @RequiredArgsConstructor(onConstructor_ = {@Inject})
 public final class ServerNetworkGateway implements NetworkGateway {
@@ -21,7 +20,7 @@ public final class ServerNetworkGateway implements NetworkGateway {
     private final PacketSenderImpl packetSender;
 
     @NotNull
-    public CompletableFuture<?> sendConnectSpigotServerPacket(
+    public CompletableFuture<Void> sendConnectSpigotServerPacket(
             @NotNull String identifier,
             @NotNull ServerType serverType,
             @NotNull InetSocketAddress address,
@@ -40,11 +39,11 @@ public final class ServerNetworkGateway implements NetworkGateway {
                 .subject("server.spigot.connect")
                 .build();
 
-        return send(packet, packetSender);
+        return packetSender.send(packet);
     }
 
     @NotNull
-    public CompletableFuture<?> sendPingSpigotServerPacket(
+    public CompletableFuture<Void> sendPingSpigotServerPacket(
             @NotNull String identifier,
             @NotNull ServerType serverType,
             @NotNull InetSocketAddress address,
@@ -63,11 +62,11 @@ public final class ServerNetworkGateway implements NetworkGateway {
                 .subject("server.spigot.ping")
                 .build();
 
-        return send(packet, packetSender);
+        return packetSender.send(packet);
     }
 
     @NotNull
-    public CompletableFuture<?> sendDisconnectSpigotServerPacket(@NotNull String identifier) {
+    public CompletableFuture<Void> sendDisconnectSpigotServerPacket(@NotNull String identifier) {
         var generatedMessage = SpigotServerDisconnect.newBuilder()
                 .setServerIdentifier(identifier)
                 .build();
@@ -77,6 +76,6 @@ public final class ServerNetworkGateway implements NetworkGateway {
                 .subject("server.spigot.disconnect")
                 .build();
 
-        return send(packet, packetSender);
+        return packetSender.send(packet);
     }
 }

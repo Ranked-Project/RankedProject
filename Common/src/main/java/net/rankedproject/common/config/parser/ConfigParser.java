@@ -1,13 +1,12 @@
 package net.rankedproject.common.config.parser;
 
 import com.google.common.base.Preconditions;
-import lombok.RequiredArgsConstructor;
-import net.rankedproject.common.config.codec.ConfigCodec;
-import org.jetbrains.annotations.NotNull;
-
 import java.io.Reader;
 import java.util.List;
 import java.util.Map;
+import lombok.RequiredArgsConstructor;
+import net.rankedproject.common.config.codec.ConfigCodec;
+import org.jetbrains.annotations.NotNull;
 
 @RequiredArgsConstructor
 public abstract class ConfigParser<T> {

@@ -1,8 +1,7 @@
 package net.rankedproject.common.config.codec;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.util.List;
+import org.jetbrains.annotations.NotNull;
 
 public interface ConfigCodec<T, U> {
 

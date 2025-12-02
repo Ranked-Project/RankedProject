@@ -2,18 +2,17 @@ package net.rankedproject.common.rest.request;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import java.util.EnumMap;
+import java.util.Map;
+import java.util.Optional;
+import java.util.function.Consumer;
+import java.util.function.Function;
 import net.rankedproject.common.rest.request.type.RequestContent;
 import net.rankedproject.common.rest.request.type.RequestType;
 import okhttp3.HttpUrl;
 import okhttp3.Request;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.EnumMap;
-import java.util.Map;
-import java.util.Optional;
-import java.util.function.Consumer;
-import java.util.function.Function;
 
 /**
  * Factory class for creating and managing HTTP requests using OkHttp.

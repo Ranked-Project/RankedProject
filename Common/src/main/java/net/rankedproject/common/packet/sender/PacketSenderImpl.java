@@ -5,14 +5,13 @@ import com.google.inject.Injector;
 import com.google.inject.Singleton;
 import com.google.protobuf.GeneratedMessage;
 import io.nats.client.Message;
+import java.util.concurrent.CompletableFuture;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import net.rankedproject.common.instantiator.impl.NatsInstantiator;
 import net.rankedproject.common.packet.sender.data.PacketSendingData;
 import net.rankedproject.common.rest.RestCrudAPI;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.concurrent.CompletableFuture;
 
 @Singleton
 @RequiredArgsConstructor(onConstructor_ = {@Inject})
@@ -22,7 +21,7 @@ public class PacketSenderImpl implements PacketSender {
     private final Injector injector;
 
     @Override
-    public <T extends GeneratedMessage> CompletableFuture<?> send(
+    public <T extends GeneratedMessage> CompletableFuture<Void> send(
             @NotNull PacketSendingData<T, ?> packetSendingData
     ) {
         var packet = packetSendingData.sendingPacket();

@@ -1,10 +1,9 @@
 package net.rankedproject.common.instantiator;
 
 import com.google.common.base.Preconditions;
-import org.jetbrains.annotations.NotNull;
-
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import org.jetbrains.annotations.NotNull;
 
 public interface Instantiator<T> {
 

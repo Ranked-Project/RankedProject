@@ -2,12 +2,11 @@ package net.rankedproject.common.localization;
 
 import com.google.common.base.Preconditions;
 import com.google.inject.Injector;
-import net.rankedproject.common.config.placeholder.ConfigPlaceholder;
-import org.jetbrains.annotations.NotNull;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import net.rankedproject.common.config.placeholder.ConfigPlaceholder;
+import org.jetbrains.annotations.NotNull;
 
 public record LocalizationReadOption(String path, List<UUID> playerUUIDs, List<ConfigPlaceholder> placeholders) {
 

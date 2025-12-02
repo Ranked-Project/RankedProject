@@ -1,12 +1,11 @@
 package net.rankedproject.common.config;
 
 import com.google.inject.Injector;
+import java.util.Collection;
+import java.util.concurrent.CompletableFuture;
 import net.rankedproject.common.config.accessor.ConfigAccessor;
 import net.rankedproject.common.config.reader.ConfigReadOption;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.Collection;
-import java.util.concurrent.CompletableFuture;
 
 public class ConfigProvider {
 

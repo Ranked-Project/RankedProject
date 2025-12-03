@@ -4,6 +4,7 @@ import com.google.inject.Inject;
 import com.google.inject.Injector;
 import com.google.inject.Singleton;
 import com.velocitypowered.api.event.Subscribe;
+import java.lang.reflect.Method;
 import lombok.RequiredArgsConstructor;
 import net.rankedproject.common.registrar.ExecutionPriority;
 import net.rankedproject.common.registrar.Registrar;
@@ -12,11 +13,9 @@ import org.jetbrains.annotations.NotNull;
 import org.reflections.Reflections;
 import org.reflections.scanners.Scanners;
 
-import java.lang.reflect.Method;
-
 @Singleton
 @RequiredArgsConstructor(onConstructor_ = {@Inject})
-public class VelocityListenerRegistrar implements Registrar {
+public final class VelocityListenerRegistrar implements Registrar {
 
     private static final String LOOKUP_PACKAGES = "net.rankedproject.velocity";
 
@@ -33,8 +32,8 @@ public class VelocityListenerRegistrar implements Registrar {
                 .filter(listenerClass -> !VelocityProxy.class.isAssignableFrom(listenerClass))
                 .distinct()
                 .forEach(listenerClass -> {
-                    var listener = injector.getInstance(listenerClass);
-                    plugin.getProxyServer().getEventManager().register(plugin, listener);
+                    var listener = this.injector.getInstance(listenerClass);
+                    this.plugin.getProxyServer().getEventManager().register(this.plugin, listener);
                 });
     }
 

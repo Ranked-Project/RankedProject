@@ -3,6 +3,7 @@ package net.rankedproject.velocity.server.listener.player;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.velocitypowered.api.proxy.ProxyServer;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.rankedproject.common.network.server.ServerType;
@@ -10,20 +11,15 @@ import net.rankedproject.common.network.server.picker.ServerPickerType;
 import net.rankedproject.common.packet.listener.PacketListener;
 import net.rankedproject.proto.PlayerSendToServerByPicker;
 import net.rankedproject.velocity.server.picker.registry.ServerPickerRegistry;
-import net.rankedproject.velocity.server.tracker.ServerTracker;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.UUID;
 
 @Slf4j
 @Singleton
 @RequiredArgsConstructor(onConstructor_ = {@Inject})
-public class PlayerServerSendPickerListener implements PacketListener<PlayerSendToServerByPicker> {
+public final class PlayerServerSendPickerListener implements PacketListener<PlayerSendToServerByPicker> {
 
     private final ProxyServer proxyServer;
     private final ServerPickerRegistry serverPickerRegistry;
-
-    private final ServerTracker serverTracker;
 
     @Override
     public @NotNull Class<PlayerSendToServerByPicker> getPacketType() {
@@ -36,21 +32,21 @@ public class PlayerServerSendPickerListener implements PacketListener<PlayerSend
     }
 
     @Override
-    public void onPacket(@NotNull PlayerSendToServerByPicker packet) {
+    public void onPacket(final PlayerSendToServerByPicker packet) {
         var playerUUID = UUID.fromString(packet.getPlayerUuid());
         var serverType = ServerType.valueOf(packet.getServerType());
         var serverPickerType = ServerPickerType.valueOf(packet.getServerPickerType());
 
-        var player = proxyServer.getPlayer(playerUUID).orElse(null);
+        var player = this.proxyServer.getPlayer(playerUUID).orElse(null);
         if (player == null) {
             return;
         }
 
-        var pickedServer = serverPickerRegistry
+        var pickedServer = this.serverPickerRegistry
                 .get(serverPickerType)
                 .getServer(playerUUID, serverType);
 
-        proxyServer
+        this.proxyServer
                 .getServer(pickedServer.getServerInfo().getName())
                 .ifPresent(registeredServer -> player.createConnectionRequest(registeredServer).connect());
     }

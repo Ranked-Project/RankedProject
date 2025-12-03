@@ -3,17 +3,16 @@ package net.rankedproject.velocity.server.listener.player;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.velocitypowered.api.proxy.ProxyServer;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import net.rankedproject.common.packet.listener.PacketListener;
 import net.rankedproject.proto.PlayerSendToServer;
 import net.rankedproject.velocity.server.tracker.ServerTracker;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.UUID;
-
 @Singleton
 @RequiredArgsConstructor(onConstructor_ = {@Inject})
-public class PlayerServerSendListener implements PacketListener<PlayerSendToServer> {
+public final class PlayerServerSendListener implements PacketListener<PlayerSendToServer> {
 
     private final ProxyServer proxyServer;
     private final ServerTracker serverTracker;
@@ -29,21 +28,21 @@ public class PlayerServerSendListener implements PacketListener<PlayerSendToServ
     }
 
     @Override
-    public void onPacket(@NotNull PlayerSendToServer packet) {
+    public void onPacket(final PlayerSendToServer packet) {
         var playerUUID = UUID.fromString(packet.getPlayerUuid());
-        var player = proxyServer.getPlayer(playerUUID).orElse(null);
+        var player = this.proxyServer.getPlayer(playerUUID).orElse(null);
         if (player == null) {
             return;
         }
 
         var identifier = packet.getServerIdentifier();
-        var loadedServer = serverTracker.get(identifier);
+        var loadedServer = this.serverTracker.get(identifier);
 
         if (loadedServer == null) {
             return;
         }
 
-        var registeredServer = proxyServer.getServer(identifier).orElse(null);
+        var registeredServer = this.proxyServer.getServer(identifier).orElse(null);
         if (registeredServer == null) {
             return;
         }

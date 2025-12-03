@@ -6,6 +6,10 @@ import com.velocitypowered.api.event.Subscribe;
 import com.velocitypowered.api.event.proxy.ProxyInitializeEvent;
 import com.velocitypowered.api.plugin.Plugin;
 import com.velocitypowered.api.proxy.ProxyServer;
+import java.util.Comparator;
+import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.logging.Logger;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.rankedproject.common.instantiator.Instantiator;
@@ -18,16 +22,12 @@ import net.rankedproject.common.registrar.impl.PacketListenerRegistrar;
 import net.rankedproject.velocity.registrar.ServerPickerRegistrar;
 import net.rankedproject.velocity.registrar.VelocityListenerRegistrar;
 import net.rankedproject.velocity.server.ServerHealthMonitor;
-
-import java.util.Comparator;
-import java.util.List;
-import java.util.concurrent.CompletableFuture;
-import java.util.logging.Logger;
+import org.jetbrains.annotations.NotNull;
 
 @Slf4j
 @Getter
 @Plugin(id = "velocity-proxy", name = "VelocityProxy")
-public class VelocityProxy {
+public final class VelocityProxy {
 
     private static final List<Class<? extends Instantiator<?>>> INSTANTIATORS = List.of(
             RedisInstantiator.class,
@@ -45,28 +45,44 @@ public class VelocityProxy {
 
     private final Injector injector;
 
+    /**
+     * Handles Velocity plugin construction.
+     *
+     * @param injector    Guice injector used to resolve dependencies
+     * @param proxyServer instance of the Velocity proxy server
+     * @param logger      logger for plugin output
+     */
     @Inject
-    public VelocityProxy(Injector injector, ProxyServer proxyServer, Logger logger) {
+    public VelocityProxy(
+            final @NotNull Injector injector,
+            final @NotNull ProxyServer proxyServer,
+            final @NotNull Logger logger
+    ) {
         this.proxyServer = proxyServer;
         this.logger = logger;
         this.injector = injector;
     }
 
+    /**
+     * Called when the proxy is fully initialized and ready.
+     *
+     * @param event initialization event fired by Velocity
+     */
     @Subscribe
-    public void onProxyInitialization(ProxyInitializeEvent event) {
+    public void onProxyInitialization(final @NotNull ProxyInitializeEvent event) {
         this.initializeServer();
     }
 
     private void initializeServer() {
-        initInstantiator();
-        initRegistrars();
+        this.initInstantiator();
+        this.initRegistrars();
 
-        ServerHealthMonitor.runTask(injector);
+        ServerHealthMonitor.runTask(this.injector);
     }
 
     private void initRegistrars() {
         var registrars = REGISTRARS.stream()
-                .map(injector::getInstance)
+                .map(this.injector::getInstance)
                 .sorted(Comparator.comparingInt(registrar -> registrar.getPriority().ordinal()))
                 .toList();
 
@@ -90,7 +106,7 @@ public class VelocityProxy {
 
     private void initInstantiator() {
         INSTANTIATORS.stream()
-                .map(injector::getInstance)
+                .map(this.injector::getInstance)
                 .forEach(Instantiator::init);
     }
 }

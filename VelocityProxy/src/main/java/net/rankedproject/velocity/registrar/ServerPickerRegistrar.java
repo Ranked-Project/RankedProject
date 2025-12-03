@@ -13,7 +13,7 @@ import org.reflections.Reflections;
 
 @Singleton
 @RequiredArgsConstructor(onConstructor_ = {@Inject})
-public class ServerPickerRegistrar implements Registrar {
+public final class ServerPickerRegistrar implements Registrar {
 
     private static final String LOOKUP_PACKAGE = "net.rankedproject.velocity";
 
@@ -26,10 +26,10 @@ public class ServerPickerRegistrar implements Registrar {
         var serverPickerClasses = reflections.getSubTypesOf(ServerPicker.class);
 
         serverPickerClasses.forEach(serverPickerClass -> {
-            var serverPicker = injector.getInstance(serverPickerClass);
+            var serverPicker = this.injector.getInstance(serverPickerClass);
             var serverPickerType = serverPicker.getServerPickerType();
 
-            serverPickerRegistry.register(serverPickerType, serverPicker);
+            this.serverPickerRegistry.register(serverPickerType, serverPicker);
         });
     }
 

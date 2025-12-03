@@ -3,8 +3,8 @@ import io.nats.client.Connection;
 import io.nats.client.Message;
 import io.nats.client.Nats;
 import net.rankedproject.common.instantiator.impl.NatsInstantiator;
-import net.rankedproject.common.packet.PacketSenderImpl;
-import net.rankedproject.proto.SendPlayerToServer;
+import net.rankedproject.common.packet.sender.PacketSenderImpl;
+import net.rankedproject.proto.PlayerSendToServer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -45,7 +45,7 @@ public class PacketSenderIntegrationTest {
         var dispatcher = connection.createDispatcher(queue::offer);
         dispatcher.subscribe(subject);
 
-        var packet = SendPlayerToServer.newBuilder()
+        var packet = PlayerSendToServer.newBuilder()
                 .setServerIdentifier("server-2")
                 .setPlayerUuid("")
                 .build();

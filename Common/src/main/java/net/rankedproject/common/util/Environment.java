@@ -1,10 +1,9 @@
 package net.rankedproject.common.util;
 
+import java.util.Arrays;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.Arrays;
 
 /**
  * The environment type defines runtime behavior, which is handy for local testing.

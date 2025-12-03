@@ -5,7 +5,7 @@ import com.google.inject.Injector;
 import com.google.inject.Singleton;
 import lombok.RequiredArgsConstructor;
 import net.rankedproject.common.instantiator.impl.NatsInstantiator;
-import net.rankedproject.common.packet.PacketListener;
+import net.rankedproject.common.packet.listener.PacketListener;
 import net.rankedproject.common.registrar.ExecutionPriority;
 import net.rankedproject.common.registrar.Registrar;
 import org.jetbrains.annotations.NotNull;

@@ -1,8 +1,7 @@
 package net.rankedproject.common.util;
 
-import lombok.experimental.UtilityClass;
-
 import java.util.Optional;
+import lombok.experimental.UtilityClass;
 
 @UtilityClass
 public class EnvironmentUtil {

@@ -7,26 +7,27 @@ import net.rankedproject.common.instantiator.impl.NatsInstantiator;
 import net.rankedproject.common.registrar.Registrar;
 import net.rankedproject.common.registrar.impl.PacketListenerRegistrar;
 import net.rankedproject.common.rest.type.PlayerRestClient;
+import net.rankedproject.common.network.server.ServerType;
 import net.rankedproject.spigot.command.RankedCommand;
 import net.rankedproject.spigot.instantiator.CommandManagerInstantiator;
 import net.rankedproject.spigot.instantiator.SlimeLoaderInstantiator;
 import net.rankedproject.spigot.registrar.*;
+import net.rankedproject.spigot.registrar.bukkit.BukkitListenerRegistrar;
+import net.rankedproject.spigot.registrar.bukkit.BukkitCommandRegistrar;
+import net.rankedproject.spigot.registrar.proxy.ServerProxyConnectRegistrar;
 import net.rankedproject.spigot.world.Spawn;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 public class RankedServerBuilder {
 
     private final List<Class<? extends Registrar>> registrars = new ArrayList<>(Arrays.asList(
+            ServerProxyConnectRegistrar.class,
             ConfigRegistrar.class,
-            ServerProxyRegistrar.class,
             BukkitListenerRegistrar.class,
             PacketListenerRegistrar.class,
-            CommandRegistrar.class,
+            BukkitCommandRegistrar.class,
             AutoSpawnNpcRegistrar.class
     ));
 
@@ -43,6 +44,7 @@ public class RankedServerBuilder {
 
     private Spawn spawn;
     private String name;
+    private ServerType serverType;
 
     @NotNull
     public RankedServerBuilder setName(@NotNull String name) {
@@ -117,7 +119,27 @@ public class RankedServerBuilder {
     }
 
     @NotNull
+    public RankedServerBuilder setServerType(ServerType serverType) {
+        this.serverType = serverType;
+        return this;
+    }
+
+    @NotNull
     public RankedServer build() {
-        return new RankedServer(instantiators, registrars, requiredPlayerData, configs, ignoredCommands, modules, spawn, name);
+        UUID serverUUID = UUID.randomUUID();
+        String identifier = name + "_" + serverUUID;
+
+        return new RankedServer(
+                instantiators,
+                registrars,
+                requiredPlayerData,
+                configs,
+                ignoredCommands,
+                modules,
+                spawn,
+                name,
+                serverType,
+                identifier
+        );
     }
 }

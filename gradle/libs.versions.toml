@@ -5,9 +5,9 @@ paperweight = "2.0.0-beta.19"
 run-paper = "3.0.2"
 shadow = "9.2.2"
 protobuf-gradle-plugin = "0.9.5"
-protoc = "4.33.1"
+protoc = "4.29.0"
 lombok = "1.18.42"
-gson = "2.12.1"
+gson = "2.13.2"
 okhttp = "4.12.0"
 caffeine = "3.2.3"
 fastutil = "8.2.1"
@@ -23,6 +23,8 @@ sonarqube = "7.1.0.6387"
 checkstyle = "12.1.2"
 editorconfig = "0.1.0"
 stylecheck = "0.2.1"
+mockito = "5.+"
+velocity = "3.4.0-SNAPSHOT"
 
 [libraries]
 lombok = { module = "org.projectlombok:lombok", version.ref = "lombok" }
@@ -35,7 +37,7 @@ fastutil = { module = "it.unimi.dsi:fastutil", version.ref = "fastutil" }
 guice = { module = "com.google.inject:guice", version.ref = "guice" }
 annotations = { module = "org.jetbrains:annotations", version.ref = "annotations" }
 jnats = { module = "io.nats:jnats", version.ref = "jnats" }
-protobuf-java = { module = "com.google.protobuf:protobuf-java", version.ref = "protoc" }
+protobuf-java = { module = "com.google.protobuf:protobuf-java", version.strictly = "4.29.0", version.prefer = "4.33.1" }
 protobuf-protoc = { module = "com.google.protobuf:protoc", version.ref = "protoc" }
 junit-bom = { module = "org.junit:junit-bom", version.ref = "junit-bom" }
 cloud-paper = { module = "org.incendo:cloud-paper", version.ref = "cloud-paper" }
@@ -43,6 +45,10 @@ reflections = { module = "org.reflections:reflections", version.ref = "reflectio
 packetevents-spigot = { module = "com.github.retrooper:packetevents-spigot", version.ref = "packetevents-spigot" }
 redisson = { module = "org.redisson:redisson", version.ref = "redisson" }
 stylecheck = { module = "ca.stellardrift:stylecheck", version.ref = "stylecheck" }
+junit-jupiter = { module = "org.junit.jupiter:junit-jupiter" }
+junit-platform = { module = "org.junit.platform:junit-platform-launcher" }
+mockito-core = { module = "org.mockito:mockito-core", version.ref = "mockito" }
+velocity = { module = "com.velocitypowered:velocity-api", version.ref = "velocity" }
 
 [plugins]
 protobuf = { id = "com.google.protobuf", version.ref = "protobuf-gradle-plugin" }

@@ -1,14 +1,13 @@
 package net.rankedproject.common.rest;
 
 import com.google.gson.JsonElement;
-import net.rankedproject.common.rest.request.type.RequestContent;
-import okhttp3.MediaType;
-import okhttp3.Request;
-
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.function.Supplier;
+import net.rankedproject.common.rest.request.type.RequestContent;
+import okhttp3.MediaType;
+import okhttp3.Request;
 
 public interface RestCrudAPI<V> {
 

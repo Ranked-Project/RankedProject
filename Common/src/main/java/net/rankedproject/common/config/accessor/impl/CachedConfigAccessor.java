@@ -3,15 +3,14 @@ package net.rankedproject.common.config.accessor.impl;
 import com.google.common.base.Preconditions;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import lombok.RequiredArgsConstructor;
 import net.rankedproject.common.config.Config;
 import net.rankedproject.common.config.accessor.ConfigAccessor;
 import net.rankedproject.common.config.parser.ParsedConfig;
 import net.rankedproject.common.config.reader.ConfigReadOption;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 @Singleton
 @RequiredArgsConstructor(onConstructor_ = {@Inject})

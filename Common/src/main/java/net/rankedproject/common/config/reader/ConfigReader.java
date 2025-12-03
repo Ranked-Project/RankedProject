@@ -3,6 +3,7 @@ package net.rankedproject.common.config.reader;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
 import com.google.inject.Singleton;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import net.rankedproject.common.config.Config;
 import net.rankedproject.common.config.ConfigMetadata;
@@ -11,8 +12,6 @@ import net.rankedproject.common.config.parser.ConfigParser;
 import net.rankedproject.common.config.parser.ParsedConfig;
 import net.rankedproject.common.config.type.ConfigSection;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.List;
 
 @Singleton
 @RequiredArgsConstructor(onConstructor_ = {@Inject})

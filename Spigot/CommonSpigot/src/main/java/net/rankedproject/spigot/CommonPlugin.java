@@ -10,6 +10,7 @@ import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import net.rankedproject.common.instantiator.Instantiator;
 import net.rankedproject.common.instantiator.impl.NatsInstantiator;
+import net.rankedproject.common.network.server.ServerNetworkGateway;
 import net.rankedproject.common.registrar.AsyncRegistrar;
 import net.rankedproject.common.registrar.ExecutionPriority;
 import net.rankedproject.common.registrar.Registrar;
@@ -20,11 +21,15 @@ import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.concurrent.Executor;
+
 @Slf4j
 @Getter
 public abstract class CommonPlugin extends JavaPlugin {
 
     private final RankedServer rankedServer = rankedServer();
+    private final Executor mainExecutor = Bukkit.getScheduler().getMainThreadExecutor(this);
+
     protected Injector injector;
 
     @Override
@@ -36,8 +41,9 @@ public abstract class CommonPlugin extends JavaPlugin {
     @Override
     public void onEnable() {
         initGuice();
-        initInstantiator(rankedServer);
-        initRegistrars(rankedServer);
+
+        initInstantiator();
+        initRegistrars();
     }
 
     @SneakyThrows
@@ -50,6 +56,7 @@ public abstract class CommonPlugin extends JavaPlugin {
         nats.close();
 
         RestCrudAPI.EXECUTOR_SERVICE.shutdown();
+        injector.getInstance(ServerNetworkGateway.class).sendDisconnectSpigotServerPacket(rankedServer.identifier());
     }
 
     private void initGuice() {
@@ -58,7 +65,7 @@ public abstract class CommonPlugin extends JavaPlugin {
         injector.injectMembers(this);
     }
 
-    private void initRegistrars(@NotNull RankedServer rankedServer) {
+    private void initRegistrars() {
         var mainThreadExecutor = Bukkit.getScheduler().getMainThreadExecutor(this);
         var registrars = rankedServer.registrars().stream()
                 .map(registrar -> injector.getInstance(registrar))
@@ -88,7 +95,7 @@ public abstract class CommonPlugin extends JavaPlugin {
         });
     }
 
-    private void initInstantiator(@NotNull RankedServer rankedServer) {
+    private void initInstantiator() {
         rankedServer.instantiator()
                 .stream()
                 .map(registrar -> injector.getInstance(registrar))

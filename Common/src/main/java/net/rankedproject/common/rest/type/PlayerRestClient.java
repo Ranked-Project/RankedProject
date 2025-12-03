@@ -1,16 +1,15 @@
 package net.rankedproject.common.rest.type;
 
+import java.util.Collection;
+import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
+import java.util.function.Consumer;
 import net.rankedproject.common.data.domain.BasePlayer;
 import net.rankedproject.common.rest.request.RequestFactory;
 import net.rankedproject.common.rest.request.type.RequestContent;
 import net.rankedproject.common.rest.request.type.RequestType;
 import okhttp3.RequestBody;
 import okhttp3.Response;
-
-import java.util.Collection;
-import java.util.UUID;
-import java.util.concurrent.CompletableFuture;
-import java.util.function.Consumer;
 
 @SuppressWarnings("UnusedReturnValue")
 public abstract class PlayerRestClient<V extends BasePlayer> extends CrudRestClient<V> {

@@ -3,11 +3,10 @@ package net.rankedproject.common.rest.provider;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
 import com.google.inject.Singleton;
+import java.util.Collection;
 import lombok.RequiredArgsConstructor;
 import net.rankedproject.common.rest.RestClient;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.Collection;
 
 @Singleton
 @RequiredArgsConstructor(onConstructor_ = {@Inject})

@@ -1,8 +1,7 @@
 package net.rankedproject.common.registrar;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.util.concurrent.CompletableFuture;
+import org.jetbrains.annotations.NotNull;
 
 public interface AsyncRegistrar extends Registrar {
 

@@ -55,8 +55,9 @@ allprojects {
     }
 }
 
+
 subprojects {
-    plugins.apply("com.google.protobuf")
+    plugins.apply(rootProject.libs.plugins.protobuf.get().pluginId)
 
     configure<com.google.protobuf.gradle.ProtobufExtension> {
         protoc {

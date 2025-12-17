@@ -24,17 +24,16 @@ public class RandomGameFinder<G extends Game, M extends GameMetadata> implements
     private final GameTracker gameTracker;
     private final GameFactory<G, M> gameFactory;
 
-    public RandomGameFinder(@NotNull Injector injector, @NotNull GameFactory<G, M> gameFactory) {
+    public RandomGameFinder(final @NotNull Injector injector, final @NotNull GameFactory<G, M> gameFactory) {
         this.gameFactory = gameFactory;
 
         this.plugin = injector.getInstance(CommonPlugin.class);
         this.gameTracker = injector.getInstance(GameTracker.class);
     }
 
-    @NotNull
     @Override
     @SuppressWarnings("unchecked")
-    public CompletableFuture<G> find(@NotNull UUID playerUUID) {
+    public @NotNull CompletableFuture<G> find(final @NotNull UUID playerUUID) {
         var availableGame = gameTracker.getGames().stream()
                 .sorted(Comparator.<Game>comparingLong(game -> game.getPlayerTracker().getPlayers().size()).reversed())
                 .filter(game -> !game.getPlayerTracker().getPlayers().contains(playerUUID))

@@ -10,11 +10,10 @@ import org.redisson.api.RedissonClient;
 
 @Singleton
 @RequiredArgsConstructor(onConstructor_ = {@Inject})
-public class RedisInstantiator implements Instantiator<RedissonClient> {
+public final class RedisInstantiator implements Instantiator<RedissonClient> {
 
-    @NotNull
     @Override
-    public RedissonClient initInternally() {
+    public @NotNull RedissonClient initInternally() {
         return Redisson.create();
     }
 }

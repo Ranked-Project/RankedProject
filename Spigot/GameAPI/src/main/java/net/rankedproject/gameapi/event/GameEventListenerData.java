@@ -15,7 +15,7 @@ public record GameEventListenerData<E>(String id, Class<E> eventType, Consumer<E
         return new GameEventListenerData.Builder<>();
     }
 
-    public static class Builder<E extends Event> {
+    public final static class Builder<E extends Event> {
 
         private String id = UUID.randomUUID().toString();
 

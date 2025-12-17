@@ -25,10 +25,9 @@ public interface PlayerSession {
      * @return A non-null {@link CompletableFuture} containing the loaded data instance.
      *         The future will complete with a nullable value if no data exists.
      */
-    @NotNull
-    <U extends BasePlayer, T extends PlayerRestClient<U>> CompletableFuture<U> load(
-            @NotNull UUID playerUUID,
-            @NotNull Class<T> clientType
+    <U extends BasePlayer, T extends PlayerRestClient<U>> @NotNull CompletableFuture<U> load(
+            final @NotNull UUID playerUUID,
+            final @NotNull Class<T> clientType
     );
 
     /**
@@ -41,9 +40,9 @@ public interface PlayerSession {
      * @return A non-null {@link CompletableFuture} that completes when all data types are loaded.
      *         Individual results may still be null if no data exists for a given type.
      */
-    @NotNull CompletableFuture<?> load(
-            @NotNull Collection<Class<? extends PlayerRestClient<?>>> clients,
-            @NotNull UUID playerUUID
+    @NotNull CompletableFuture<Void> load(
+            final @NotNull Collection<Class<? extends PlayerRestClient<?>>> clients,
+            final @NotNull UUID playerUUID
     );
 
     /**
@@ -56,10 +55,9 @@ public interface PlayerSession {
      * @return A non-null {@link CompletableFuture} containing the most recent data from the database.
      *         The result may be null if no data exists.
      */
-    @NotNull
-    <T extends BasePlayer, U extends PlayerRestClient<T>> CompletableFuture<T> get(
-            @NotNull UUID playerUUID,
-            @NotNull Class<U> clientType
+    <T extends BasePlayer, U extends PlayerRestClient<T>> @NotNull CompletableFuture<T> get(
+            final @NotNull UUID playerUUID,
+            final @NotNull Class<U> clientType
     );
 
     /**
@@ -69,10 +67,9 @@ public interface PlayerSession {
      * @param <T>        The type of the data to retrieve.
      * @return The cached data instance, or {@code null} if no data is cached.
      */
-    @Nullable
-    <T extends BasePlayer> T getCached(
-            @NotNull UUID playerUUID,
-            @NotNull Class<T> dataType
+    <T extends BasePlayer> @Nullable T getCached(
+            final @NotNull UUID playerUUID,
+            final @NotNull Class<T> dataType
     );
 
     /**
@@ -88,9 +85,9 @@ public interface PlayerSession {
      * @return A non-null {@link CompletableFuture} containing the updated data instance.
      */
     <T extends BasePlayer> @NotNull CompletableFuture<Void> updateData(
-            @NotNull UUID playerUUID,
-            @NotNull Class<T> dataClassType,
-            @NotNull Consumer<T> dataConsumer
+            final @NotNull UUID playerUUID,
+            final @NotNull Class<T> dataClassType,
+            final @NotNull Consumer<T> dataConsumer
     );
 
     /**
@@ -100,5 +97,5 @@ public interface PlayerSession {
      *
      * @param playerUUID The UUID of the player whose data should be removed from cache.
      */
-    void unload(@NotNull UUID playerUUID);
+    void unload(final @NotNull UUID playerUUID);
 }

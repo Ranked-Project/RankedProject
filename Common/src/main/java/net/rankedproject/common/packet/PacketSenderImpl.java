@@ -10,19 +10,20 @@ import lombok.SneakyThrows;
 import net.rankedproject.common.instantiator.impl.NatsInstantiator;
 import net.rankedproject.common.rest.RestCrudAPI;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.concurrent.CompletableFuture;
 
 @Singleton
 @RequiredArgsConstructor(onConstructor_ = {@Inject})
-public class PacketSenderImpl implements PacketSender {
+public final class PacketSenderImpl implements PacketSender {
 
     private static final byte[] EMPTY_BYTE_ARRAY = new byte[0];
     private final Injector injector;
 
     @Override
-    public <T extends GeneratedMessage> CompletableFuture<?> send(
-            @NotNull PacketSendingData<T, ?> packetSendingData
+    public <T extends GeneratedMessage> @NotNull CompletableFuture<Void> send(
+            final @NotNull PacketSendingData<T, ?> packetSendingData
     ) {
         var packet = packetSendingData.sendingPacket();
         var byteArray = packet == null ? EMPTY_BYTE_ARRAY : packet.toByteArray();
@@ -34,8 +35,8 @@ public class PacketSenderImpl implements PacketSender {
     }
 
     @Override
-    public <T extends GeneratedMessage, U extends GeneratedMessage> CompletableFuture<U> sendAwaiting(
-            @NotNull PacketSendingData<T, U> packetSendingData
+    public <T extends GeneratedMessage, U extends GeneratedMessage> @NotNull CompletableFuture<U> sendAwaiting(
+            final @NotNull PacketSendingData<T, U> packetSendingData
     ) {
         var packet = packetSendingData.sendingPacket();
         var byteArray = packet == null ? EMPTY_BYTE_ARRAY : packet.toByteArray();
@@ -50,9 +51,9 @@ public class PacketSenderImpl implements PacketSender {
 
     @SneakyThrows
     @SuppressWarnings("unchecked")
-    private <T extends GeneratedMessage, U extends GeneratedMessage> U parsePacketDataFromMessage(
-            @NotNull PacketSendingData<T, U> packetSendingData,
-            @NotNull Message message
+    private <T extends GeneratedMessage, U extends GeneratedMessage> @Nullable U parsePacketDataFromMessage(
+            final @NotNull PacketSendingData<T, U> packetSendingData,
+            final @NotNull Message message
     ) {
         var awaitingPacketClass = packetSendingData.awaitingPacket();
         if (awaitingPacketClass == null) {

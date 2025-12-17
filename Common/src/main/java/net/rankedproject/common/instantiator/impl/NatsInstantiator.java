@@ -11,12 +11,11 @@ import org.jetbrains.annotations.NotNull;
 
 @Singleton
 @RequiredArgsConstructor(onConstructor_ = {@Inject})
-public class NatsInstantiator implements Instantiator<Connection> {
+public final class NatsInstantiator implements Instantiator<Connection> {
 
-    @NotNull
     @Override
     @SneakyThrows
-    public Connection initInternally() {
+    public @NotNull Connection initInternally() {
         return Nats.connect();
     }
 }

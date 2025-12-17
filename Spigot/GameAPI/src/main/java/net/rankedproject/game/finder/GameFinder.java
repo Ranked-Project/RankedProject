@@ -20,16 +20,14 @@ public interface GameFinder<G extends Game> {
      * @param playerUUID UUID of the player looking for a game
      * @return Game
      */
-    @NotNull
-    CompletableFuture<G> find(@NotNull UUID playerUUID);
+    @NotNull CompletableFuture<G> find(final @NotNull UUID playerUUID);
 
     /**
      * Finds random game's identifier
      *
      * @return Game identifier
      */
-    @NotNull
-    default String findRandomGameIdentifier(Injector injector) {
+    default @NotNull String findRandomGameIdentifier(final @NotNull Injector injector) {
         var ids = ConfigProvider.get(MapInfoConfig.class, injector)
                 .path("games-active-ids")
                 .getAsList(String.class);

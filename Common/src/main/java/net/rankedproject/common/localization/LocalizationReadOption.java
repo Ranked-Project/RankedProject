@@ -17,48 +17,43 @@ public record LocalizationReadOption(String path, List<UUID> playerUUIDs, List<C
 
     public static class Builder {
 
-        private String path, fileName;
+        private String path;
+        private String fileName;
         private final Injector injector;
 
         private List<UUID> playerUUIDs = new ArrayList<>();
         private final List<ConfigPlaceholder> placeholders = new ArrayList<>();
 
-        public Builder(@NotNull Injector injector) {
+        private Builder(final @NotNull Injector injector) {
             this.injector = injector;
         }
 
-        @NotNull
-        public Builder path(@NotNull String path) {
+        public @NotNull Builder path(final @NotNull String path) {
             this.path = path;
             return this;
         }
 
-        @NotNull
-        public Builder fileName(@NotNull String fileName) {
+        public @NotNull Builder fileName(final @NotNull String fileName) {
             this.fileName = fileName;
             return this;
         }
 
-        @NotNull
-        public Builder playerUUID(@NotNull UUID playerUUID) {
+        public @NotNull Builder playerUUID(final @NotNull UUID playerUUID) {
             this.playerUUIDs.add(playerUUID);
             return this;
         }
 
-        @NotNull
-        public Builder placeholder(@NotNull String placeholder, @NotNull Object value) {
+        public @NotNull Builder placeholder(final @NotNull String placeholder, final @NotNull Object value) {
             this.placeholders.add(ConfigPlaceholder.of(placeholder, value));
             return this;
         }
 
-        @NotNull
-        public Builder playerUUIDs(@NotNull List<UUID> playerUUIDs) {
+        public @NotNull Builder playerUUIDs(final @NotNull List<UUID> playerUUIDs) {
             this.playerUUIDs = playerUUIDs;
             return this;
         }
 
-        @NotNull
-        public String get() {
+        public @NotNull String get() {
             return injector.getInstance(Localization.class).get(fileName, build());
         }
 
@@ -66,8 +61,7 @@ public record LocalizationReadOption(String path, List<UUID> playerUUIDs, List<C
             injector.getInstance(Localization.class).sendMessage(fileName, build());
         }
 
-        @NotNull
-        public LocalizationReadOption build() {
+        public @NotNull LocalizationReadOption build() {
             Preconditions.checkNotNull(injector, "You didn't provide Guice Injector");
             return new LocalizationReadOption(path, playerUUIDs, placeholders);
         }

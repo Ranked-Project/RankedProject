@@ -18,9 +18,8 @@ public class ForceNextStateCommand implements RankedCommand {
 
     private final GameTracker gameTracker;
 
-    @NotNull
     @Override
-    public Command<PlayerSource> command(@NotNull PaperCommandManager<Source> commandManager) {
+    public @NotNull Command<PlayerSource> command(final @NotNull PaperCommandManager<Source> commandManager) {
         return commandManager.commandBuilder("forcenextstate")
                 .senderType(PlayerSource.class)
                 .handler(executor -> {

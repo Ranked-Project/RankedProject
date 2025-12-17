@@ -25,14 +25,14 @@ public class BukkitLocalization extends Localization {
     }
 
     @Override
-    public void sendMessage(@NotNull String fileName, @NotNull LocalizationReadOption readOption) {
+    public void sendMessage(final @NotNull String fileName, final @NotNull LocalizationReadOption readOption) {
         readOption.playerUUIDs().forEach(playerUUID -> {
             var player = Bukkit.getPlayer(playerUUID);
             if (player == null) {
                 return;
             }
 
-            var resourceBundle = getResourceBundle(playerUUID, fileName);
+            var resourceBundle = getResourceBundle(fileName);
             var fetchedLine = resourceBundle.getObject(readOption.path());
             var placeholders = readOption.placeholders();
 
@@ -49,14 +49,14 @@ public class BukkitLocalization extends Localization {
     }
 
     @Override
-    protected ResourceBundle findResourceBundle(@NotNull String fileName, @NotNull Locale locale) {
+    protected @NotNull ResourceBundle findResourceBundle(final @NotNull String fileName, final @NotNull Locale locale) {
         return ResourceBundle.getBundle(fileName, locale, UTF8ResourceBundleControl.utf8ResourceBundleControl());
     }
 
     private void sendMessageToPlayer(
-            @NotNull List<ConfigPlaceholder> placeholders,
-            @NotNull String message,
-            @NotNull Player player
+            final @NotNull List<ConfigPlaceholder> placeholders,
+            final @NotNull String message,
+            final @NotNull Player player
     ) {
         var messageWithPlaceholders = applyPlaceholders(message, placeholders);
         var componentMessage = ComponentUtil.deserialize(messageWithPlaceholders);

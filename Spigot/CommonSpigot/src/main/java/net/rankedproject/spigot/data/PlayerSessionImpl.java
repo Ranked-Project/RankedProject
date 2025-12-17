@@ -26,11 +26,10 @@ public class PlayerSessionImpl implements PlayerSession {
     private final RestProvider restProvider;
     private final CommonPlugin plugin;
 
-    @NotNull
     @Override
-    public <U extends BasePlayer, T extends PlayerRestClient<U>> CompletableFuture<U> load(
-            @NotNull UUID playerUUID,
-            @NotNull Class<T> clientType
+    public <U extends BasePlayer, T extends PlayerRestClient<U>> @NotNull CompletableFuture<U> load(
+            final @NotNull UUID playerUUID,
+            final @NotNull Class<T> clientType
     ) {
         return restProvider.get(clientType)
                 .getPlayerAsync(playerUUID)
@@ -40,31 +39,28 @@ public class PlayerSessionImpl implements PlayerSession {
                 });
     }
 
-    @NotNull
     @Override
-    public CompletableFuture<?> load(
-            @NotNull Collection<Class<? extends PlayerRestClient<?>>> clients,
-            @NotNull UUID playerUUID
+    public @NotNull CompletableFuture<Void> load(
+            final @NotNull Collection<Class<? extends PlayerRestClient<?>>> clients,
+            final @NotNull UUID playerUUID
     ) {
         return CompletableFuture.allOf(clients.stream()
                 .map(client -> (CompletableFuture<?>) load(playerUUID, (Class) client))
                 .toArray(CompletableFuture[]::new));
     }
 
-    @NotNull
     @Override
-    public <T extends BasePlayer, U extends PlayerRestClient<T>> CompletableFuture<T> get(
-            @NotNull UUID playerUUID,
-            @NotNull Class<U> clientType
+    public <T extends BasePlayer, U extends PlayerRestClient<T>> @NotNull CompletableFuture<T> get(
+            final @NotNull UUID playerUUID,
+            final @NotNull Class<U> clientType
     ) {
         return restProvider.get(clientType).getPlayerAsync(playerUUID);
     }
 
-    @Nullable
     @Override
-    public <T extends BasePlayer> T getCached(
-            @NotNull UUID playerUUID,
-            @NotNull Class<T> dataType
+    public <T extends BasePlayer> @Nullable T getCached(
+            final @NotNull UUID playerUUID,
+            final @NotNull Class<T> dataType
     ) {
         return cache.getOrDefault(playerUUID, Collections.emptySet()).stream()
                 .filter(data -> data.getClass() == dataType)
@@ -73,12 +69,11 @@ public class PlayerSessionImpl implements PlayerSession {
                 .orElse(null);
     }
 
-    @NotNull
     @Override
-    public <T extends BasePlayer> CompletableFuture<Void> updateData(
-            @NotNull UUID playerUUID,
-            @NotNull Class<T> dataClassType,
-            @NotNull Consumer<T> dataAction
+    public <T extends BasePlayer> @NotNull CompletableFuture<Void> updateData(
+            final @NotNull UUID playerUUID,
+            final @NotNull Class<T> dataClassType,
+            final @NotNull Consumer<T> dataAction
     ) {
         var restClientTypes = plugin.getRankedServer().requiredPlayerData();
         PlayerRestClient<T> client = restProvider.getByReturnType(dataClassType, restClientTypes);
@@ -88,11 +83,11 @@ public class PlayerSessionImpl implements PlayerSession {
     }
 
     @Override
-    public void unload(@NotNull UUID playerUUID) {
+    public void unload(final @NotNull UUID playerUUID) {
         cache.remove(playerUUID);
     }
 
-    private void setCachedData(BasePlayer basePlayer) {
+    private void setCachedData(final @NotNull BasePlayer basePlayer) {
         UUID playerId = basePlayer.getId();
         Set<BasePlayer> existingCache = cache.getOrDefault(playerId, new HashSet<>());
 

@@ -19,25 +19,23 @@ public class GameTracker {
 
     private final List<Game> games = new ArrayList<>();
 
-    @Nullable
-    public Game getGameByPlayer(@NotNull UUID playerUUID) {
+    public @Nullable Game getGameByPlayer(final @NotNull UUID playerUUID) {
         return games.stream()
                 .filter(game -> game.getPlayerTracker().getPlayers().contains(playerUUID))
                 .findFirst()
                 .orElse(null);
     }
 
-    public void track(@NotNull Game game) {
+    public void track(final @NotNull Game game) {
         this.games.add(game);
     }
 
-    public void untrack(@NotNull Game game) {
+    public void untrack(final @NotNull Game game) {
         this.games.remove(game);
     }
 
-    @NotNull
     @UnmodifiableView
-    public List<Game> getGames() {
+    public @NotNull List<Game> getGames() {
         return Collections.unmodifiableList(games);
     }
 }

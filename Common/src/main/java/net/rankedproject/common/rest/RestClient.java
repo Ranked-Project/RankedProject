@@ -1,10 +1,12 @@
 package net.rankedproject.common.rest;
 
+import com.esotericsoftware.kryo.util.Null;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.inject.Inject;
 import lombok.RequiredArgsConstructor;
+import net.rankedproject.common.rest.exception.HttpRequestFailedException;
 import net.rankedproject.common.rest.request.RequestFactory;
 import net.rankedproject.common.rest.request.type.RequestContent;
 import net.rankedproject.common.rest.request.type.RequestType;
@@ -12,6 +14,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
@@ -27,6 +30,9 @@ import java.util.logging.Logger;
 public abstract class RestClient<V> implements RestCrudAPI<V> {
 
     private static final int MAX_RETRY_ATTEMPTS = 5;
+
+    private static final String RETRY_FAILED = "Attempt #%s failed sending request: %s";
+    private static final String REQUEST_FAILED = "GET request failed: %s";
 
     protected static final Logger LOGGER = Logger.getLogger(RestClient.class.getName());
     protected static final Gson GSON = new GsonBuilder().serializeNulls().create();
@@ -46,15 +52,15 @@ public abstract class RestClient<V> implements RestCrudAPI<V> {
      * @param request the HTTP request to execute
      * @return the parsed JSON response, or null if unsuccessful
      */
-    public JsonElement get(Request request) {
+    public @Nullable JsonElement get(final @NotNull Request request) {
         try (Response response = HTTP_CLIENT.newCall(request).execute()) {
             if (!response.isSuccessful() || response.body() == null) {
-                LOGGER.warning("GET request failed: " + response.code());
+                LOGGER.warning(() -> REQUEST_FAILED.formatted(response.code()));
                 return null;
             }
             return GSON.fromJson(response.body().string(), JsonElement.class);
         } catch (IOException e) {
-            throw new RuntimeException("Failed to retrieve resource", e);
+            throw new HttpRequestFailedException("Failed to retrieve resource", e);
         }
     }
 
@@ -63,7 +69,7 @@ public abstract class RestClient<V> implements RestCrudAPI<V> {
      *
      * @return the parsed JSON response, or null if unsuccessful
      */
-    public JsonElement retrieve() {
+    public @Nullable JsonElement retrieve() {
         Request request = requestFactory.get(RequestType.GET);
         return get(request);
     }
@@ -74,7 +80,7 @@ public abstract class RestClient<V> implements RestCrudAPI<V> {
      * @param requestContent DTO class containing information to modify the output request.
      * @return the parsed JSON response, or null if unsuccessful
      */
-    public JsonElement retrieve(@NotNull RequestContent requestContent) {
+    public @Nullable JsonElement retrieve(final @NotNull RequestContent requestContent) {
         Request request = requestFactory.get(RequestType.GET, requestContent);
         return get(request);
     }
@@ -84,7 +90,7 @@ public abstract class RestClient<V> implements RestCrudAPI<V> {
      *
      * @param request the HTTP request to execute
      */
-    public void sendRequestWithRetry(@NotNull Request request) {
+    public void sendRequestWithRetry(final @NotNull Request request) {
         executeWithRetry(request, 1);
     }
 
@@ -93,7 +99,7 @@ public abstract class RestClient<V> implements RestCrudAPI<V> {
      *
      * @param requestType the HTTP request type to execute
      */
-    public void sendRequestWithRetry(@NotNull RequestType requestType) {
+    public void sendRequestWithRetry(final @NotNull RequestType requestType) {
         Request request = requestFactory.get(requestType);
         executeWithRetry(request, 1);
     }
@@ -104,10 +110,7 @@ public abstract class RestClient<V> implements RestCrudAPI<V> {
      * @param requestType    the HTTP request type to execute
      * @param requestContent DTO class containing information to modify the output request.
      */
-    public void sendRequestWithRetry(
-            @NotNull RequestType requestType,
-            @NotNull RequestContent requestContent
-    ) {
+    public void sendRequestWithRetry(final @NotNull RequestType requestType, final @NotNull RequestContent requestContent) {
         Request request = requestFactory.get(requestType, requestContent);
         executeWithRetry(request, 1);
     }
@@ -118,8 +121,7 @@ public abstract class RestClient<V> implements RestCrudAPI<V> {
      * @param request the HTTP request to execute
      * @return Response containing HTTP information
      */
-    @NotNull
-    public Response sendRequest(@NotNull Request request) {
+    public @NotNull Response sendRequest(final @NotNull Request request) {
         return execute(request);
     }
 
@@ -129,8 +131,7 @@ public abstract class RestClient<V> implements RestCrudAPI<V> {
      * @param requestType the HTTP request type to execute
      * @return Response containing HTTP information
      */
-    @NotNull
-    public Response sendRequest(@NotNull RequestType requestType) {
+    public @NotNull Response sendRequest(final @NotNull RequestType requestType) {
         return execute(requestFactory.get(requestType));
     }
 
@@ -141,11 +142,7 @@ public abstract class RestClient<V> implements RestCrudAPI<V> {
      * @param requestContent DTO class containing information to modify the output request.
      * @return Response containing HTTP information
      */
-    @NotNull
-    public Response sendRequest(
-            @NotNull RequestType requestType,
-            @NotNull RequestContent requestContent
-    ) {
+    public @NotNull Response sendRequest(final @NotNull RequestType requestType, final @NotNull RequestContent requestContent) {
         return execute(requestFactory.get(requestType, requestContent));
     }
 
@@ -155,9 +152,9 @@ public abstract class RestClient<V> implements RestCrudAPI<V> {
      * @param request        the HTTP request to execute
      * @param attemptedTimes attempts taken to send a request
      */
-    private void executeWithRetry(@NotNull Request request, int attemptedTimes) {
+    private void executeWithRetry(final @NotNull Request request, int attemptedTimes) {
         if (attemptedTimes >= MAX_RETRY_ATTEMPTS) {
-            LOGGER.warning("Attempt #" + attemptedTimes + " failed sending request: " + request);
+            LOGGER.warning(() -> RETRY_FAILED.formatted(attemptedTimes, request));
             return;
         }
 
@@ -166,16 +163,15 @@ public abstract class RestClient<V> implements RestCrudAPI<V> {
                 executeWithRetry(request, attemptedTimes + 1);
             }
         } catch (IOException e) {
-            throw new RuntimeException("Request execution failed", e);
+            throw new HttpRequestFailedException("Request execution failed", e);
         }
     }
 
-    @NotNull
-    private Response execute(@NotNull Request request) {
+    private @NotNull Response execute(final @NotNull Request request) {
         try (Response response = HTTP_CLIENT.newCall(request).execute()) {
             return response;
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new HttpRequestFailedException(e);
         }
     }
 }

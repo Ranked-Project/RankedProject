@@ -4,6 +4,8 @@ import com.google.gson.JsonElement;
 import net.rankedproject.common.rest.request.type.RequestContent;
 import okhttp3.MediaType;
 import okhttp3.Request;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
@@ -18,39 +20,39 @@ public interface RestCrudAPI<V> {
     /**
      * @return REST Repository URL
      */
-    String getRepository();
+    @NotNull String getRepository();
 
     /**
      * @return Expected DTO Class
      */
-    Class<V> getReturnType();
+    @NotNull Class<V> getReturnType();
 
-    JsonElement get(Request request);
-    void update(RequestContent request);
-    void save(RequestContent request);
-    void delete(RequestContent request);
+    @Nullable JsonElement get(final @NotNull Request request);
+    void update(final @NotNull RequestContent request);
+    void save(final @NotNull RequestContent request);
+    void delete(final @NotNull RequestContent request);
 
-    default CompletableFuture<JsonElement> getAsJsonAsync(Request request) {
+    default @NotNull CompletableFuture<JsonElement> getAsJsonAsync(final @NotNull Request request) {
         return async(() -> get(request));
     }
 
-    default CompletableFuture<Void> updateSave(RequestContent requestContent) {
+    default @NotNull CompletableFuture<Void> updateSave(final @NotNull RequestContent requestContent) {
         return async(() -> update(requestContent));
     }
 
-    default CompletableFuture<Void> saveAsync(RequestContent requestContent) {
+    default @NotNull CompletableFuture<Void> saveAsync(final @NotNull RequestContent requestContent) {
         return async(() -> save(requestContent));
     }
 
-    default CompletableFuture<Void> deleteAsync(RequestContent requestContent) {
+    default @NotNull CompletableFuture<Void> deleteAsync(final @NotNull RequestContent requestContent) {
         return async(() -> delete(requestContent));
     }
 
-    default CompletableFuture<Void> async(Runnable action) {
+    default @NotNull CompletableFuture<Void> async(final @NotNull Runnable action) {
         return CompletableFuture.runAsync(action, EXECUTOR_SERVICE);
     }
 
-    default <T> CompletableFuture<T> async(Supplier<T> supplier) {
+    default <T> @NotNull CompletableFuture<T> async(final @NotNull Supplier<T> supplier) {
         return CompletableFuture.supplyAsync(supplier, EXECUTOR_SERVICE);
     }
 

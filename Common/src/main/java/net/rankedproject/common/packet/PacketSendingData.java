@@ -14,64 +14,64 @@ public record PacketSendingData<T extends GeneratedMessage, U extends GeneratedM
         Class<U> awaitingPacket
 ) {
 
-    public static <T extends GeneratedMessage, U extends GeneratedMessage> PacketSendingData.Builder<T, U> builder(
-            @NotNull PacketSender packetSender
+    public static <T extends GeneratedMessage, U extends GeneratedMessage> PacketSendingData.@NotNull Builder<T, U> builder(
+            final @NotNull PacketSender packetSender
     ) {
         return new Builder<>(packetSender);
     }
 
     @RequiredArgsConstructor
-    public static class Builder<T extends GeneratedMessage, U extends GeneratedMessage> {
+    public static final class Builder<T extends GeneratedMessage, U extends GeneratedMessage> {
 
         private String subject;
-        private T sendingPacket;
+        private T packet;
 
         private Class<U> awaitingPacket;
         private Duration timeout = Duration.ofMinutes(10);
 
         private final PacketSender packetSender;
 
-        public Builder(PacketSender packetSender, Class<U> awaitingPacket) {
+        private Builder(final @NotNull PacketSender packetSender, final @NotNull Class<U> awaitingPacket) {
             this.packetSender = packetSender;
             this.awaitingPacket = awaitingPacket;
         }
 
-        public Builder<T, U> subject(@NotNull String subject) {
+        public @NotNull Builder<T, U> subject(final @NotNull String subject) {
             this.subject = subject;
             return this;
         }
 
-        public Builder<T, U> sendingPacket(@NotNull T sendingPacket) {
-            this.sendingPacket = sendingPacket;
+        public @NotNull Builder<T, U> packet(final @NotNull T sendingPacket) {
+            this.packet = sendingPacket;
             return this;
         }
 
-        public <V extends U> Builder<T, V> awaitingPacket(@NotNull Class<V> awaitingPacket) {
+        public <V extends U> @NotNull Builder<T, V> awaitingPacket(final @NotNull Class<V> awaitingPacket) {
             return new Builder<T, V>(packetSender, awaitingPacket)
-                    .sendingPacket(sendingPacket)
+                    .packet(packet)
                     .subject(subject);
         }
 
-        public CompletableFuture<?> send() {
+        public @NotNull CompletableFuture<Void> send() {
             return packetSender.send(build());
         }
 
-        public CompletableFuture<?> send(@NotNull Duration timeout) {
+        public @NotNull CompletableFuture<Void> send(final @NotNull Duration timeout) {
             this.timeout = timeout;
             return packetSender.send(build());
         }
 
-        public CompletableFuture<U> sendAwaiting() {
+        public @NotNull CompletableFuture<U> sendAwaiting() {
             return packetSender.sendAwaiting(build());
         }
 
-        public CompletableFuture<U> sendAwaiting(@NotNull Duration timeout) {
+        public @NotNull CompletableFuture<U> sendAwaiting(final @NotNull Duration timeout) {
             this.timeout = timeout;
             return packetSender.sendAwaiting(build());
         }
 
-        public PacketSendingData<T, U> build() {
-            return new PacketSendingData<>(subject, sendingPacket, timeout, awaitingPacket);
+        public @NotNull PacketSendingData<T, U> build() {
+            return new PacketSendingData<>(subject, packet, timeout, awaitingPacket);
         }
     }
 }

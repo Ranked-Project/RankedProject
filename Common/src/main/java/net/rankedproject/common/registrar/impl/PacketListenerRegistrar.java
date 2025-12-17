@@ -13,7 +13,7 @@ import org.reflections.Reflections;
 
 @Singleton
 @RequiredArgsConstructor(onConstructor_ = {@Inject})
-public class PacketListenerRegistrar implements Registrar {
+public final class PacketListenerRegistrar implements Registrar {
 
     private static final String PACKAGE_LOOKUP_NAME = "net.rankedproject";
 
@@ -26,16 +26,17 @@ public class PacketListenerRegistrar implements Registrar {
 
         reflection.getSubTypesOf(PacketListener.class).forEach(listener -> {
             var packetListener = injector.getInstance(listener);
-            var subject = packetListener.getSubject();
+            var packetMetadata = packetListener.metadata();
+
+            var subject = packetMetadata.subject();
             var dispatcher = nats.createDispatcher(packetListener::onPacket);
 
             dispatcher.subscribe(subject);
         });
     }
 
-    @NotNull
     @Override
-    public ExecutionPriority getPriority() {
+    public @NotNull ExecutionPriority getPriority() {
         return ExecutionPriority.FIRST;
     }
 }

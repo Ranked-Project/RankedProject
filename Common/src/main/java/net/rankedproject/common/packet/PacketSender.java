@@ -18,8 +18,8 @@ public interface PacketSender {
      * @param packetSendingData data that contains subject, packet and optional metadata
      * @return a {@link CompletableFuture} that completes when the send finishes
      */
-    <T extends GeneratedMessage> CompletableFuture<?> send(
-            @NotNull PacketSendingData<T, ?> packetSendingData
+    <T extends GeneratedMessage> @NotNull CompletableFuture<Void> send(
+            final @NotNull PacketSendingData<T, ?> packetSendingData
     );
 
     /**
@@ -34,8 +34,8 @@ public interface PacketSender {
      * @param packetSendingData data that specifies the request and expected response type
      * @return a {@link CompletableFuture} that completes with the response {@code U}
      */
-    <T extends GeneratedMessage, U extends GeneratedMessage> CompletableFuture<U> sendAwaiting(
-            @NotNull PacketSendingData<T, U> packetSendingData
+    <T extends GeneratedMessage, U extends GeneratedMessage> @NotNull CompletableFuture<U> sendAwaiting(
+            final @NotNull PacketSendingData<T, U> packetSendingData
     );
 
     /**
@@ -50,12 +50,12 @@ public interface PacketSender {
      * @param packet the protobuf message instance to send
      * @return a preconfigured {@link PacketSendingData.Builder} ready for customization
      */
-    default <T extends GeneratedMessage, U extends GeneratedMessage> PacketSendingData.Builder<T, U> builder(
-            @NotNull String subject,
-            @NotNull T packet
+    default <T extends GeneratedMessage, U extends GeneratedMessage> PacketSendingData.@NotNull Builder<T, U> builder(
+            final @NotNull String subject,
+            final @NotNull T packet
     ) {
         return PacketSendingData.<T, U>builder(this)
                 .subject(subject)
-                .sendingPacket(packet);
+                .packet(packet);
     }
 }

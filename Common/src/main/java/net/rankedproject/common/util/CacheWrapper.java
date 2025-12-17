@@ -1,5 +1,7 @@
 package net.rankedproject.common.util;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import java.lang.ref.WeakReference;
 import java.util.HashMap;
 import java.util.Map;
@@ -8,7 +10,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 
-public class CacheWrapper<T> {
+public final class CacheWrapper<T> {
 
     private static final ScheduledExecutorService SCHEDULED_EXECUTOR_SERVICE = Executors.newSingleThreadScheduledExecutor();
 
@@ -17,19 +19,19 @@ public class CacheWrapper<T> {
 
     private final WeakReference<T> storedObject;
 
-    public CacheWrapper(T object, Consumer<T> cacheAction) {
+    private CacheWrapper(final @NotNull T object, final @NotNull Consumer<T> cacheAction) {
         this.storedObject = new WeakReference<>(object);
 
         cacheAction.accept(object);
         SCHEDULED_EXECUTOR_SERVICE.scheduleAtFixedRate(() -> cacheAction.accept(object), 0, 1, TimeUnit.SECONDS);
     }
 
-    public T getStoredObject() {
+    public @Nullable T getStoredObject() {
         return storedObject.get();
     }
 
     @SuppressWarnings("unchecked")
-    public static <T> CacheWrapper<T> of(T object, Consumer<T> cacheAction) {
-        return (CacheWrapper<T>) cachedObjectsMap.computeIfAbsent(object, wrapper -> new CacheWrapper<>(object, cacheAction));
+    public static <T> CacheWrapper<T> of(final @NotNull T object, final @NotNull Consumer<T> cacheAction) {
+        return (CacheWrapper<T>) cachedObjectsMap.computeIfAbsent(object, _ -> new CacheWrapper<>(object, cacheAction));
     }
 }

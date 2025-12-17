@@ -20,9 +20,9 @@ import java.util.function.Function;
  * Supports dynamic request composition using consumers for URL and request building.
  */
 @Singleton
-public class RequestFactory {
+public final class RequestFactory {
 
-    protected static final String BASE_URL = Optional
+    private static final String BASE_URL = Optional
             .ofNullable(System.getenv("REST_API_URL"))
             .orElse("http://localhost:8080/");
 
@@ -34,13 +34,13 @@ public class RequestFactory {
     }
 
     /**
-     * Registers a request function for a specific request type.
+     * Registers a request factory for a specific request type.
      *
      * @param type     The type of request to register.
-     * @param function The function that builds the request.
+     * @param factory The factory that builds the request.
      */
-    public void register(RequestType type, Function<RequestContent, Request> function) {
-        this.requests.put(type, function);
+    public void register(final @NotNull RequestType type, final @NotNull Function<RequestContent, Request> factory) {
+        requests.put(type, factory);
     }
 
     /**
@@ -49,7 +49,7 @@ public class RequestFactory {
      * @param type The type of request to retrieve.
      * @return The constructed request.
      */
-    public Request get(RequestType type) {
+    public @NotNull Request get(final @NotNull RequestType type) {
         return requests.get(type).apply(null);
     }
 
@@ -61,7 +61,11 @@ public class RequestFactory {
      * @param requestBuilder Consumer to modify the request builder.
      * @return The constructed request.
      */
-    public Request get(RequestType type, Consumer<HttpUrl.Builder> httpBuilder, Consumer<Request.Builder> requestBuilder) {
+    public @NotNull Request get(
+            final @NotNull RequestType type,
+            final @NotNull Consumer<HttpUrl.Builder> httpBuilder,
+            final @NotNull Consumer<Request.Builder> requestBuilder
+    ) {
         return requests.get(type).apply(new RequestContent(httpBuilder, requestBuilder));
     }
 
@@ -72,7 +76,7 @@ public class RequestFactory {
      * @param requestContent DTO class containing information to modify the output request.
      * @return The constructed request.
      */
-    public Request get(RequestType type, RequestContent requestContent) {
+    public @NotNull Request get(final @NotNull RequestType type, final @NotNull RequestContent requestContent) {
         return requests.get(type).apply(requestContent);
     }
 
@@ -83,7 +87,10 @@ public class RequestFactory {
      * @param httpBuilder Consumer to modify the HTTP URL.
      * @return The constructed request.
      */
-    public Request getWithHttpBuilder(RequestType type, Consumer<HttpUrl.Builder> httpBuilder) {
+    public @NotNull Request getWithHttpBuilder(
+            final @NotNull RequestType type,
+            final @NotNull Consumer<HttpUrl.Builder> httpBuilder
+    ) {
         return requests.get(type).apply(new RequestContent(httpBuilder, null));
     }
 
@@ -94,7 +101,10 @@ public class RequestFactory {
      * @param requestBuilder Consumer to modify the request builder.
      * @return The constructed request.
      */
-    public Request getWithRequestBuilder(RequestType type, Consumer<Request.Builder> requestBuilder) {
+    public @NotNull Request getWithRequestBuilder(
+            final @NotNull RequestType type,
+            final @NotNull Consumer<Request.Builder> requestBuilder
+    ) {
         return requests.get(type).apply(new RequestContent(null, requestBuilder));
     }
 
@@ -115,9 +125,9 @@ public class RequestFactory {
      * @param urlBuilder     The URL builder to be modified.
      * @return A configured Request.Builder instance.
      */
-    private Request.Builder composeFlexibleRequestBuilder(
-            @Nullable RequestContent requestContent,
-            @NotNull HttpUrl.Builder urlBuilder
+    private @NotNull Request.Builder composeFlexibleRequestBuilder(
+            final @Nullable RequestContent requestContent,
+            final @NotNull HttpUrl.Builder urlBuilder
     ) {
         Request.Builder nativeBuilder = new Request.Builder();
 

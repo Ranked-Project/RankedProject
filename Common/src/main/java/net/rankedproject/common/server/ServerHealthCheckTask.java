@@ -16,7 +16,7 @@ import java.util.logging.Logger;
 
 @Singleton
 @RequiredArgsConstructor(onConstructor_ = {@Inject})
-public class ServerHealthCheckTask implements Runnable {
+public final class ServerHealthCheckTask implements Runnable {
 
     private static final String SERVER_UNTRACKED = "Untracked server %s because it didn't send a heartbeat response";
 
@@ -27,8 +27,7 @@ public class ServerHealthCheckTask implements Runnable {
     private final PacketSender packetSender;
     private final Logger logger;
 
-    @NotNull
-    public static ServerHealthCheckTask runTask(@NotNull Injector injector) {
+    public static @NotNull ServerHealthCheckTask runTask(final @NotNull Injector injector) {
         var healthCheckTask = injector.getInstance(ServerHealthCheckTask.class);
         SCHEDULER.schedule(healthCheckTask, 3, TimeUnit.SECONDS);
 

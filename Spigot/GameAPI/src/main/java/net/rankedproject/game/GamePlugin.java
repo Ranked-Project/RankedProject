@@ -11,9 +11,8 @@ import org.jetbrains.annotations.NotNull;
 
 public abstract class GamePlugin extends CommonPlugin implements Provider<GameFinder<?>> {
 
-    @NotNull
     @Override
-    protected final RankedServer rankedServer() {
+    protected final @NotNull RankedServer rankedServer() {
         var builder = new RankedServerBuilder()
                 .addConfig(MapInfoConfig.class)
                 .addModule(new GamePluginModule(this));
@@ -21,6 +20,5 @@ public abstract class GamePlugin extends CommonPlugin implements Provider<GameFi
         return rankedServer(builder);
     }
 
-    @NotNull
-    protected abstract RankedServer rankedServer(@NotNull RankedServerBuilder builder);
+    protected abstract @NotNull RankedServer rankedServer(final @NotNull RankedServerBuilder builder);
 }

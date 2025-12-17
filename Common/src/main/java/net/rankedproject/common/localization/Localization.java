@@ -16,25 +16,26 @@ public abstract class Localization {
         Locale.setDefault(Locale.US);
     }
 
-    @NotNull
-    public LocalizationReadOption.Builder builder(@NotNull String fileName, @NotNull String path, @NotNull UUID playerUUID) {
+    public @NotNull LocalizationReadOption.Builder builder(
+            final @NotNull String fileName,
+            final @NotNull String path,
+            final @NotNull UUID playerUUID
+    ) {
         return LocalizationReadOption.builder(injector)
                 .fileName(fileName)
                 .path(path)
                 .playerUUID(playerUUID);
     }
 
-    @NotNull
-    public String get(@NotNull String fileName, @NotNull LocalizationReadOption readOption) {
-        var resourceBundle = getResourceBundle(readOption.playerUUIDs().getFirst(), fileName);
+    public @NotNull String get(final @NotNull String fileName, final @NotNull LocalizationReadOption readOption) {
+        var resourceBundle = getResourceBundle(fileName);
         var string = resourceBundle.getString(readOption.path());
 
         return applyPlaceholders(string, readOption.placeholders());
     }
 
-    @NotNull
-    public List<String> getList(@NotNull String fileName, @NotNull LocalizationReadOption readOption) {
-        var resourceBundle = getResourceBundle(readOption.playerUUIDs().getFirst(), fileName);
+    public @NotNull List<String> getList(final @NotNull String fileName, final @NotNull LocalizationReadOption readOption) {
+        var resourceBundle = getResourceBundle(fileName);
         var stringArray = resourceBundle.getStringArray(readOption.path());
 
         return Arrays.stream(stringArray)
@@ -42,8 +43,10 @@ public abstract class Localization {
                 .toList();
     }
 
-    @NotNull
-    protected String applyPlaceholders(@NotNull String string, @NotNull List<ConfigPlaceholder> placeholders) {
+    protected @NotNull String applyPlaceholders(
+            final @NotNull String string,
+            final @NotNull List<ConfigPlaceholder> placeholders
+    ) {
         var result = string;
         for (var placeholder : placeholders) {
             var placeholderName = placeholder.placeholder();
@@ -56,13 +59,13 @@ public abstract class Localization {
         return result;
     }
 
-    protected ResourceBundle getResourceBundle(@NotNull UUID playerUUID, @NotNull String fileName) {
+    protected @NotNull ResourceBundle getResourceBundle(final @NotNull String fileName) {
         return findResourceBundle(fileName, Locale.getDefault());
     }
 
-    protected ResourceBundle findResourceBundle(@NotNull String fileName, @NotNull Locale locale) {
+    protected @NotNull ResourceBundle findResourceBundle(final @NotNull String fileName, final @NotNull Locale locale) {
         return ResourceBundle.getBundle(fileName, locale);
     }
 
-    public abstract void sendMessage(@NotNull String fileName, @NotNull LocalizationReadOption readOption);
+    public abstract void sendMessage(final @NotNull String fileName, final @NotNull LocalizationReadOption readOption);
 }

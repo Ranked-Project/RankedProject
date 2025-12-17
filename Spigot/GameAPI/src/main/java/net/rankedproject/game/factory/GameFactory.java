@@ -16,8 +16,7 @@ public interface GameFactory<G extends Game, M extends GameMetadata> {
      *
      * @return the metadata parser
      */
-    @NotNull
-    Class<? extends GameMetadataParser<M>> getParser();
+    @NotNull Class<? extends GameMetadataParser<M>> getParser();
 
     /**
      * Builds a new {@link Game} from the given metadata and plugin.
@@ -30,8 +29,7 @@ public interface GameFactory<G extends Game, M extends GameMetadata> {
      * @param metadata info that describes the game
      * @return a new game instance (not yet loaded)
      */
-    @NotNull
-    G createInstance(@NotNull CommonPlugin plugin, @NotNull M metadata);
+    @NotNull G createInstance(@NotNull CommonPlugin plugin, @NotNull M metadata);
 
     /**
      * Convenience method for creating and initializing a game in one go.
@@ -47,8 +45,7 @@ public interface GameFactory<G extends Game, M extends GameMetadata> {
      * @param gameIdentifier unique identifier for the game
      * @return a future that completes once the game and its world are ready
      */
-    @NotNull
-    default CompletableFuture<G> create(@NotNull CommonPlugin plugin, @NotNull String gameIdentifier) {
+    default @NotNull CompletableFuture<G> create(@NotNull CommonPlugin plugin, @NotNull String gameIdentifier) {
         var metadataParser = plugin.getInjector().getInstance(getParser());
         var metadata = metadataParser.parse(gameIdentifier);
 

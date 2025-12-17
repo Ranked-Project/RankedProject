@@ -9,6 +9,5 @@ public interface Registrar {
      */
     void register();
 
-    @NotNull
-    ExecutionPriority getPriority();
+    @NotNull ExecutionPriority getPriority();
 }

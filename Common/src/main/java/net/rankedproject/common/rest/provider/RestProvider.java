@@ -6,12 +6,13 @@ import com.google.inject.Singleton;
 import lombok.RequiredArgsConstructor;
 import net.rankedproject.common.rest.RestClient;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
 
 @Singleton
 @RequiredArgsConstructor(onConstructor_ = {@Inject})
-public class RestProvider {
+public final class RestProvider {
 
     private final Injector injector;
 
@@ -24,7 +25,7 @@ public class RestProvider {
      * @return An instance of the specified {@code RestClient} type, or {@code null} if not found.
      * @throws ClassCastException if the retrieved instance cannot be cast to the specified type.
      */
-    public <V, T extends RestClient<? extends V>> T get(Class<? extends T> classType) {
+    public <V, T extends RestClient<? extends V>> @NotNull T get(final @NotNull Class<? extends T> classType) {
         return injector.getInstance(classType);
     }
 
@@ -42,17 +43,17 @@ public class RestProvider {
      * @implNote The method performs an unchecked cast to {@code T}, which is suppressed via {@code @SuppressWarnings("unchecked")}.
      */
     @SuppressWarnings("unchecked")
-    public <V, T extends RestClient<V>> T getByReturnType(
-            @NotNull Class<? extends V> classType,
-            @NotNull Collection<? extends Class<? extends RestClient<?>>> restClientTypes
+    public <V, T extends RestClient<V>> @NotNull T getByReturnType(
+            final @NotNull Class<? extends V> classType,
+            final @NotNull Collection<? extends Class<? extends RestClient<?>>> restClientTypes
     ) {
         RestClient<?> restClient = restClientTypes
                 .stream()
                 .map(injector::getInstance)
                 .filter(client -> client.getReturnType() == classType)
                 .findFirst()
-                .orElse(null);
+                .orElseThrow(() -> new RuntimeException("Rest Client with return value %s is not found".formatted(classType)));
 
-        return restClient == null ? null : (T) restClient;
+        return (T) restClient;
     }
 }

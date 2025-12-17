@@ -17,29 +17,6 @@ import org.jetbrains.annotations.NotNull;
 public interface PacketListener<T extends GeneratedMessage> {
 
     /**
-     * Returns the protobuf packet class this listener expects.
-     *
-     * <p>This class is used to parse incoming raw bytes into a typed protobuf
-     * instance via its static {@code parseFrom(byte[])} method.
-     *
-     * @return the protobuf class to parse incoming messages into
-     */
-    @NotNull
-    Class<T> getPacketType();
-
-    /**
-     * Returns the subject/topic this listener handles.
-     *
-     * <p>The subject is used by the messaging layer (e.g. NATS) to route
-     * messages to this listener. Use clear, namespaced subjects to avoid
-     * accidental collisions (for example: {@code "service.component.event"}).
-     *
-     * @return the subject string to subscribe to
-     */
-    @NotNull
-    String getSubject();
-
-    /**
      * Handle a parsed protobuf packet.
      *
      * <p>This method receives a fully-parsed protobuf instance of type {@code T}.
@@ -51,19 +28,30 @@ public interface PacketListener<T extends GeneratedMessage> {
      *
      * @param packet the parsed protobuf message
      */
-    void onPacket(@NotNull T packet);
+    void onPacket(final @NotNull T packet);
+
+    /**
+     * Returns metadata about this packet listener.
+     *
+     * <p>The metadata typically includes the subject/topic this listener subscribes to
+     * and the protobuf type it expects. This information is used by the messaging
+     * system to route messages correctly.
+     *
+     * @return metadata describing the listener's subscription and packet type
+     */
+    @NotNull PacketListenerMetadata<T> metadata();
 
     /**
      * Default handler for raw transport messages.
      *
      * <p>This method parses raw {@link Message#getData()} into the protobuf type
-     * declared by {@link #getPacketType()} and delegates to {@link #onPacket(T)}.
+     * declared by {@link #metadata().packetType()} and delegates to {@link #onPacket(T)}.
      * Use this default unless you need custom raw access (for headers, reply
      * handling, etc).
      *
      * @param message raw transport message containing protobuf bytes
      */
-    default void onPacket(@NotNull Message message) {
+    default void onPacket(final @NotNull Message message) {
         T parsedPacket = parsePacketDataFromMessage(message);
         onPacket(parsedPacket);
     }
@@ -72,7 +60,7 @@ public interface PacketListener<T extends GeneratedMessage> {
      * Parses protobuf bytes from {@link Message}.
      *
      * <p>Uses reflection to call the static {@code parseFrom(byte[])} method on
-     * the class returned by {@link #getPacketType()}. Any exception during
+     * the class returned by {@link #metadata().packetType()}. Any exception during
      * reflection or parsing will be thrown (currently via {@link lombok.SneakyThrows}).
      *
      * @param message the transport message carrying protobuf bytes
@@ -80,8 +68,10 @@ public interface PacketListener<T extends GeneratedMessage> {
      */
     @SneakyThrows
     @SuppressWarnings("unchecked")
-    private T parsePacketDataFromMessage(@NotNull Message message) {
-        var classType = getPacketType();
+    private T parsePacketDataFromMessage(final @NotNull Message message) {
+        var metadata = metadata();
+
+        var classType = metadata.packetType();
         var parseMethod = classType.getMethod("parseFrom", byte[].class);
 
         return (T) parseMethod.invoke(null, (Object) message.getData());

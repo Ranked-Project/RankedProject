@@ -26,8 +26,7 @@ public enum Environment {
 
     private final String identifier;
 
-    @NotNull
-    public static Environment fromIdentifier(@NotNull String identifier) {
+    public static @NotNull Environment fromIdentifier(final @NotNull String identifier) {
         return Arrays.stream(values())
                 .filter(environment -> identifier.equalsIgnoreCase(environment.getIdentifier()))
                 .findFirst()

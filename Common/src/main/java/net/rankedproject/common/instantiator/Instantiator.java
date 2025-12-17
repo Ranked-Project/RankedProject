@@ -37,9 +37,8 @@ public interface Instantiator<T> {
      *
      * @return the loaded {@code T} instance if available, or {@code null} if not yet loaded
      */
-    @NotNull
     @SuppressWarnings("unchecked")
-    default T get() {
+    default @NotNull T get() {
         T instantiatedField = (T) INSTANTIATED_FIELDS.get(getClass());
         Preconditions.checkNotNull(instantiatedField, "%s never initialized".formatted(getClass()));
 

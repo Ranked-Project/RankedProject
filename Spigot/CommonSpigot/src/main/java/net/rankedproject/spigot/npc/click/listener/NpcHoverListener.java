@@ -14,6 +14,8 @@ import com.google.inject.Singleton;
 import it.unimi.dsi.fastutil.ints.Int2BooleanOpenHashMap;
 import lombok.RequiredArgsConstructor;
 import net.rankedproject.spigot.npc.executor.LoadedNpc;
+import net.rankedproject.spigot.npc.model.impl.EntityNpcModel;
+import kr.toxicity.model.api.tracker.TrackerUpdateAction;
 import net.rankedproject.spigot.npc.executor.tracker.NpcSpawnedTracker;
 import net.rankedproject.spigot.util.raytrace.EntityRayTraceUtil;
 import org.bukkit.Bukkit;
@@ -65,6 +67,10 @@ public class NpcHoverListener implements PacketListener {
             var npc = loadedNpc.npc();
             var behavior = npc.getBehavior();
 
+            if (behavior.model() instanceof EntityNpcModel && loadedNpc.modelTracker() == null) {
+                continue;
+            }
+
             var hasHoverEffect = behavior.clickBehaviorMetadata() != null;
             if (!hasHoverEffect) {
                 continue;
@@ -89,10 +95,17 @@ public class NpcHoverListener implements PacketListener {
 
     private void setEntityGlow(@NotNull UUID playerUUID, int entityId, boolean glowing) {
         var player = Objects.requireNonNull(Bukkit.getPlayer(playerUUID));
-        var entityGlowingFlags = glowing ? ENTITY_GLOWING_TRUE_FLAGS : ENTITY_GLOWING_FALSE_FLAGS;
-
-        var packet = new WrapperPlayServerEntityMetadata(entityId, entityGlowingFlags);
-        PacketEvents.getAPI().getPlayerManager().sendPacket(player, packet);
+        var loadedNpc = npcSpawnedTracker.getNpcById(playerUUID, entityId);
+        if (loadedNpc != null && loadedNpc.npc().getBehavior().model() instanceof EntityNpcModel) {
+            var tracker = loadedNpc.modelTracker();
+            if (tracker != null && !tracker.isClosed()) {
+                tracker.update(TrackerUpdateAction.glow(glowing));
+            }
+        } else {
+            var entityGlowingFlags = glowing ? ENTITY_GLOWING_TRUE_FLAGS : ENTITY_GLOWING_FALSE_FLAGS;
+            var packet = new WrapperPlayServerEntityMetadata(entityId, entityGlowingFlags);
+            PacketEvents.getAPI().getPlayerManager().sendPacket(player, packet);
+        }
 
         var lastGlowingStatePerEntityMap = Objects.requireNonNull(lastPacket.get(playerUUID));
         lastGlowingStatePerEntityMap.put(entityId, glowing);

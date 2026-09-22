@@ -1,0 +1,11 @@
+# BetterModel generates plugins/BetterModel/build.zip from the bundled NPC on startup.
+# This is a static ZIP download server, using the JDK HTTP server.
+resource-pack:
+  bind-address: "0.0.0.0"
+  port: 8081
+  # Empty: use the hostname the player entered, with the port above.
+  # Behind Velocity, SRV records, NAT or a reverse proxy, set the actual public URL.
+  # The URL must deliver this server's generated pack, for example:
+  # public-url: "https://packs.example.com/ranked.zip"
+  public-url: ""
+  timeout-seconds: 120

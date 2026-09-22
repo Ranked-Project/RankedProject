@@ -40,7 +40,15 @@ public interface NpcSpawnExecutor {
      * @param playerUUID the UUID of the player who should no longer see the NPC
      */
     default void despawnEntity(@NotNull LoadedNpc loadedNpc, @NotNull UUID playerUUID) {
-        Player player = Objects.requireNonNull(Bukkit.getPlayer(playerUUID));
+        var tracker = loadedNpc.modelTracker();
+        loadedNpc.modelTracker(null);
+        if (tracker != null) {
+            tracker.close();
+        }
+        Player player = Bukkit.getPlayer(playerUUID);
+        if (player == null) {
+            return;
+        }
 
         WrapperPlayServerDestroyEntities destroyPacket = new WrapperPlayServerDestroyEntities(loadedNpc.entityId());
         PacketEvents.getAPI().getPlayerManager().sendPacket(player, destroyPacket);

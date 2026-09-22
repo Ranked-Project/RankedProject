@@ -7,10 +7,9 @@ import net.minecraft.world.entity.EntityType;
 import net.rankedproject.spigot.npc.NpcBehavior;
 import net.rankedproject.spigot.npc.click.NpcClickBehaviorMetadata;
 import net.rankedproject.spigot.npc.type.MobNpc;
-import net.rankedproject.spigot.npc.type.PlayerNpc;
+import net.rankedproject.spigot.npc.model.impl.EntityNpcModel;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.entity.Zombie;
 import org.jetbrains.annotations.NotNull;
 
 @Singleton
@@ -24,11 +23,12 @@ public class LobbyNpc extends MobNpc {
     @Override
     public @NotNull NpcBehavior behavior() {
         return NpcBehavior.builder()
-                .location(new Location(Bukkit.getWorld("lobby"), 27.5, 91, 17.5))
+                .location(new Location(Bukkit.getWorld("lobby"), 27, 89, 1))
                 .clickBehavior(NpcClickBehaviorMetadata.builder()
                         .onClick(player -> player.sendMessage("Suck my dick and massage my nuts"))
                         .build())
-                .entityType(EntityType.BAT)
+                .entityType(EntityType.IRON_GOLEM)
+                .model((EntityNpcModel) () -> "ranked_bust")
                 .autoSpawn()
                 .build();
     }
